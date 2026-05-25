@@ -1,6 +1,6 @@
 # <p align="center">
 
-<img src="assets/essorawm.png" width="220"/>
+<img src="contrib/essorawm.svg"/>
 </p>
 
 <h1 align="center">EssoraWM</h1>
