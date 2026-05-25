@@ -179,26 +179,26 @@ void GetRootMenuSize(int index, int *width, int *height)
 
 }
 
-/** Show a root menu. */
+/** Show a root menu.
+ *
+ * agregado por josejp2424:
+ * Toda invocación de un RootMenu (clic derecho en el escritorio,
+ * RootMenu por keybinding, RootMenu desde un TrayButton, etc.) se
+ * delega de forma incondicional al lanzador externo Pymenu,
+ * ubicado en /usr/local/bin/pymenu. Los parámetros index/x/y/keyboard
+ * se ignoran: Pymenu maneja su propio posicionamiento y contenido
+ * (generado vía XDG por essora-menu-gen).
+ *
+ * El comportamiento original del menú nativo de JWM queda anulado;
+ * los menús internos (winmenu, etc.) siguen intactos.
+ */
 char ShowRootMenu(int index, int x, int y, char keyboard)
 {
-   if(!rootMenu[index]) {
-      return 0;
-   }
-   if(menuShown) {
-      return 1;
-   }
-   if(rootMenu[index]->dynamic) {
-      Menu *menu = rootMenu[index];
-      menu = ParseDynamicMenu(menu->timeout_ms, menu->dynamic);
-      if(menu) {
-         InitializeMenu(menu);
-         ShowMenu(menu, RunRootCommand, x, y, keyboard);
-         DestroyMenu(menu);
-         return 1;
-      }
-   }
-   ShowMenu(rootMenu[index], RunRootCommand, x, y, keyboard);
+   (void)index;
+   (void)x;
+   (void)y;
+   (void)keyboard;
+   RunCommand("/usr/local/bin/pymenu");
    return 1;
 }
 

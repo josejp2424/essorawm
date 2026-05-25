@@ -26,6 +26,7 @@
 #include "event.h"
 #include "misc.h"
 #include "desktop.h"
+#include "taskpreview.h"
 
 typedef struct TaskBarType {
 
@@ -63,27 +64,24 @@ static TaskBarType *bars;
 static TaskEntry *taskEntries;
 static TaskEntry *taskEntriesTail;
 
-static unsigned TallyVisibleItems(void);
-static void ComputeItemSize(TaskBarType *tp);
-static char ShouldShowEntry(const TaskEntry *tp);
-static char ShouldFocusEntry(const TaskEntry *tp);
-static TaskEntry *GetEntry(TaskBarType *bar, int x, int y);
-static void Render(const TaskBarType *bp);
-static void ShowClientList(TaskBarType *bar, TaskEntry *tp);
-static void RunTaskBarCommand(MenuAction *action, unsigned button);
-
+/* Agregado por josejp2424: prototipos internos para compilar limpio con GCC moderno. */
 static void SetSize(TrayComponentType *cp, int width, int height);
 static void Create(TrayComponentType *cp);
 static void Resize(TrayComponentType *cp);
-static void ProcessTaskButtonEvent(TrayComponentType *cp,
-                                   int x, int y, int mask);
-static void MinimizeGroup(const TaskEntry *tp);
-static void FocusGroup(const TaskEntry *tp);
+static void ProcessTaskButtonEvent(TrayComponentType *cp, int x, int y, int mask);
+static void ProcessTaskMotionEvent(TrayComponentType *cp, int x, int y, int mask);
+static void SignalTaskbar(const TimeType *now, int x, int y, Window w, void *data);
+static void Render(const TaskBarType *bp);
+static unsigned TallyVisibleItems(void);
+static void ComputeItemSize(TaskBarType *tp);
 static char IsGroupOnTop(const TaskEntry *entry);
-static void ProcessTaskMotionEvent(TrayComponentType *cp,
-                                   int x, int y, int mask);
-static void SignalTaskbar(const TimeType *now, int x, int y, Window w,
-                          void *data);
+static char ShouldShowEntry(const TaskEntry *tp);
+static char ShouldFocusEntry(const TaskEntry *tp);
+static TaskEntry *GetEntry(TaskBarType *bar, int x, int y);
+static void ShowClientList(TaskBarType *bar, TaskEntry *tp);
+static void RunTaskBarCommand(MenuAction *action, unsigned button);
+static void FocusGroup(const TaskEntry *tp);
+static void MinimizeGroup(const TaskEntry *tp);
 
 /** Initialize task bar data. */
 void InitializeTaskBar(void)
@@ -91,12 +89,14 @@ void InitializeTaskBar(void)
    bars = NULL;
    taskEntries = NULL;
    taskEntriesTail = NULL;
+   InitializeTaskPreview();
 }
 
 /** Shutdown the task bar. */
 void ShutdownTaskBar(void)
 {
    TaskBarType *bp;
+   ShutdownTaskPreview();
    for(bp = bars; bp; bp = bp->next) {
       JXFreePixmap(display, bp->buffer);
    }
@@ -105,6 +105,7 @@ void ShutdownTaskBar(void)
 /** Destroy task bar data. */
 void DestroyTaskBar(void)
 {
+   DestroyTaskPreview();
    TaskBarType *bp;
    while(bars) {
       bp = bars->next;
@@ -129,7 +130,8 @@ TrayComponentType *CreateTaskBar()
    tp->userHeight = 0;
    tp->maxItemWidth = 0;
    tp->layout = LAYOUT_HORIZONTAL;
-   tp->labeled = 1;
+   /* agregado por josejp2424: TaskList sin texto por defecto; solo iconos/miniaturas. */
+   tp->labeled = 0;
    tp->labelPos = LABEL_POSITION_RIGHT;
    tp->mousex = -settings.doubleClickDelta;
    tp->mousey = -settings.doubleClickDelta;
@@ -153,7 +155,7 @@ TrayComponentType *CreateTaskBar()
 }
 
 /** Set the size of a task bar tray component. */
-void SetSize(TrayComponentType *cp, int width, int height)
+static void SetSize(TrayComponentType *cp, int width, int height)
 {
    TaskBarType *tp = (TaskBarType*)cp->object;
    if(width == 0) {
@@ -168,7 +170,7 @@ void SetSize(TrayComponentType *cp, int width, int height)
 }
 
 /** Initialize a task bar tray component. */
-void Create(TrayComponentType *cp)
+static void Create(TrayComponentType *cp)
 {
    TaskBarType *tp = (TaskBarType*)cp->object;
    cp->pixmap = JXCreatePixmap(display, rootWindow, cp->width, cp->height,
@@ -178,7 +180,7 @@ void Create(TrayComponentType *cp)
 }
 
 /** Resize a task bar tray component. */
-void Resize(TrayComponentType *cp)
+static void Resize(TrayComponentType *cp)
 {
    TaskBarType *tp = (TaskBarType*)cp->object;
    if(tp->buffer != None) {
@@ -191,7 +193,7 @@ void Resize(TrayComponentType *cp)
 }
 
 /** Count the number of items that should be shown in the task bar. */
-unsigned TallyVisibleItems(void)
+static unsigned TallyVisibleItems(void)
 {
    TaskEntry *ep;
    unsigned count = 0;
@@ -204,7 +206,7 @@ unsigned TallyVisibleItems(void)
 }
 
 /** Determine the size of items in the task bar. */
-void ComputeItemSize(TaskBarType *tp)
+static void ComputeItemSize(TaskBarType *tp)
 {
    TrayComponentType *cp = tp->cp;
 
@@ -251,7 +253,7 @@ void ComputeItemSize(TaskBarType *tp)
 }
 
 /** Check if all clients in this group are on the top of their layer. */
-char IsGroupOnTop(const TaskEntry *entry)
+static char IsGroupOnTop(const TaskEntry *entry)
 {
    ClientEntry *cp;
    int layer;
@@ -280,7 +282,7 @@ char IsGroupOnTop(const TaskEntry *entry)
 }
 
 /** Process a task list button event. */
-void ProcessTaskButtonEvent(TrayComponentType *cp, int x, int y, int mask)
+static void ProcessTaskButtonEvent(TrayComponentType *cp, int x, int y, int mask)
 {
 
    TaskBarType *bar = (TaskBarType*)cp->object;
@@ -400,7 +402,7 @@ FoundActiveAndTop:
 }
 
 /** Minimize all clients in a group. */
-void MinimizeGroup(const TaskEntry *tp)
+static void MinimizeGroup(const TaskEntry *tp)
 {
    ClientEntry *cp;
    for(cp = tp->clients; cp; cp = cp->next) {
@@ -411,7 +413,7 @@ void MinimizeGroup(const TaskEntry *tp)
 }
 
 /** Raise all clients in a group and focus the top-most. */
-void FocusGroup(const TaskEntry *tp)
+static void FocusGroup(const TaskEntry *tp)
 {
    const char *className = tp->clients->client->className;
    ClientNode **toRestore;
@@ -490,16 +492,17 @@ void FocusGroup(const TaskEntry *tp)
 }
 
 /** Process a task list motion event. */
-void ProcessTaskMotionEvent(TrayComponentType *cp, int x, int y, int mask)
+static void ProcessTaskMotionEvent(TrayComponentType *cp, int x, int y, int mask)
 {
    TaskBarType *bp = (TaskBarType*)cp->object;
+   HideTaskPreview();
    bp->mousex = cp->screenx + x;
    bp->mousey = cp->screeny + y;
    GetCurrentTime(&bp->mouseTime);
 }
 
 /** Show the menu associated with a task list item. */
-void ShowClientList(TaskBarType *bar, TaskEntry *tp)
+static void ShowClientList(TaskBarType *bar, TaskEntry *tp)
 {
    Menu *menu;
    MenuItem *item;
@@ -609,7 +612,7 @@ void ShowClientList(TaskBarType *bar, TaskEntry *tp)
 }
 
 /** Run a menu action. */
-void RunTaskBarCommand(MenuAction *action, unsigned button)
+static void RunTaskBarCommand(MenuAction *action, unsigned button)
 {
    ClientEntry *cp;
 
@@ -767,7 +770,7 @@ void UpdateTaskBar(void)
 }
 
 /** Signal task bar (for popups). */
-void SignalTaskbar(const TimeType *now, int x, int y, Window w, void *data)
+static void SignalTaskbar(const TimeType *now, int x, int y, Window w, void *data)
 {
 
    TaskBarType *bp = (TaskBarType*)data;
@@ -778,13 +781,24 @@ void SignalTaskbar(const TimeType *now, int x, int y, Window w, void *data)
       abs(bp->mousey - y) < settings.doubleClickDelta) {
       if(GetTimeDifference(now, &bp->mouseTime) >= settings.popupDelay) {
          ep = GetEntry(bp, x - bp->cp->screenx, y - bp->cp->screeny);
+         /* agregado por josejp2424:
+          * En TaskList no mostrar el popup de texto clásico de JWM.
+          * Solo se muestra la miniatura interna; los TrayButton, systray y
+          * aplicaciones fijas mantienen sus nombres/popups normales.
+          */
          if(settings.groupTasks) {
             if(ep && ep->clients->client->className) {
-               ShowPopup(x, y, ep->clients->client->className, POPUP_TASK);
+               HidePopup();
+               ShowTaskPreview(ep->clients->client, x, y);
+            } else {
+               HideTaskPreview();
             }
          } else {
             if(ep && ep->clients->client->name) {
-               ShowPopup(x, y, ep->clients->client->name, POPUP_TASK);
+               HidePopup();
+               ShowTaskPreview(ep->clients->client, x, y);
+            } else {
+               HideTaskPreview();
             }
          }
       }
@@ -793,7 +807,7 @@ void SignalTaskbar(const TimeType *now, int x, int y, Window w, void *data)
 }
 
 /** Draw a specific task bar. */
-void Render(const TaskBarType *bp)
+static void Render(const TaskBarType *bp)
 {
    TaskEntry *tp;
    char *displayName;
@@ -852,6 +866,10 @@ void Render(const TaskBarType *bp)
       }
       button.x = x;
       button.y = y;
+      /* Agregado por josejp2424: keep thumbnail cache fresh while windows are visible. */
+      if(tp->clients && tp->clients->client) {
+         UpdateTaskPreviewCache(tp->clients->client);
+      }
       if(!tp->clients->client || !tp->clients->client->icon) {
          button.icon = GetDefaultIcon();
       } else {
@@ -991,7 +1009,7 @@ void FocusAt(char n)
 }
 
 /** Determine if there is anything to show for the specified entry. */
-char ShouldShowEntry(const TaskEntry *tp)
+static char ShouldShowEntry(const TaskEntry *tp)
 {
    const ClientEntry *cp;
    for(cp = tp->clients; cp; cp = cp->next) {
@@ -1003,7 +1021,7 @@ char ShouldShowEntry(const TaskEntry *tp)
 }
 
 /** Determine if we should attempt to focus an entry. */
-char ShouldFocusEntry(const TaskEntry *tp)
+static char ShouldFocusEntry(const TaskEntry *tp)
 {
    const ClientEntry *cp;
    for(cp = tp->clients; cp; cp = cp->next) {
@@ -1017,7 +1035,7 @@ char ShouldFocusEntry(const TaskEntry *tp)
 }
 
 /** Get the item associated with a coordinate on the task bar. */
-TaskEntry *GetEntry(TaskBarType *bar, int x, int y)
+static TaskEntry *GetEntry(TaskBarType *bar, int x, int y)
 {
    TaskEntry *tp;
    int offset;

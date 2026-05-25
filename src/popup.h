@@ -28,6 +28,9 @@ void ShutdownPopup(void);
 void ShowPopup(int x, int y, const char *text,
                const PopupMaskType context);
 
+/* agregado por josejp2424: ocultar popup de texto del TaskList cuando hay miniatura. */
+void HidePopup(void);
+
 /** Process a popup event.
  * @param event The event to process.
  * @return 1 if handled, 0 otherwise.

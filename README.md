@@ -1,37 +1,211 @@
+# <p align="center">
+
+<img src="contrib/essorawm.svg" width="220"/>
+</p>
+
+<h1 align="center">EssoraWM</h1>
+
+<p align="center">
+Fast, lightweight and customizable window manager based on JWM.
+</p>
+
+<p align="center">
+EssoraWM 0.1<br>
+Based on JWM 2.4.7
+</p>
+
+---
+
+## About
+
+EssoraWM is a fork of JWM (Joe's Window Manager) focused on preserving JWM's lightweight structure while adding Essora improvements and modern behavior.
+
+EssoraWM keeps the original `jwm` binary name for compatibility:
+
+```bash
+jwm -restart
+jwm -reload
+jwm -version
+```
+
+Version output:
+
+```text
+EssoraWM 0.1
+Based on JWM 2.4.7
+```
+
+EssoraWM preserves the original JWM architecture and configuration system, but replaces the original menu workflow.
+
+The traditional JWM menu is no longer the primary launcher.
+
+Instead, EssoraWM uses:
+
+```bash
+/usr/local/bin/pymenu
+```
+
+---
+
+## Screenshots
+
+### Task preview / thumbnail support
+
+EssoraWM includes window previews directly in the taskbar.
+
+Window text labels were removed for a cleaner panel appearance.
+
+Task buttons now prioritize:
+
+* Window previews
+* Icons
+* Cleaner panel behavior
+
+Screenshot:
+
+<p align="center">
+<img src="assets/essorawm-miniatura.png"/>
+</p>
+
+---
+
+### Pymenu launcher
+
+Pymenu is used as the application launcher for EssoraWM.
+
+Screenshot:
+
+<p align="center">
+<img src="assets/essorawm-pymenu.png"/>
+</p>
+
+---
+
+## Important
+
+Pymenu is distributed separately.
+
+EssoraWM expects:
+
+```bash
+/usr/local/bin/pymenu
+```
+
+to exist.
+
+Package example:
+
+```text
+essora-pymenu
+```
+
+EssoraWM does not embed Python/GTK menu code directly into the window manager.
+
+This keeps the WM:
+
+* lightweight
+* modular
+* independent
+* easy to maintain
+
+---
+
+## EssoraWM changes
+
+Current modifications:
+
+* Window task preview support
+* Taskbar thumbnails
+* Removed task text labels from open windows
+* Pymenu integration
+* Essora branding
+* Updated panel behavior
+* Improved icon handling
+* Optional custom window buttons
+* User JWM configuration support
+* Custom build system
+* Automatic Debian package generation
+
+Essora specific changes are marked in source code:
+
+```c
+/* agregado por josejp2424 */
+```
+
+---
+
+## Building EssoraWM
+
+EssoraWM includes its own build system.
+
+The build script:
+
+* compiles EssoraWM
+* builds NLS translations
+* creates package structure
+* includes Essora assets
+* generates Debian package automatically
+
+Requirements:
+
+```bash
+sudo apt install build-essential \
+libx11-dev \
+libxext-dev \
+libxrender-dev \
+libxmu-dev \
+libxinerama-dev \
+libxpm-dev \
+libjpeg-dev \
+libpng-dev \
+libcairo2-dev \
+librsvg2-dev \
+libpango1.0-dev \
+gettext \
+autoconf \
+automake
+```
+
+Build:
+
+```bash
+chmod +x build-essorawm-deb.sh
+./build-essorawm-deb.sh
+```
+
+Generated structure:
+
+```text
+build-deb/
+└── essorawm_0.1_amd64/
+```
+
+Generated package:
+
+```text
+essorawm_0.1_amd64.deb
+```
+
+---
+
+## Original project
+
+EssoraWM is based on:
+
 JWM (Joe's Window Manager)
-==============================================================================
 
-JWM is a light-weight window manager for the X11 Window System.
+Original author: Joe Wingbermuehle
 
-Requirements
-------------------------------------------------------------------------------
-To build JWM you will need a C compiler (gcc works), X11, and the
-"development headers" for X11 and Xlib.
-If available and not disabled at compile time, JWM will also use
-the following libraries:
+Original project: https://joewing.net/projects/jwm/
 
- - cairo and librsvg2 for SVG icons and backgrounds.
- - pango (with the xft backend) for text layout.
- - libjpeg for JPEG icons and backgrounds.
- - libpng for PNG icons and backgrounds.
- - libXext for the shape extension.
- - libXrender for the render extension.
- - libXmu for rounded corners.
- - libXinerama for multiple head support.
- - libXpm for XPM icons and backgrounds.
+License:
 
-Installation
-------------------------------------------------------------------------------
+MIT
 
- 0. For building from the git repository, run "./autogen.sh".
- 1. Run "./configure --help" for configuration options.
- 2. Run "./configure [options]"
- 3. Run "make" to build JWM.
- 4. Run "make install" to install JWM.  Depending on where you are installing
-    JWM, you may need to perform this step as root ("sudo make install").
+---
 
-License
-------------------------------------------------------------------------------
-See LICENSE for license information.
+## EssoraWM
 
-For more information see http://joewing.net/projects/jwm/
+Modifications and Essora integration:
+
+josejp2424

@@ -4,11 +4,11 @@
 
 AC_INIT([jwm],[2.4.7],[joewing@joewing.net])
 AC_PREREQ([2.69])
+AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR([src])
 AC_CONFIG_SRCDIR([po])
 AC_CONFIG_HEADERS([config.h])
 AC_LANG(C)
-AM_INIT_AUTOMAKE
 
 AC_PROG_CC
 AC_PROG_CPP
@@ -475,12 +475,42 @@ if test "$enable_xinerama" != "no"; then
 fi
 
 ############################################################################
-# Check if support for gettext was requested and available.
+# Check if support for gettext/iconv was requested and available.
+# Agregado por josejp2424: evitar dependencia de macros AM_ICONV/AM_GNU_GETTEXT
+# para que el source compile aunque el sistema no tenga gettextize/autopoint.
 ############################################################################
-AM_ICONV
-AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION([0.20])
-LDFLAGS="$LDFLAGS $LIBINTL $LIBICONV"
+AC_ARG_ENABLE(nls,
+   AS_HELP_STRING([--disable-nls],[disable Native Language Support]) )
+
+USE_NLS=no
+if test "x$enable_nls" != "xno"; then
+   AC_CHECK_FUNCS([gettext bindtextdomain textdomain],
+      [have_gettext=yes], [have_gettext=no])
+   if test "x$have_gettext" = "xyes"; then
+      AC_DEFINE(ENABLE_NLS, 1, [Define to enable Native Language Support])
+      AC_DEFINE(HAVE_GETTEXT, 1, [Define if gettext is available])
+      USE_NLS=yes
+   else
+      AC_CHECK_LIB([intl], [gettext],
+         [ LDFLAGS="$LDFLAGS -lintl"
+           AC_DEFINE(ENABLE_NLS, 1, [Define to enable Native Language Support])
+           AC_DEFINE(HAVE_GETTEXT, 1, [Define if gettext is available])
+           USE_NLS=yes ],
+         [ AC_MSG_WARN([gettext not found; NLS disabled]) ])
+   fi
+fi
+AC_SUBST(USE_NLS)
+
+AC_CHECK_FUNCS([iconv],
+   [ AC_DEFINE(USE_ICONV, 1, [Define to use iconv])
+     AC_DEFINE(ICONV_CONST, [], [Define as const if iconv needs const]) ],
+   [ AC_CHECK_LIB([iconv], [iconv],
+       [ LDFLAGS="$LDFLAGS -liconv"
+         AC_DEFINE(USE_ICONV, 1, [Define to use iconv])
+         AC_DEFINE(ICONV_CONST, [], [Define as const if iconv needs const]) ],
+       [ AC_MSG_WARN([iconv not found]) ]) ])
+AC_CHECK_PROG(MSGFMT, msgfmt, msgfmt, :)
+AC_SUBST(MSGFMT)
 
 ############################################################################
 # Check if debug mode was requested.
@@ -548,7 +578,7 @@ AC_SUBST(DATE, `date -u -d "@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y-%m-%d`)
 AC_SUBST(SYSCONF, "$SYSCONF")
 AC_SUBST(PACKAGE, "$PACKAGE")
 
-AC_CONFIG_FILES([po/Makefile.in
+AC_CONFIG_FILES([po/Makefile
    Makefile
    src/Makefile
    contrib/Makefile

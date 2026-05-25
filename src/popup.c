@@ -203,6 +203,25 @@ void ShowPopup(int x, int y, const char *text,
 
 }
 
+
+/** Hide the current popup window.
+ * agregado por josejp2424: used by TaskList thumbnail-only mode
+ * to avoid showing the old text tooltip under the thumbnail.
+ */
+void HidePopup(void)
+{
+   if(popup.text) {
+      Release(popup.text);
+      Release(popup.lines);
+      popup.text = NULL;
+   }
+   if(popup.window != None) {
+      JXDestroyWindow(display, popup.window);
+      JXFreePixmap(display, popup.pmap);
+      popup.window = None;
+   }
+}
+
 /** Signal popup (this is used to hide popups after awhile). */
 void SignalPopup(const TimeType *now, int x, int y, Window w, void *data)
 {

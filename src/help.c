@@ -15,7 +15,9 @@ static void DisplayUsage(void);
 /** Display program name, version, and compiled options . */
 void DisplayAbout(void)
 {
-   printf("JWM v" PACKAGE_VERSION " by Joe Wingbermuehle\n");
+   /* agregado por josejp2424: identificación del fork EssoraWM manteniendo el binario jwm. */
+   printf("EssoraWM 0.1\n");
+   printf("Based on JWM " PACKAGE_VERSION "\n");
    DisplayCompileOptions();
 }
 
