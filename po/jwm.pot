@@ -497,3 +497,31 @@ msgstr ""
 #: src/winmenu.c:162
 msgid "Below"
 msgstr ""
+
+#: src/essorawallpaper.c
+msgid "EssoraWM Wallpaper"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Wallpapers from /usr/share/backgrounds"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "No images found in /usr/share/backgrounds"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "No preview"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Previous"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Next"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Apply"
+msgstr ""

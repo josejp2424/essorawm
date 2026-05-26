@@ -128,6 +128,13 @@ void RunCommand(const char *command)
       return;
    }
 
+   /* agregado por josejp2424: comando interno para abrir el selector nativo de wallpaper. */
+   if(!strcmp(command, "essorawm:wallpaper") || !strcmp(command, "wallpaper")) {
+      command = "jwm -wallpaper";
+   } else if(!strcmp(command, "essorawm:wallpaper-restore")) {
+      command = "jwm -wallpaper-restore";
+   }
+
    displayString = DisplayString(display);
    if(!fork()) {
       close(ConnectionNumber(display));

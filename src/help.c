@@ -81,6 +81,8 @@ void DisplayHelp(void)
           "  -p          Parse the configuration file and exit\n"
           "  -reload     Reload menu (send _JWM_RELOAD to the root)\n"
           "  -restart    Restart JWM (send _JWM_RESTART to the root)\n"
+          "  -wallpaper  Open EssoraWM wallpaper selector (agregado por josejp2424)\n"
+          "  -wallpaper-restore  Restore saved EssoraWM wallpaper (agregado por josejp2424)\n"
           "  -v          Display version information\n");
 }
 

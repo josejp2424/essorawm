@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 <JWM>
-    <!-- agregado por josejp2424: configuración base de JWM-Essora -->
+    <!-- agregado por josejp2424: configuración base de EssoraWM -->
     <!-- agregado por josejp2424: EssoraWM usa Pymenu externo en /usr/local/bin/pymenu -->
 
-    <RootMenu label="Menu" labeled="false" height="24" onroot="123">
-        <!-- agregado por josejp2424: menú mínimo; siempre abre Pymenu externo -->
-        <Program label="Essora Menu" icon="start-here">exec:/usr/local/bin/pymenu</Program>
-        <Restart label="Restart JWM" icon="view-refresh"/>
-        <Exit label="Exit JWM" confirm="true" icon="system-log-out"/>
+    <RootMenu label="Menu" labeled="false" height="24" onroot="3">
+        <!-- agregado por josejp2424: menú de escritorio sin Pymenu para evitar conflictos con el root window -->
+        <Program label="Change Wallpaper" icon="/usr/share/jwm/essorawm.svg">essorawm:wallpaper</Program>
+        <Separator/>
+        <Restart label="Restart EssoraWM" icon="view-refresh"/>
+        <Exit label="Exit EssoraWM" confirm="true" icon="system-log-out"/>
     </RootMenu>
 
     <!-- agregado por josejp2424: rutas de iconos tomadas de example.jwmrc -->
@@ -146,11 +147,12 @@
     </TrayButtonStyle>
 
     <Tray x="0" y="-1" height="30" autohide="false">
-        <!-- agregado por josejp2424: EssoraWM abre Pymenu externo instalado aparte -->
+        <!-- agregado por josejp2424: Pymenu externo, distribuido aparte -->
         <TrayButton label="Menu" icon="/usr/share/pixmaps/menu3.svg">exec:/usr/local/bin/pymenu</TrayButton>
 
-        <!-- agregado por josejp2424: TaskList sin texto, solo iconos/miniaturas -->
+        <!-- agregado por josejp2424: TaskList sin texto; solo iconos/miniaturas -->
         <TaskList maxwidth="48" labeled="false"/>
+
         <Dock/>
         <Clock format="%H:%M"/>
     </Tray>
@@ -173,6 +175,8 @@
 
     <!-- agregado por josejp2424: arranque -->
     <StartupCommand>xsettingsd</StartupCommand>
+    <!-- agregado por josejp2424: restaurar wallpaper guardado -->
+    <StartupCommand>jwm -wallpaper-restore</StartupCommand>
     <StartupCommand>auto-numlock.sh</StartupCommand>
     <StartupCommand>/usr/local/bin/essora-menu-gen >/dev/null 2>&amp;1 || true</StartupCommand>
 

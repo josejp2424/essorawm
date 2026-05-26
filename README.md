@@ -1,5 +1,5 @@
 <p align="center">
-<img src="assets/essorawm.png"/>
+<img src="contrib/essorawm.svg"/>
 </p>
 
 <h1 align="center">EssoraWM</h1>
@@ -17,9 +17,11 @@ Based on JWM 2.4.7
 
 ## About
 
-EssoraWM is a fork of JWM (Joe's Window Manager) focused on preserving JWM's lightweight structure while adding Essora improvements and modern behavior.
+EssoraWM is a fork of **JWM (Joe's Window Manager)**.
 
-EssoraWM keeps the original `jwm` binary name for compatibility:
+It keeps the original JWM structure and the `jwm` binary name for compatibility, but adds Essora-specific improvements for the panel, task previews, Pymenu launching, branding and wallpaper handling.
+
+EssoraWM keeps compatibility with regular JWM commands:
 
 ```bash
 jwm -restart
@@ -34,15 +36,15 @@ EssoraWM 0.1
 Based on JWM 2.4.7
 ```
 
-EssoraWM preserves the original JWM architecture and configuration system, but replaces the original menu workflow.
+EssoraWM preserves the original JWM architecture, configuration style and lightweight behavior, but it does **not** use the original JWM menu as the main application launcher.
 
-The traditional JWM menu is no longer the primary launcher.
-
-Instead, EssoraWM uses:
+Instead, the menu button and menu hotkeys are intended to call:
 
 ```bash
 /usr/local/bin/pymenu
 ```
+
+Pymenu is distributed as a separate package.
 
 ---
 
@@ -50,17 +52,9 @@ Instead, EssoraWM uses:
 
 ### Task preview / thumbnail support
 
-EssoraWM includes window previews directly in the taskbar.
+EssoraWM includes task previews directly in the panel.
 
-Window text labels were removed for a cleaner panel appearance.
-
-Task buttons now prioritize:
-
-* Window previews
-* Icons
-* Cleaner panel behavior
-
-Screenshot:
+The open-window task list was changed to avoid showing application names under the preview. The panel now focuses on icons and thumbnails for a cleaner look.
 
 <p align="center">
 <img src="assets/essorawm-miniatura.png"/>
@@ -70,9 +64,13 @@ Screenshot:
 
 ### Pymenu launcher
 
-Pymenu is used as the application launcher for EssoraWM.
+EssoraWM is designed to launch Pymenu from `/usr/local/bin/pymenu`.
 
-Screenshot:
+Pymenu is **not embedded** inside the EssoraWM source. It is expected to come as a separate package, for example:
+
+```text
+essora-pymenu
+```
 
 <p align="center">
 <img src="assets/essorawm-pymenu.png"/>
@@ -80,72 +78,89 @@ Screenshot:
 
 ---
 
-## Important
+### Wallpaper selector
 
-Pymenu is distributed separately.
-
-EssoraWM expects:
+EssoraWM includes a native wallpaper selector that can be launched with:
 
 ```bash
-/usr/local/bin/pymenu
+jwm -wallpaper
 ```
 
-to exist.
-
-Package example:
+The wallpaper selector searches images in:
 
 ```text
-essora-pymenu
+/usr/share/backgrounds
 ```
 
-EssoraWM does not embed Python/GTK menu code directly into the window manager.
+It saves the selected wallpaper in:
 
-This keeps the WM:
+```text
+~/.config/essorawm/wallpaper
+```
 
-* lightweight
-* modular
-* independent
-* easy to maintain
+It can apply wallpapers using available tools such as:
+
+- `hsetroot`
+- `feh`
+- `xwallpaper`
+
+It also includes Puppy/ROX compatibility. If this file exists:
+
+```text
+$HOME/Choices/ROX-Filer/PuppyPin
+```
+
+EssoraWM updates the `<backdrop>` entry while preserving the current backdrop style, for example `Stretched`.
+
+The wallpaper can be restored with:
+
+```bash
+jwm -wallpaper-restore
+```
+
+<p align="center">
+<img src="assets/essorawm-wallpaper.png"/>
+</p>
 
 ---
 
 ## EssoraWM changes
 
-Current modifications:
+Current Essora-specific changes include:
 
-* Window task preview support
-* Taskbar thumbnails
-* Removed task text labels from open windows
-* Pymenu integration
-* Essora branding
-* Updated panel behavior
-* Improved icon handling
-* Optional custom window buttons
-* User JWM configuration support
-* Custom build system
-* Automatic Debian package generation
+- EssoraWM branding
+- `jwm -version` identifies the fork as EssoraWM 0.1
+- Task preview / thumbnail support for open windows
+- Removed task text labels from open windows
+- Cleaner task list behavior
+- Pymenu launcher integration using `/usr/local/bin/pymenu`
+- Wallpaper selector integrated into the `jwm` binary
+- `jwm -wallpaper` command
+- `jwm -wallpaper-restore` command
+- Wallpaper selection from `/usr/share/backgrounds`
+- Wallpaper state stored in `~/.config/essorawm/wallpaper`
+- Puppy/ROX `PuppyPin` backdrop compatibility
+- Optional custom window buttons and Essora theme assets
+- Custom build script with automatic Debian package generation
+- NLS/translations kept inside the main package build
 
-Essora specific changes are marked in source code:
+Essora-specific source changes are marked with:
 
 ```c
 /* agregado por josejp2424 */
 ```
 
+or equivalent comments in scripts/configuration files.
+
 ---
 
 ## Building EssoraWM
 
-EssoraWM includes its own build system.
+EssoraWM includes a custom build script that compiles the window manager and creates a Debian package automatically.
 
-The build script:
+### Build dependencies
 
-* compiles EssoraWM
-* builds NLS translations
-* creates package structure
-* includes Essora assets
-* generates Debian package automatically
-
-Requirements:
+On Debian/Devuan-based systems:
 
 ```bash
 sudo apt install build-essential \
@@ -165,25 +180,60 @@ autoconf \
 automake
 ```
 
-Build:
+### Build and generate the package
 
 ```bash
-chmod +x build-essorawm-deb.sh
-./build-essorawm-deb.sh
+chmod +x build-essora-jwm-deb.sh
+./build-essora-jwm-deb.sh
 ```
 
-Generated structure:
+The build script creates the package tree in:
 
 ```text
-build-deb/
-└── essorawm_0.1_amd64/
+build-deb/essorawm_0.1_amd64/
 ```
 
-Generated package:
+The generated Debian package is placed in:
+
+```text
+deb-output/essorawm_0.1_amd64.deb
+```
+
+A copy is also left in the source directory:
 
 ```text
 essorawm_0.1_amd64.deb
 ```
+
+The build system automatically:
+
+- runs `autogen.sh` when needed
+- configures the source
+- compiles EssoraWM
+- builds NLS translations
+- installs into a temporary package tree
+- creates a `.deb` package
+- keeps generated files inside the source build directory
+
+---
+
+## Runtime notes
+
+EssoraWM keeps `/usr/bin/jwm` as the main binary for compatibility.
+
+Pymenu is expected at:
+
+```bash
+/usr/local/bin/pymenu
+```
+
+Wallpaper tools are optional but recommended:
+
+```bash
+sudo apt install hsetroot feh xwallpaper
+```
+
+EssoraWM will use whichever supported wallpaper setter is available.
 
 ---
 
@@ -191,15 +241,19 @@ essorawm_0.1_amd64.deb
 
 EssoraWM is based on:
 
-JWM (Joe's Window Manager)
+**JWM (Joe's Window Manager)**
 
-Original author: Joe Wingbermuehle
+Original author:
 
-Original project: https://joewing.net/projects/jwm/
+**Joe Wingbermuehle**
+
+Original project:
+
+https://joewing.net/projects/jwm/
 
 License:
 
-MIT
+**MIT**
 
 ---
 
@@ -207,4 +261,4 @@ MIT
 
 Modifications and Essora integration:
 
-josejp2424
+**josejp2424**

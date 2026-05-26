@@ -13,6 +13,7 @@
 #include "help.h"
 #include "error.h"
 #include "event.h"
+#include "essorawallpaper.h" /* agregado por josejp2424 */
 
 #include "border.h"
 #include "client.h"
@@ -111,7 +112,9 @@ int main(int argc, char *argv[])
       COMMAND_RESTART,
       COMMAND_EXIT,
       COMMAND_RELOAD,
-      COMMAND_PARSE
+      COMMAND_PARSE,
+      COMMAND_WALLPAPER,
+      COMMAND_WALLPAPER_RESTORE
    } action;
 
    StartDebug();
@@ -133,6 +136,10 @@ int main(int argc, char *argv[])
          action = COMMAND_EXIT;
       } else if(!strcmp(argv[x], "-reload")) {
          action = COMMAND_RELOAD;
+      } else if(!strcmp(argv[x], "-wallpaper")) {
+         action = COMMAND_WALLPAPER;
+      } else if(!strcmp(argv[x], "-wallpaper-restore")) {
+         action = COMMAND_WALLPAPER_RESTORE;
       } else if(!strcmp(argv[x], "-display") && x + 1 < argc) {
          displayString = argv[++x];
       } else if(!strcmp(argv[x], "-f") && x + 1 < argc) {
@@ -146,6 +153,15 @@ int main(int argc, char *argv[])
          DoExit(1);
       }
    }
+
+   /* agregado por josejp2424: inicializar NLS antes de ejecutar comandos independientes como -wallpaper. */
+#if defined(HAVE_SETLOCALE) && (defined(ENABLE_NLS) || defined(ENABLE_ICONV))
+   setlocale(LC_ALL, "");
+#endif
+#ifdef HAVE_GETTEXT
+   bindtextdomain("jwm", LOCALEDIR);
+   textdomain("jwm");
+#endif
 
    switch(action) {
    case COMMAND_PARSE:
@@ -161,17 +177,17 @@ int main(int argc, char *argv[])
    case COMMAND_RELOAD:
       SendReload();
       DoExit(0);
+   case COMMAND_WALLPAPER:
+      /* agregado por josejp2424 */
+      RunEssoraWallpaperSelector();
+      DoExit(0);
+   case COMMAND_WALLPAPER_RESTORE:
+      /* agregado por josejp2424 */
+      RestoreEssoraWallpaper();
+      DoExit(0);
    default:
       break;
    }
-
-#if defined(HAVE_SETLOCALE) && (defined(ENABLE_NLS) || defined(ENABLE_ICONV))
-   setlocale(LC_ALL, "");
-#endif
-#ifdef HAVE_GETTEXT
-   bindtextdomain("jwm", LOCALEDIR);
-   textdomain("jwm");
-#endif
 
    /* The main loop. */
    StartupConnection();

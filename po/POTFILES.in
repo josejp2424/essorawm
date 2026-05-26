@@ -48,3 +48,4 @@ src/timing.c
 src/tray.c
 src/traybutton.c
 src/winmenu.c
+src/essorawallpaper.c

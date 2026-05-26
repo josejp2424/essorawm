@@ -531,3 +531,39 @@ msgstr "[Abajo]"
 #: src/winmenu.c:162
 msgid "Below"
 msgstr "Abajo"
+
+#: src/essorawallpaper.c
+msgid "EssoraWM Wallpaper"
+msgstr "Fondo de pantalla de EssoraWM"
+
+#: src/essorawallpaper.c
+msgid "Wallpapers from /usr/share/backgrounds"
+msgstr "Fondos de pantalla desde /usr/share/backgrounds"
+
+#: src/essorawallpaper.c
+msgid "No images found in /usr/share/backgrounds"
+msgstr "No se encontraron imágenes en /usr/share/backgrounds"
+
+#: src/essorawallpaper.c
+msgid "No preview"
+msgstr "Sin vista previa"
+
+#: src/essorawallpaper.c
+msgid "Previous"
+msgstr "Anterior"
+
+#: src/essorawallpaper.c
+msgid "Next"
+msgstr "Siguiente"
+
+#: src/essorawallpaper.c
+msgid "Apply"
+msgstr "Aplicar"
+
+#: src/essorawallpaper.c
+msgid "Up"
+msgstr "Arriba"
+
+#: src/essorawallpaper.c
+msgid "Down"
+msgstr "Abajo"

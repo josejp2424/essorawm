@@ -514,3 +514,39 @@ msgstr "Aşağıda"
 
 #~ msgid "invalid tray height: %d"
 #~ msgstr "Geçersiz tepsi yüksekliği：%d"
+
+#: src/essorawallpaper.c
+msgid "EssoraWM Wallpaper"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Wallpapers from /usr/share/backgrounds"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "No images found in /usr/share/backgrounds"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "No preview"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Previous"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Next"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Apply"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Up"
+msgstr "Up"
+
+#: src/essorawallpaper.c
+msgid "Down"
+msgstr "Down"

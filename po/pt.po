@@ -525,3 +525,39 @@ msgstr "Abaixo"
 
 #~ msgid "Fullscreen state will be shaped!"
 #~ msgstr "Estado do ecrã expandido será moldado!"
+
+#: src/essorawallpaper.c
+msgid "EssoraWM Wallpaper"
+msgstr "Papel de parede do EssoraWM"
+
+#: src/essorawallpaper.c
+msgid "Wallpapers from /usr/share/backgrounds"
+msgstr "Papéis de parede de /usr/share/backgrounds"
+
+#: src/essorawallpaper.c
+msgid "No images found in /usr/share/backgrounds"
+msgstr "Nenhuma imagem encontrada em /usr/share/backgrounds"
+
+#: src/essorawallpaper.c
+msgid "No preview"
+msgstr "Sem pré-visualização"
+
+#: src/essorawallpaper.c
+msgid "Previous"
+msgstr "Anterior"
+
+#: src/essorawallpaper.c
+msgid "Next"
+msgstr "Próximo"
+
+#: src/essorawallpaper.c
+msgid "Apply"
+msgstr "Aplicar"
+
+#: src/essorawallpaper.c
+msgid "Up"
+msgstr "Subir"
+
+#: src/essorawallpaper.c
+msgid "Down"
+msgstr "Bajar"

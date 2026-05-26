@@ -521,3 +521,39 @@ msgstr "Sotto"
 
 #~ msgid "cannot swallow the same client multiple times"
 #~ msgstr "Impossibile includere più volte lo stesso client"
+
+#: src/essorawallpaper.c
+msgid "EssoraWM Wallpaper"
+msgstr "Sfondo di EssoraWM"
+
+#: src/essorawallpaper.c
+msgid "Wallpapers from /usr/share/backgrounds"
+msgstr "Sfondi da /usr/share/backgrounds"
+
+#: src/essorawallpaper.c
+msgid "No images found in /usr/share/backgrounds"
+msgstr "Nessuna immagine trovata in /usr/share/backgrounds"
+
+#: src/essorawallpaper.c
+msgid "No preview"
+msgstr "Nessuna anteprima"
+
+#: src/essorawallpaper.c
+msgid "Previous"
+msgstr "Precedente"
+
+#: src/essorawallpaper.c
+msgid "Next"
+msgstr "Successivo"
+
+#: src/essorawallpaper.c
+msgid "Apply"
+msgstr "Applica"
+
+#: src/essorawallpaper.c
+msgid "Up"
+msgstr "Su"
+
+#: src/essorawallpaper.c
+msgid "Down"
+msgstr "Giù"

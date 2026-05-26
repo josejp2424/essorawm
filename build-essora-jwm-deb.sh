@@ -108,6 +108,7 @@ Architecture: ${ARCH}
 Maintainer: ${MAINTAINER}
 Installed-Size: ${INSTALLED_SIZE}
 Depends: libc6, libx11-6, libxext6, libxft2, libxinerama1, libxpm4, libjpeg62-turbo | libjpeg62, libpng16-16, librsvg2-2
+Recommends: hsetroot | feh | xwallpaper
 Provides: jwm
 Conflicts: jwm
 Replaces: jwm
@@ -115,7 +116,7 @@ Homepage: ${HOMEPAGE}
 Description: EssoraWM based on JWM with Pymenu launcher support
  EssoraWM 0.1 keeps the /usr/bin/jwm binary for compatibility.
  Based on JWM 2.4.7.
- Calls /usr/local/bin/pymenu and includes TaskList thumbnail-only previews, agregado por josejp2424.
+ Calls /usr/local/bin/pymenu, includes TaskList thumbnail-only previews, and adds a native wallpaper selector, agregado por josejp2424.
 CONTROL
 
 cat > "${STAGE}/DEBIAN/postinst" <<'POSTINST'

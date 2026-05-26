@@ -509,3 +509,39 @@ msgstr "置底"
 
 #~ msgid "invalid tray height: %d"
 #~ msgstr "无效的托盘高度：%d"
+
+#: src/essorawallpaper.c
+msgid "EssoraWM Wallpaper"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Wallpapers from /usr/share/backgrounds"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "No images found in /usr/share/backgrounds"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "No preview"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Previous"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Next"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Apply"
+msgstr ""
+
+#: src/essorawallpaper.c
+msgid "Up"
+msgstr "向上"
+
+#: src/essorawallpaper.c
+msgid "Down"
+msgstr "向下"
