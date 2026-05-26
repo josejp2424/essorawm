@@ -1,255 +1,264 @@
 <?xml version="1.0"?>
+
 <JWM>
-    <!-- agregado por josejp2424: configuración base de EssoraWM -->
-    <!-- agregado por josejp2424: EssoraWM usa Pymenu externo en /usr/local/bin/pymenu -->
+	
+<!-- version flag for rc.update --> 
+<!-- When updating change number here and in rc.update -->
+<!-- XDG_JWMRC_VERSION_001 -->
 
-    <RootMenu label="Menu" labeled="false" height="24" onroot="3">
-        <!-- agregado por josejp2424: menú de escritorio sin Pymenu para evitar conflictos con el root window -->
-        <Program label="Change Wallpaper" icon="/usr/share/jwm/essorawm.svg">essorawm:wallpaper</Program>
-        <Separator/>
-        <Restart label="Restart EssoraWM" icon="view-refresh"/>
-        <Exit label="Exit EssoraWM" confirm="true" icon="system-log-out"/>
-    </RootMenu>
+<!-- IMPORTANT, ONLY EDIT /etc/xdg/templates/_root_.jwmrc -->
+<!-- jwm menu for puppy Linux -->
+<RootMenu label="Menu" labeled="false" height="24" onroot="3">
 
-    <!-- agregado por josejp2424: rutas de iconos tomadas de example.jwmrc -->
-    <IconPath>/usr/share/icons/essora-dark-teal/48x48/apps</IconPath>
-    <IconPath>/usr/share/icons/TokyoNight-SE/48x48/apps</IconPath>
-    <IconPath>/usr/share/pixmaps</IconPath>
-    <IconPath>/usr/share/icons/hicolor/48x48/apps</IconPath>
-    <IconPath>/usr/share/icons/hicolor/32x32/apps</IconPath>
-    <IconPath>/usr/share/icons/hicolor/64x64/apps</IconPath>
-    <IconPath>/usr/local/lib/X11/pixmaps</IconPath>
-    <IconPath>/usr/local/share/pixmaps</IconPath>
-    <IconPath>/usr/share/pixmaps/puppy</IconPath>
-    <IconPath>/usr/share/icons/hicolor/scalable/apps</IconPath>
-    <IconPath>/usr/local/lib/X11/mini-icons</IconPath>
-    <IconPath>/var/lib/flatpak/exports/share/icons/hicolor/48x48/apps</IconPath>
-    <IconPath>/var/lib/flatpak/exports/share/icons/hicolor/scalable/apps</IconPath>
+    PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-wine.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-desktop.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-system.menu
+	<Separator/>
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-utility.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-filesystem.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-graphic.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-document.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-calculate.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-network.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-internet.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-multimedia.menu
+	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-fun.menu
+	<Separator/>
+	<Program label="essora Installer" icon="/usr/share/pixmaps/essora/essora-installer.png">exec essora-installer</Program>
+	<Program label="Jwm Config" icon="/usr/share/pixmaps/essora/jwm/jwmconfig.png">exec /usr/local/bin/jwmcc.sh</Program>
+	<Program label="Menu Update" icon="/usr/share/pixmaps/essora/jwm/menu-update.png">exec /usr/local/bin/fixmenus</Program>
+	<Program label="Leave" icon="/usr/local/KLA-Shutdown/shutdowm/logout.svg">exec logout_gui</Program>
+</RootMenu>
 
-    <!-- agregado por josejp2424: grupos generales tomados de example.jwmrc -->
-    <Group>
-        <Option>tiled</Option>
-        <Option>aerosnap</Option>
-        <Option>noturgent</Option>
-    </Group>
+<!-- General classes -->
+<Group>
+	<Option>aerosnap</Option>
+</Group>
+<Group>
+	<Class>splashwindow</Class>
+	<Option>nolist</Option>
+	<Option>layer:above</Option>
+	<Option>nopager</Option>
+	<Option>nofocus</Option>
+</Group>
 
-    <Group>
-        <Class>splashwindow</Class>
-        <Option>nolist</Option>
-        <Option>layer:above</Option>
-        <Option>nopager</Option>
-        <Option>nofocus</Option>
-    </Group>
+<Group>
+	<Class>applet</Class>
+	<Option>layer:below</Option>
+	<Option>noborder</Option>
+	<Option>notitle</Option>
+	<Option>sticky</Option>
+	<Option>nolist</Option>
+	<Option>nopager</Option>
+</Group>
 
-    <Group>
-        <Class>applet</Class>
-        <Option>layer:below</Option>
-        <Option>noborder</Option>
-        <Option>notitle</Option>
-        <Option>sticky</Option>
-        <Option>nolist</Option>
-        <Option>nopager</Option>
-    </Group>
+<Group>		<Class>ontop</Class>		<Option>layer:above</Option>		</Group>
+<Group>		<Class>maximized</Class>	<Option>maximized</Option>		</Group>
+<Group>		<Class>fullscreen</Class>	<Option>fullscreen</Option>		</Group>
+<Group>		<Class>nolist</Class>		<Option>nolist</Option>			</Group>
+<Group>		<Class>noborder</Class>		<Option>noborder</Option>		</Group>
+<Group>		<Class>notitle</Class>		<Option>notitle</Option>		</Group>
+<Group>		<Class>sticky</Class>		<Option>sticky</Option>			</Group> 
 
-    <Group><Class>ontop</Class><Option>layer:above</Option></Group>
-    <Group><Class>maximized</Class><Option>maximized</Option></Group>
-    <Group><Class>fullscreen</Class><Option>fullscreen</Option></Group>
-    <Group><Class>nolist</Class><Option>nolist</Option></Group>
-    <Group><Class>noborder</Class><Option>noborder</Option></Group>
-    <Group><Class>notitle</Class><Option>notitle</Option></Group>
-    <Group><Class>sticky</Class><Option>sticky</Option></Group>
+<!-- 130630 joe added support disable flashing in tray, all apps -->
+<Group>
+	<Option>noturgent</Option>
+</Group>
 
-    <Group>
-        <Class>gtkdialog-splash</Class>
-        <Option>nolist</Option>
-        <Option>nofocus</Option>
-    </Group>
+<Group>
+	<Class>gtkdialog-splash</Class>
+	<Option>nolist</Option>
+	<!-- <Option>layer:above</Option> -->
+	<Option>nofocus</Option>
+</Group>
 
-    <Group><Class>Savebox</Class><Option>width:500</Option></Group>
-    <Group><Name>galculator</Name><Option>centered</Option></Group>
+<!-- Styles -->
+<WindowStyle>
+	<Font>Serif-11</Font>
+	<Width>3</Width>
+	<Height>22</Height>     
+	<Foreground>#aaaaaa</Foreground>
+	<Background>#fffa71:#ffda51</Background>
+	<Corner>4</Corner>
+	<Outline>gray70</Outline>
+	<Active>
+		<Foreground>black</Foreground>
+		<Background>#ffda51:#ffa100</Background>
+		<Outline>black</Outline>
+	</Active>
+</WindowStyle> 
 
-    <!-- agregado por josejp2424: estilos Essora -->
-    <WindowStyle decorations="motif">
-        <Font align="left">Cantarell-10</Font>
-        <Width>4</Width>
-        <Height>24</Height>
-        <Corner>3</Corner>
-        <Foreground>#ffffff</Foreground>
-        <Background>#4a4a4a</Background>
-        <Outline>#303030</Outline>
-        <Active>
-            <Foreground>#ffffff</Foreground>
-            <Background>#77960A</Background>
-            <Outline>#7D9B37</Outline>
-        </Active>
-    </WindowStyle>
+<PagerStyle>
+	<Outline>black</Outline>
+	<Foreground>#ffc100</Foreground>
+	<Background>#ffc100</Background>
+	<Active>
+		<Foreground>#ff8100</Foreground>
+		<Background>#ffa100</Background>
+	</Active>
+</PagerStyle>
 
-    <BorderStyle>
-        <Font>Cantarell-10</Font>
-        <Width>4</Width>
-        <Height>22</Height>
-        <Foreground>#ffffff</Foreground>
-        <Background>#4a4a4a</Background>
-        <ActiveForeground>#ffffff</ActiveForeground>
-        <ActiveBackground>#77960A</ActiveBackground>
-    </BorderStyle>
+<MenuStyle>
+	<Font>Serif-11</Font>
+	<Foreground>black</Foreground>
+	<Background>#ffda51</Background>
+	<Active>
+		<Foreground>black</Foreground>
+		<Background>#ffda51:#ffa100</Background>
+	</Active>
+</MenuStyle>
 
-    <PagerStyle>
-        <Outline>#303030</Outline>
-        <Foreground>#77960A</Foreground>
-        <Background>#202020</Background>
-        <Active>
-            <Foreground>#ffffff</Foreground>
-            <Background>#77960A</Background>
-        </Active>
-    </PagerStyle>
+<PopupStyle>
+	<Font>Serif-11</Font>
+	<Outline>white</Outline>
+	<Foreground>white</Foreground>
+	<Background>black</Background>
+</PopupStyle>
 
-    <MenuStyle>
-        <Font>Cantarell-10</Font>
-        <Foreground>#eeeeee</Foreground>
-        <Background>#2b2b2b</Background>
-        <Active>
-            <Foreground>#ffffff</Foreground>
-            <Background>#77960A</Background>
-        </Active>
-    </MenuStyle>
+<!-- <Icons> -->
+<IconPath>/usr/share/icons/essora-dark-teal/48x48/apps</IconPath>
+<IconPath>/usr/share/icons/TokyoNight-SE/48x48/apps</IconPath>
+<IconPath>/usr/share/pixmaps</IconPath>
+<IconPath>/usr/share/icons/hicolor/48x48/apps</IconPath>
+<IconPath>/usr/share/icons/hicolor/32x32/apps</IconPath>
+<IconPath>/usr/share/icons/hicolor/64x64/apps</IconPath>
+<IconPath>/usr/local/lib/X11/pixmaps</IconPath>
+<IconPath>/usr/local/share/pixmaps</IconPath>
+<IconPath>/usr/share/pixmaps/puppy</IconPath>
+<IconPath>/usr/share/icons/hicolor/scalable/apps</IconPath>
+<IconPath>/usr/local/lib/X11/mini-icons</IconPath>
+<IconPath>/var/lib/flatpak/exports/share/icons/hicolor/48x48/apps</IconPath>
+<IconPath>/var/lib/flatpak/exports/share/icons/hicolor/scalable/apps</IconPath>
+<!-- </Icons> -->
+<StartupCommand>xsettingsd</StartupCommand>
+<StartupCommand>essora-jwm-preview</StartupCommand>
+<StartupCommand>auto-numlock.sh</StartupCommand>
+<!-- Virtual Desktops -->
+<!-- Name tags can be contained within Desktops for desktop names.  BK: syntax change with jwm 500... -->
+<!-- Number of virtual desktops -->
+<Desktops width="2" height="2"/>
 
-    <PopupStyle>
-        <Font>Cantarell-10</Font>
-        <Outline>#77960A</Outline>
-        <Foreground>#ffffff</Foreground>
-        <Background>#202020</Background>
-    </PopupStyle>
+<!-- Double click speed (in milliseconds) -->
+<DoubleClickSpeed>400</DoubleClickSpeed>
 
-    <TrayStyle group="true" list="desktop">
-        <Font>Cantarell-10</Font>
-        <Background>#202020</Background>
-        <Foreground>#eeeeee</Foreground>
-        <Outline>#303030</Outline>
-        <ActiveBackground>#77960A</ActiveBackground>
-        <ActiveForeground>#ffffff</ActiveForeground>
-    </TrayStyle>
+<!-- Double click delta (in pixels) -->
+<DoubleClickDelta>3</DoubleClickDelta>
 
-    <TaskListStyle list="desktop">
-        <Font>Cantarell-10</Font>
-        <ActiveForeground>#ffffff</ActiveForeground>
-        <ActiveBackground>#77960A</ActiveBackground>
-        <Foreground>#eeeeee</Foreground>
-        <Background>#2b2b2b</Background>
-    </TaskListStyle>
+<!-- The focus model (sloppy or click) -->
+<FocusModel>click</FocusModel>
 
-    <TrayButtonStyle>
-        <Font>Cantarell-10</Font>
-        <Foreground>#ffffff</Foreground>
-        <Background>#2b2b2b</Background>
-        <ActiveForeground>#ffffff</ActiveForeground>
-        <ActiveBackground>#77960A</ActiveBackground>
-    </TrayButtonStyle>
+<!-- The snap mode (none, screen, or border) -->
+<SnapMode distance="10">none</SnapMode>
 
-    <Tray x="0" y="-1" height="30" autohide="false">
-        <!-- agregado por josejp2424: Pymenu externo, distribuido aparte -->
-        <TrayButton label="Menu" icon="/usr/share/pixmaps/menu3.svg">exec:/usr/local/bin/pymenu</TrayButton>
+<!-- The move mode (outline or opaque) -->
+<MoveMode coordinates="off" delay="1000">opaque</MoveMode>
 
-        <!-- agregado por josejp2424: TaskList sin texto; solo iconos/miniaturas -->
-        <TaskList maxwidth="48" labeled="false"/>
+<!-- The resize mode (outline or opaque) -->
+<ResizeMode coordinates="off" >opaque</ResizeMode>
 
-        <Dock/>
-        <Clock format="%H:%M"/>
-    </Tray>
+<TitleButtonOrder>wtimx</TitleButtonOrder>
 
-    <Desktops width="2" height="2"/>
-    <DoubleClickSpeed>400</DoubleClickSpeed>
-    <DoubleClickDelta>3</DoubleClickDelta>
-    <FocusModel>click</FocusModel>
-    <SnapMode distance="10">border</SnapMode>
-    <MoveMode coordinates="off" delay="1000">opaque</MoveMode>
-    <ResizeMode coordinates="off">opaque</ResizeMode>
-    <TitleButtonOrder>wtimx</TitleButtonOrder>
+<WindowStyle decorations="motif">
+  <Height>24</Height>
+  <Width>4</Width>
+  <Corner>3</Corner>
+  <Font align="left">Serif-11:normal</Font>
+</WindowStyle>
 
-    <!-- agregado por josejp2424: botones de ventana opcionales -->
-    <ButtonClose>/usr/share/pixmaps/close.png</ButtonClose>
-    <ButtonMax>/usr/share/pixmaps/max.png</ButtonMax>
-    <ButtonMaxActive>/usr/share/pixmaps/maxact.png</ButtonMaxActive>
-    <ButtonMin>/usr/share/pixmaps/min.png</ButtonMin>
-    <DefaultIcon>/usr/share/pixmaps/terminator.svg</DefaultIcon>
+<!-- group options set for all windows -->
+<Group>
+<!-- disable flashing in tray for urgent windows -->
+<Option>noturgent</Option>
+<!-- placement for new window (default is cascaded) -->
+<!-- <Option>tiled</Option> -->
+<!-- auto-maximization when moving window to top/side of desktop -->
+<Option>aerosnap</Option>
+</Group>
 
-    <!-- agregado por josejp2424: arranque -->
-    <StartupCommand>xsettingsd</StartupCommand>
-    <!-- agregado por josejp2424: restaurar wallpaper guardado -->
-    <StartupCommand>jwm -wallpaper-restore</StartupCommand>
-    <StartupCommand>auto-numlock.sh</StartupCommand>
-    <StartupCommand>/usr/local/bin/essora-menu-gen >/dev/null 2>&amp;1 || true</StartupCommand>
+<!-- Key bindings -->
+<Key key="Up">up</Key>
+<Key key="Down">down</Key>
+<Key key="Right">right</Key>
+<Key key="Left">left</Key>
+<Key key="h">left</Key>
+<Key key="j">down</Key>
+<Key key="k">up</Key>
+<Key key="l">right</Key>
+<Key key="Return">select</Key>
+<Key key="Escape">escape</Key>
+<Key key="F12">pymenu</Key>
 
-    <!-- agregado por josejp2424: teclas del menú apuntan siempre a Pymenu -->
-    <Key key="F12">exec:/usr/local/bin/pymenu</Key>
-    <Key mask="A" key="F1">exec:/usr/local/bin/pymenu</Key>
-    <Key mask="4" key="l">exec:/usr/local/bin/pymenu</Key>
-    <Key key="Super_R">exec:/usr/local/bin/pymenu</Key>
-    <Key mask="C" key="Super_L">exec:/usr/local/bin/pymenu</Key>
+<Key mask="CA" key="Right">rdesktop</Key>
+<Key mask="CA" key="Left">ldesktop</Key>
+<Key mask="CA" key="Up">udesktop</Key>
+<Key mask="CA" key="Down">ddesktop</Key>
 
-    <!-- agregado por josejp2424: navegación y atajos -->
-    <Key key="Up">up</Key>
-    <Key key="Down">down</Key>
-    <Key key="Right">right</Key>
-    <Key key="Left">left</Key>
-    <Key key="h">left</Key>
-    <Key key="j">down</Key>
-    <Key key="k">up</Key>
-    <Key key="l">right</Key>
-    <Key key="Return">select</Key>
-    <Key key="Escape">escape</Key>
+<Key mask="A" key="Tab">nextstacked</Key>
+<Key mask="AS" key="Tab">prevstacked</Key>
+<Key mask="A" key="F4">close</Key>
+<Key mask="A" key="F10">maximize</Key>
+<Key mask="A" key="F6">minimize</Key>
+<Key mask="CA" key="Right">rdesktop</Key>
+<Key mask="CA" key="Left">ldesktop</Key>
+<Key mask="CA" key="Up">udesktop</Key>
+<Key mask="CA" key="Down">ddesktop</Key>
+<Key mask="A" key="F1">pymenu</Key>
+<Key mask="A" key="F3">window</Key>
+<Key mask="A" key="space">window</Key>
 
-    <Key mask="CA" key="Right">rdesktop</Key>
-    <Key mask="CA" key="Left">ldesktop</Key>
-    <Key mask="CA" key="Up">udesktop</Key>
-    <Key mask="CA" key="Down">ddesktop</Key>
+<Key mask="CA" key="Delete">exec:defaultprocessmanager</Key>
+<Key mask="CS" key="Escape">exec:defaultprocessmanager</Key>
 
-    <Key mask="A" key="Tab">nextstacked</Key>
-    <Key mask="AS" key="Tab">prevstacked</Key>
-    <Key mask="A" key="F4">close</Key>
-    <Key mask="A" key="F10">maximize</Key>
-    <Key mask="A" key="F6">minimize</Key>
-    <Key mask="A" key="F3">window</Key>
-    <Key mask="A" key="space">window</Key>
+<!-- http://wiki.linuxquestions.org/wiki/XF86_keyboard_symbols -->
+> <Key keycode="160">exec:amixer sset Master toggle</Key>
+> <Key keycode="176">exec:amixer sset Master 1+,1+</Key>
+> <Key keycode="174">exec:amixer sset Master 1-,1-</Key>
+<Key key="XF86WWW">exec:defaultbrowser</Key>
+<Key key="XF86HomePage">exec:defaultbrowser</Key>
+<Key key="XF86MonBrightnessUp">exec:brightnessctl set +10%</Key>
+<Key key="XF86MonBrightnessDown">exec:brightnessctl set 10%-</Key>
+<Key key="Print">exec:/usr/local/YADCapture/shot_scrot</Key>
 
-    <Key mask="CA" key="Delete">exec:process-manager</Key>
-    <Key mask="CS" key="Escape">exec:process-manager</Key>
+<!-- mod4 Super_L Super_R Hyper_L -->
+<Key mask="C" key="e">exec:skippy-xd-fix</Key>
+<Key mask="4" key="e">exec:defaultfilemanager</Key>
+<Key mask="4" key="r">exec:defaultrun</Key>
+<Key mask="4" key="f">exec:tkfind</Key>
+<Key mask="4" key="F7">exec:defaultterminal</Key>
+<Key mask="4" key="#">desktop#</Key>
+<Key mask="4" key="d">showdesktop</Key>
+<Key mask="4" key="m">showdesktop</Key>
+<Key mask="4" key="l">exec:findnrun</Key>
+<Key mask="4" key="k">exec:keymap-set</Key>
 
-    <Key keycode="160">exec:amixer sset Master toggle</Key>
-    <Key keycode="176">exec:amixer sset Master 1+,1+</Key>
-    <Key keycode="174">exec:amixer sset Master 1-,1-</Key>
-    <Key key="XF86WWW">exec:defaultbrowser</Key>
-    <Key key="XF86HomePage">exec:defaultbrowser</Key>
-    <Key key="XF86MonBrightnessUp">exec:brightnessctl set +10%</Key>
-    <Key key="XF86MonBrightnessDown">exec:brightnessctl set 10%-</Key>
-    <Key key="Print">exec:/usr/local/Lumivio/lumivio.py</Key>
+<Key key="Super_R">pymenu</Key>
+<Key mask="C" key="Super_L">pymenu</Key>
 
-    <Key mask="C" key="e">exec:skippy-xd-fix</Key>
-    <Key mask="4" key="e">exec:file-manager</Key>
-    <Key mask="4" key="r">exec:defaultrun</Key>
-    <Key mask="4" key="f">exec:tkfind</Key>
-    <Key mask="4" key="F7">exec:x-terminal-emulator</Key>
-    <Key mask="4" key="#">desktop#</Key>
-    <Key mask="4" key="d">showdesktop</Key>
-    <Key mask="4" key="m">showdesktop</Key>
-    <Key mask="4" key="k">exec:keymap-set</Key>
+<DefaultIcon>/usr/share/pixmaps/terminator.svg</DefaultIcon>
 
-    <Mouse context="title" button="4">shade</Mouse>
-    <Mouse context="title" button="5">shade</Mouse>
+<Group><Class>Savebox</Class><Option>width:500</Option></Group>
+<Group><Name>galculator</Name><Option>centered</Option></Group>
 
-    <Key mask="A" key="Right">maxright</Key>
-    <Key mask="A" key="Left">maxleft</Key>
-    <Key mask="A" key="Up">maxtop</Key>
-    <Key mask="A" key="Down">maxbottom</Key>
-    <Key mask="A" key="m">maximize</Key>
-    <Key mask="A" key="x">maxh</Key>
-    <Key mask="A" key="y">maxv</Key>
+<Mouse context="title" button="4">shade</Mouse><Mouse context="title" button="5">shade</Mouse> 
+
+<ButtonClose>/usr/share/pixmaps/close.png</ButtonClose>
+<ButtonMax>/usr/share/pixmaps/max.png</ButtonMax>
+<ButtonMaxActive>/usr/share/pixmaps/maxact.png</ButtonMaxActive>
+<ButtonMin>/usr/share/pixmaps/min.png</ButtonMin>
+
+<Key mask="A" key="Right">maxright</Key>
+<Key mask="A" key="Left">maxleft</Key>
+<Key mask="A" key="Up">maxtop</Key>
+<Key mask="A" key="Down">maxbottom</Key>
+<Key mask="A" key="m">maximize</Key>
+<Key mask="A" key="x">maxh</Key>
+<Key mask="A" key="y">maxv</Key>
 
     <!-- agregado por josejp2424: includes opcionales, solo se cargan si existen -->
-    <Include>$HOME/.jwm/jwm/jwmrc-theme</Include>
-    <Include>$HOME/.jwm/jwm/jwmrc-personal</Include>
-    <Include>$HOME/.jwm/jwm/jwmrc-places</Include>
-    <Include>$HOME/.jwm/jwm/jwmrc-system</Include>
-    <Include>$HOME/.jwm/jwm/jwmrc-tray</Include>
+<Include>$HOME/.jwm/jwm/jwmrc-theme</Include>
+<Include>$HOME/.jwm/jwm/jwmrc-personal</Include>
+<Include>$HOME/.jwm/jwm/jwmrc-places</Include>
+<Include>$HOME/.jwm/jwm/jwmrc-system</Include>
+<Include>$HOME/.jwm/jwm/jwmrc-tray</Include>
 
 </JWM>
