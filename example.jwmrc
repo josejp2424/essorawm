@@ -9,25 +9,12 @@
 <!-- IMPORTANT, ONLY EDIT /etc/xdg/templates/_root_.jwmrc -->
 <!-- jwm menu for puppy Linux -->
 <RootMenu label="Menu" labeled="false" height="24" onroot="3">
-
-    PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-wine.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-desktop.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-system.menu
-	<Separator/>
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-utility.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-filesystem.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-graphic.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-document.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-calculate.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-network.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-internet.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-multimedia.menu
-	PUPPYMENU jwm-xdgmenu /etc/xdg/menus/essora-fun.menu
-	<Separator/>
-	<Program label="essora Installer" icon="/usr/share/pixmaps/essora/essora-installer.png">exec essora-installer</Program>
-	<Program label="Jwm Config" icon="/usr/share/pixmaps/essora/jwm/jwmconfig.png">exec /usr/local/bin/jwmcc.sh</Program>
-	<Program label="Menu Update" icon="/usr/share/pixmaps/essora/jwm/menu-update.png">exec /usr/local/bin/fixmenus</Program>
-	<Program label="Leave" icon="/usr/local/KLA-Shutdown/shutdowm/logout.svg">exec logout_gui</Program>
+    <!-- agregado por josejp2424 -->
+    <Program label="Pymenu" icon="/usr/share/pixmaps/menu3.svg">/usr/local/bin/pymenu</Program>
+    <!-- agregado por josejp2424 -->
+    <Program label="EssoraWM Wallpaper" icon="/usr/share/jwm/essorawm.svg">/usr/local/bin/jwm-wallpaper</Program>
+    <Restart label="Restart EssoraWM" icon="/usr/local/pymenu/icon-pymenu/menu-update.png"/>
+    <Program label="Leave" icon="/usr/local/pymenu/icon-pymenu/preferences-desktop-essora.svg">logout_gui</Program>
 </RootMenu>
 
 <!-- General classes -->
@@ -130,6 +117,7 @@
 <IconPath>/var/lib/flatpak/exports/share/icons/hicolor/48x48/apps</IconPath>
 <IconPath>/var/lib/flatpak/exports/share/icons/hicolor/scalable/apps</IconPath>
 <!-- </Icons> -->
+<StartupCommand>jwm-wallpaper</StartupCommand>
 <StartupCommand>xsettingsd</StartupCommand>
 <StartupCommand>essora-jwm-preview</StartupCommand>
 <StartupCommand>auto-numlock.sh</StartupCommand>
@@ -254,11 +242,12 @@
 <Key mask="A" key="x">maxh</Key>
 <Key mask="A" key="y">maxv</Key>
 
-    <!-- agregado por josejp2424: includes opcionales, solo se cargan si existen -->
-<Include>$HOME/.jwm/jwm/jwmrc-theme</Include>
-<Include>$HOME/.jwm/jwm/jwmrc-personal</Include>
-<Include>$HOME/.jwm/jwm/jwmrc-places</Include>
-<Include>$HOME/.jwm/jwm/jwmrc-system</Include>
-<Include>$HOME/.jwm/jwm/jwmrc-tray</Include>
-
+<!-- Include external rc files -->
+<Include>$HOME/.config/essorawm/jwm/jwmrc-theme</Include>
+<Include>$HOME/.config/essorawm/jwm/jwmrc-personal</Include>
+<Include>$HOME/.config/essorawm/jwm/jwmrc-places</Include>
+<Include>$HOME/.config/essorawm/jwm/jwmrc-system</Include>
+<Include>$HOME/.config/essorawm/jwm/jwmrc-tray</Include>
+<!-- JWMCC KEYS BEGIN -->
+<!-- JWMCC KEYS END -->
 </JWM>

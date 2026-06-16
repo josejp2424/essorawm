@@ -53,11 +53,16 @@ msg "Configurando JWM..."
 )
 
 # agregado por josejp2424
+# EssoraWM conserva el binario/textdomain como jwm.
+# Por eso los locales deben instalarse como:
+#   /usr/share/locale/<lang>/LC_MESSAGES/jwm.mo
 if [ -f "${SRC_DIR}/po/Makefile" ]; then
     sed -i 's|^LOCALEDIR *=.*|LOCALEDIR = /usr/share/locale|' "${SRC_DIR}/po/Makefile"
+    sed -i 's|^PACKAGE *=.*|PACKAGE = jwm|' "${SRC_DIR}/po/Makefile"
 fi
 if [ -f "${SRC_DIR}/po/Makefile.in" ]; then
     sed -i 's|^LOCALEDIR *=.*|LOCALEDIR = /usr/share/locale|' "${SRC_DIR}/po/Makefile.in"
+    sed -i 's|^PACKAGE *=.*|PACKAGE = jwm|' "${SRC_DIR}/po/Makefile.in"
 fi
 
 msg "Compilando..."
@@ -73,6 +78,29 @@ if [ -d "$BAD_LOCALE" ]; then
     mkdir -p "$GOOD_LOCALE"
     cp -a "$BAD_LOCALE"/. "$GOOD_LOCALE"/ 2>/dev/null || true
     rm -rf "$BAD_LOCALE"
+fi
+
+# agregado por josejp2424
+# Fallback fuerte: asegurar que todos los .po/.gmo queden como jwm.mo
+# dentro del paquete, aunque el Makefile de po no los instale por alguna razón.
+if [ -d "${SRC_DIR}/po" ]; then
+    for po_file in "${SRC_DIR}"/po/*.po; do
+        [ -f "$po_file" ] || continue
+        lang="$(basename "$po_file" .po)"
+        gmo_file="${SRC_DIR}/po/${lang}.gmo"
+
+        if [ ! -s "$gmo_file" ]; then
+            if command -v msgfmt >/dev/null 2>&1; then
+                msgfmt -o "$gmo_file" "$po_file" 2>/dev/null || true
+            fi
+        fi
+
+        if [ -s "$gmo_file" ]; then
+            locale_dir="${STAGE}/usr/share/locale/${lang}/LC_MESSAGES"
+            install -d "$locale_dir"
+            install -m 0644 "$gmo_file" "$locale_dir/jwm.mo"
+        fi
+    done
 fi
 
 # Preview/thumbnail integrado dentro de JWM.

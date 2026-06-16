@@ -4,10 +4,16 @@
  *
  * agregado por josejp2424
  *
- * This module keeps the wallpaper selector inside the EssoraWM/JWM binary.
- * It scans /usr/share/backgrounds, shows thumbnails using the existing JWM
- * image loaders, applies the selected wallpaper with hsetroot/feh/xwallpaper,
- * and stores the selection in ~/.config/essorawm/wallpaper.
+ * Selector de wallpaper integrado en el binario jwm/EssoraWM.
+ * - Busca imágenes en /usr/share/backgrounds.
+ * - Muestra un carrusel simple con miniaturas.
+ * - La ventana se centra automáticamente en la pantalla.
+ * - El mouse solo selecciona/navega; la rueda y otros botones se ignoran.
+ * - Aplica solo al presionar Apply o Enter.
+ * - Guarda en ~/.config/essorawm/wallpaper.
+ * - Si existe wbar en ejecución, se reinicia al aplicar para limpiar el marco negro.
+ * - Si existe $HOME/Choices/ROX-Filer/PuppyPin, reemplaza solo la ruta del
+ *   <backdrop ...> manteniendo el style, por ejemplo Stretched.
  */
 
 #include "jwm.h"
@@ -22,6 +28,7 @@
 #  include <sys/stat.h>
 #  include <sys/types.h>
 #  include <errno.h>
+#  include <limits.h>
 #endif
 
 #define WALLPAPER_DIR "/usr/share/backgrounds"
@@ -29,20 +36,22 @@
 #define CONFIG_SUBDIR ".config/essorawm"
 #define CONFIG_FILE ".config/essorawm/wallpaper"
 #define WINDOW_W 820
-#define WINDOW_H 560
-#define HEADER_H 56
+#define WINDOW_H 500
+#define HEADER_H 64
 #define BUTTON_H 34
-#define MARGIN 14
-#define THUMB_W 150
-#define THUMB_H 92
-#define THUMB_GAP 12
-#define COLS 5
-#define ROWS 4
-#define SCROLL_X (WINDOW_W - 28) /* agregado por josejp2424 */
-#define SCROLL_Y (HEADER_H + MARGIN) /* agregado por josejp2424 */
-#define SCROLL_W 14 /* agregado por josejp2424 */
-#define SCROLL_H (WINDOW_H - HEADER_H - 76) /* agregado por josejp2424 */
-#define MAX_WALLPAPERS 512
+#define MARGIN 18
+#define PREVIEW_W 500
+#define PREVIEW_H 285
+#define SIDE_W 120
+#define SIDE_H 78
+#define MAX_WALLPAPERS 1024
+
+#ifndef MIN
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#endif
+#ifndef MAX
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#endif
 
 typedef struct WallpaperItem {
    char *path;
@@ -54,55 +63,55 @@ typedef struct WallpaperList {
    int count;
 } WallpaperList;
 
-static Display *wpDisplay;
-static Window wpWindow;
-static GC wpGC;
-static int wpScreen;
-static Visual *wpVisual;
-static Colormap wpColormap;
-static int wpDepth;
-static int wpWidth;
-static int wpHeight;
+static Display *wpDisplay = NULL;
+static Window wpWindow = None;
+static GC wpGC = None;
+static int wpScreen = 0;
+static Visual *wpVisual = NULL;
+static Colormap wpColormap = None;
+static int wpDepth = 0;
 static WallpaperList wpList;
-static int wpSelected;
-static int wpOffset;
-static char wpOwnDisplay;
-static Atom wpDeleteAtom; /* agregado por josejp2424 */
+static int wpSelected = -1;
+static char wpOwnDisplay = 0;
+static Atom wpDeleteAtom = None;
 
+static char InitWallpaperDisplay(void);
 static void CloseWallpaperDisplay(void);
 static void DrawWallpaperWindow(void);
-static void SetWallpaperWindowIcon(void); /* agregado por josejp2424 */
-static void ApplyWallpaper(const char *path, char save);
+static void SetWallpaperWindowIcon(void);
+static void DrawText(int x, int y, const char *text, unsigned long color);
+static void DrawButton(int x, int y, int w, int h, const char *label, char active);
+static int HitButton(int x, int y, int bx, int by, int bw, int bh);
+static void DrawImageNodeFit(Drawable d, ImageNode *image, int bx, int by, int bw, int bh, int bg);
+static unsigned long RGBToPixel(unsigned char r, unsigned char g, unsigned char b);
+static int MaskShift(unsigned long mask);
+static int MaskBits(unsigned long mask);
+static unsigned long ScaleToMask(unsigned char value, unsigned long mask);
 static void ScanWallpaperDir(WallpaperList *list, const char *dir);
 static void AddWallpaper(WallpaperList *list, const char *path);
 static char IsImageFile(const char *name);
 static void FreeWallpaperList(WallpaperList *list);
-static void DrawText(int x, int y, const char *text, unsigned long color);
-static void DrawImageNode(Drawable d, ImageNode *image, int dx, int dy, int bg);
-static void DrawImageNodeFit(Drawable d, ImageNode *image, int bx, int by, int bw, int bh, int bg);
-static unsigned long RGBToPixel(unsigned char r, unsigned char g, unsigned char b);
-static void DrawButton(int x, int y, int w, int h, const char *label, char active);
-static int HitButton(int x, int y, int bx, int by, int bw, int bh);
+static void SelectPrevious(void);
+static void SelectNext(void);
 static char *GetConfigPath(void);
-static char *QuoteShell(const char *path);
 static void EnsureConfigDir(void);
 static void SaveWallpaper(const char *path);
 static char *ReadWallpaperPath(void);
-static void UpdatePuppyPin(const char *path); /* agregado por josejp2424 */
-static int HitScrollbar(int x, int y); /* agregado por josejp2424 */
-static void ScrollWallpaperList(int rows); /* agregado por josejp2424 */
+static char *QuoteShell(const char *path);
 static char HasCommand(const char *cmd);
-static char InitWallpaperDisplay(void);
+static void ApplyWallpaper(const char *path, char save);
+static void UpdatePuppyPin(const char *path);
+static void RestartWbar(void);
 
 /* agregado por josejp2424 */
 void RunEssoraWallpaperSelector(void)
 {
    XEvent event;
    int running = 1;
-   const int upX = WINDOW_W - 405; /* agregado por josejp2424 */
-   const int downX = WINDOW_W - 305; /* agregado por josejp2424 */
-   const int applyX = WINDOW_W - 205;
-   const int cancelX = WINDOW_W - 105;
+   const int leftX = 32;
+   const int rightX = WINDOW_W - 118;
+   const int applyX = WINDOW_W - 210;
+   const int cancelX = WINDOW_W - 110;
    const int buttonY = WINDOW_H - 48;
 
    if(!InitWallpaperDisplay()) {
@@ -110,27 +119,27 @@ void RunEssoraWallpaperSelector(void)
    }
 
    memset(&wpList, 0, sizeof(wpList));
-   wpSelected = -1;
-   wpOffset = 0;
    ScanWallpaperDir(&wpList, WALLPAPER_DIR);
-
-   if(wpList.count > 0) {
-      wpSelected = 0;
-   }
+   wpSelected = wpList.count > 0 ? 0 : -1;
 
    wpWindow = XCreateSimpleWindow(wpDisplay, RootWindow(wpDisplay, wpScreen),
-                                  80, 80, WINDOW_W, WINDOW_H, 1,
+                                  0, 0, WINDOW_W, WINDOW_H, 1,
                                   RGBToPixel(0x77, 0x96, 0x0A),
                                   RGBToPixel(0x20, 0x20, 0x20));
-   /* agregado por josejp2424: cerrar limpio con el botón del marco, sin XIO fatal. */
+
+   /* agregado por josejp2424: centrar siempre el selector en la pantalla. */
+   XMoveWindow(wpDisplay, wpWindow,
+               MAX(0, (DisplayWidth(wpDisplay, wpScreen) - WINDOW_W) / 2),
+               MAX(0, (DisplayHeight(wpDisplay, wpScreen) - WINDOW_H) / 2));
+
    wpDeleteAtom = XInternAtom(wpDisplay, "WM_DELETE_WINDOW", False);
    XSetWMProtocols(wpDisplay, wpWindow, &wpDeleteAtom, 1);
    XStoreName(wpDisplay, wpWindow, _("EssoraWM Wallpaper"));
    XSetIconName(wpDisplay, wpWindow, _("EssoraWM Wallpaper"));
-   SetWallpaperWindowIcon(); /* agregado por josejp2424 */
+   SetWallpaperWindowIcon();
+
    XSelectInput(wpDisplay, wpWindow,
-                ExposureMask | ButtonPressMask | KeyPressMask |
-                StructureNotifyMask);
+                ExposureMask | ButtonPressMask | KeyPressMask | StructureNotifyMask);
    wpGC = XCreateGC(wpDisplay, wpWindow, 0, NULL);
    XMapRaised(wpDisplay, wpWindow);
 
@@ -142,77 +151,33 @@ void RunEssoraWallpaperSelector(void)
             DrawWallpaperWindow();
          }
          break;
-      case ConfigureNotify:
-         wpWidth = event.xconfigure.width;
-         wpHeight = event.xconfigure.height;
-         break;
       case ButtonPress:
-         /* agregado por josejp2424:
-          * Ignorar completamente botón central, clic derecho y rueda del mouse.
-          * La rueda no debe mover ni cambiar imágenes; la navegación se hace
-          * únicamente con los botones Up/Down o con el teclado. */
+         /* agregado por josejp2424: ignorar rueda, botón central y clic derecho. */
          if(event.xbutton.button != Button1) {
             break;
+         }
+         if(HitButton(event.xbutton.x, event.xbutton.y, leftX, buttonY, 86, BUTTON_H)) {
+            SelectPrevious();
+            DrawWallpaperWindow();
+         } else if(HitButton(event.xbutton.x, event.xbutton.y, rightX, buttonY, 86, BUTTON_H)) {
+            SelectNext();
+            DrawWallpaperWindow();
+         } else if(HitButton(event.xbutton.x, event.xbutton.y, applyX, buttonY, 86, BUTTON_H)) {
+            if(wpSelected >= 0 && wpSelected < wpList.count) {
+               ApplyWallpaper(wpList.items[wpSelected].path, 1);
+            }
+            running = 0;
+         } else if(HitButton(event.xbutton.x, event.xbutton.y, cancelX, buttonY, 86, BUTTON_H)) {
+            running = 0;
          } else {
-            int x = event.xbutton.x;
-            int y = event.xbutton.y;
-            int i;
-
-            if(HitButton(x, y, upX, buttonY, 86, BUTTON_H)) {
-               ScrollWallpaperList(-1);
-               DrawWallpaperWindow();
-               break;
-            }
-            if(HitButton(x, y, downX, buttonY, 86, BUTTON_H)) {
-               ScrollWallpaperList(1);
-               DrawWallpaperWindow();
-               break;
-            }
-            if(HitScrollbar(x, y)) {
-               int visible = COLS * ROWS;
-               int maxOffset = wpList.count > visible ? wpList.count - visible : 0;
-               int relative = y - SCROLL_Y;
-               if(maxOffset > 0) {
-                  wpOffset = (relative * maxOffset / Max(1, SCROLL_H));
-                  wpOffset = (wpOffset / COLS) * COLS;
-                  if(wpOffset < 0) {
-                     wpOffset = 0;
-                  }
-                  if(wpOffset > maxOffset) {
-                     wpOffset = (maxOffset / COLS) * COLS;
-                  }
-                  if(wpSelected < wpOffset || wpSelected >= wpOffset + visible) {
-                     wpSelected = wpOffset;
-                  }
-               }
-               DrawWallpaperWindow();
-               break;
-            }
-            if(HitButton(x, y, applyX, buttonY, 86, BUTTON_H)) {
-               if(wpSelected >= 0 && wpSelected < wpList.count) {
-                  ApplyWallpaper(wpList.items[wpSelected].path, 1);
-               }
-               running = 0;
-               break;
-            }
-            if(HitButton(x, y, cancelX, buttonY, 86, BUTTON_H)) {
-               running = 0;
-               break;
-            }
-
-            for(i = 0; i < COLS * ROWS; i++) {
-               int idx = wpOffset + i;
-               int col = i % COLS;
-               int row = i / COLS;
-               int bx = MARGIN + col * (THUMB_W + THUMB_GAP);
-               int by = HEADER_H + MARGIN + row * (THUMB_H + 34);
-               if(idx >= wpList.count) {
-                  continue;
-               }
-               if(x >= bx && x <= bx + THUMB_W && y >= by && y <= by + THUMB_H + 24) {
-                  wpSelected = idx;
+            /* agregado por josejp2424: zonas laterales seleccionan anterior/siguiente. */
+            if(wpList.count > 1 && event.xbutton.y >= HEADER_H && event.xbutton.y <= HEADER_H + PREVIEW_H) {
+               if(event.xbutton.x < (WINDOW_W - PREVIEW_W) / 2) {
+                  SelectPrevious();
                   DrawWallpaperWindow();
-                  break;
+               } else if(event.xbutton.x > (WINDOW_W + PREVIEW_W) / 2) {
+                  SelectNext();
+                  DrawWallpaperWindow();
                }
             }
          }
@@ -226,27 +191,16 @@ void RunEssoraWallpaperSelector(void)
                ApplyWallpaper(wpList.items[wpSelected].path, 1);
             }
             running = 0;
-         } else if(sym == XK_Down || sym == XK_Right) {
-            if(wpSelected + 1 < wpList.count) {
-               wpSelected++;
-               if(wpSelected >= wpOffset + COLS * ROWS) {
-                  wpOffset += COLS;
-               }
-               DrawWallpaperWindow();
-            }
-         } else if(sym == XK_Up || sym == XK_Left) {
-            if(wpSelected > 0) {
-               wpSelected--;
-               if(wpSelected < wpOffset) {
-                  wpOffset = Max(0, wpOffset - COLS);
-               }
-               DrawWallpaperWindow();
-            }
+         } else if(sym == XK_Right || sym == XK_Down || sym == XK_n) {
+            SelectNext();
+            DrawWallpaperWindow();
+         } else if(sym == XK_Left || sym == XK_Up || sym == XK_p) {
+            SelectPrevious();
+            DrawWallpaperWindow();
          }
          break;
       }
       case ClientMessage:
-         /* agregado por josejp2424: manejar WM_DELETE_WINDOW sin matar el cliente. */
          if((Atom)event.xclient.data.l[0] == wpDeleteAtom) {
             running = 0;
          }
@@ -262,7 +216,6 @@ void RunEssoraWallpaperSelector(void)
       wpGC = None;
    }
    if(wpWindow) {
-      /* agregado por josejp2424: cerrar la ventana solo una vez y limpiar la cola. */
       XDestroyWindow(wpDisplay, wpWindow);
       XSync(wpDisplay, False);
       wpWindow = None;
@@ -291,8 +244,6 @@ static char InitWallpaperDisplay(void)
       wpVisual = rootVisual;
       wpColormap = rootColormap;
       wpDepth = rootDepth;
-      wpWidth = rootWidth;
-      wpHeight = rootHeight;
       wpOwnDisplay = 0;
       return 1;
    }
@@ -306,23 +257,7 @@ static char InitWallpaperDisplay(void)
    wpVisual = DefaultVisual(wpDisplay, wpScreen);
    wpColormap = DefaultColormap(wpDisplay, wpScreen);
    wpDepth = DefaultDepth(wpDisplay, wpScreen);
-   wpWidth = DisplayWidth(wpDisplay, wpScreen);
-   wpHeight = DisplayHeight(wpDisplay, wpScreen);
    wpOwnDisplay = 1;
-
-   /* agregado por josejp2424: permitir que los cargadores de imagen de JWM funcionen en modo -wallpaper. */
-   display = wpDisplay;
-   rootScreen = wpScreen;
-   rootWindow = RootWindow(wpDisplay, wpScreen);
-   rootVisual = wpVisual;
-   rootColormap = wpColormap;
-   rootDepth = wpDepth;
-   rootWidth = wpWidth;
-   rootHeight = wpHeight;
-   rootGC = DefaultGC(wpDisplay, wpScreen);
-#ifdef USE_XRENDER
-   haveRender = 0;
-#endif
    return 1;
 }
 
@@ -330,29 +265,20 @@ static void CloseWallpaperDisplay(void)
 {
    if(wpOwnDisplay && wpDisplay) {
       XCloseDisplay(wpDisplay);
-      display = NULL;
    }
    wpDisplay = NULL;
+   wpOwnDisplay = 0;
 }
 
-
-/* agregado por josejp2424
- * Define el icono de la ventana para que el panel muestre EssoraWM
- * y no una miniatura del wallpaper seleccionado.
- */
 static void SetWallpaperWindowIcon(void)
 {
-   ImageNode *icon;
+   /* agregado por josejp2424: usar /usr/share/jwm/essorawm.svg como icono del panel/marco. */
+   ImageNode *icon = LoadImage(ESSORAWM_ICON, 64, 64, 1);
    Atom netWmIcon;
    unsigned long *data;
-   int x, y, i;
+   int i;
 
-   if(!wpWindow) {
-      return;
-   }
-
-   icon = LoadImage(ESSORAWM_ICON, 48, 48, 1);
-   if(!icon || icon->bitmap || !icon->data || icon->width <= 0 || icon->height <= 0) {
+   if(!icon || !icon->data || icon->bitmap) {
       if(icon) {
          DestroyImage(icon);
       }
@@ -360,107 +286,100 @@ static void SetWallpaperWindowIcon(void)
    }
 
    data = Allocate(sizeof(unsigned long) * (2 + icon->width * icon->height));
-   data[0] = (unsigned long)icon->width;
-   data[1] = (unsigned long)icon->height;
-
-   i = 2;
-   for(y = 0; y < icon->height; y++) {
-      for(x = 0; x < icon->width; x++) {
-         int p = (y * icon->width + x) * 4;
-         unsigned long a = icon->data[p + 0];
-         unsigned long r = icon->data[p + 1];
-         unsigned long g = icon->data[p + 2];
-         unsigned long b = icon->data[p + 3];
-         data[i++] = (a << 24) | (r << 16) | (g << 8) | b;
-      }
+   data[0] = icon->width;
+   data[1] = icon->height;
+   for(i = 0; i < icon->width * icon->height; i++) {
+      unsigned int a = icon->data[i * 4 + 0];
+      unsigned int r = icon->data[i * 4 + 1];
+      unsigned int g = icon->data[i * 4 + 2];
+      unsigned int b = icon->data[i * 4 + 3];
+      data[2 + i] = (a << 24) | (r << 16) | (g << 8) | b;
    }
-
    netWmIcon = XInternAtom(wpDisplay, "_NET_WM_ICON", False);
    XChangeProperty(wpDisplay, wpWindow, netWmIcon, XA_CARDINAL, 32,
                    PropModeReplace, (unsigned char*)data,
                    2 + icon->width * icon->height);
-   XFlush(wpDisplay);
-
    Release(data);
    DestroyImage(icon);
 }
 
 static void DrawWallpaperWindow(void)
 {
-   int i;
-   unsigned long bg = RGBToPixel(0x20, 0x20, 0x20);
-   unsigned long panel = RGBToPixel(0x2b, 0x2b, 0x2b);
-   unsigned long green = RGBToPixel(0x77, 0x96, 0x0A);
-   unsigned long white = RGBToPixel(0xff, 0xff, 0xff);
-   unsigned long muted = RGBToPixel(0xb0, 0xb0, 0xb0);
+   const unsigned long bg = RGBToPixel(0x20, 0x20, 0x20);
+   const unsigned long panel = RGBToPixel(0x2b, 0x2b, 0x2b);
+   const unsigned long green = RGBToPixel(0x77, 0x96, 0x0A);
+   const unsigned long white = RGBToPixel(0xff, 0xff, 0xff);
+   const unsigned long muted = RGBToPixel(0x9f, 0xb0, 0xc0);
+   const int centerX = (WINDOW_W - PREVIEW_W) / 2;
+   const int previewY = HEADER_H + 18;
+   char counter[64];
+   ImageNode *img;
 
    XSetForeground(wpDisplay, wpGC, bg);
    XFillRectangle(wpDisplay, wpWindow, wpGC, 0, 0, WINDOW_W, WINDOW_H);
 
    XSetForeground(wpDisplay, wpGC, panel);
    XFillRectangle(wpDisplay, wpWindow, wpGC, 0, 0, WINDOW_W, HEADER_H);
+
+   img = LoadImage(ESSORAWM_ICON, 42, 42, 1);
+   if(img) {
+      DrawImageNodeFit(wpWindow, img, MARGIN, 10, 42, 42, 0x2b2b2b);
+      DestroyImage(img);
+   }
+
+   DrawText(72, 28, _("EssoraWM Wallpaper"), white);
+   DrawText(72, 48, _("Select a wallpaper from /usr/share/backgrounds"), muted);
+
+   if(wpList.count <= 0) {
+      DrawText(MARGIN, HEADER_H + 80, _("No wallpapers found"), white);
+      DrawButton(WINDOW_W - 110, WINDOW_H - 48, 86, BUTTON_H, _("Cancel"), 1);
+      XFlush(wpDisplay);
+      return;
+   }
+
+   /* agregado por josejp2424: carrusel simple, similar al selector de EssoraFM. */
+   if(wpList.count > 1) {
+      int prev = (wpSelected - 1 + wpList.count) % wpList.count;
+      int next = (wpSelected + 1) % wpList.count;
+      ImageNode *left = LoadImage(wpList.items[prev].path, SIDE_W, SIDE_H, 1);
+      ImageNode *right = LoadImage(wpList.items[next].path, SIDE_W, SIDE_H, 1);
+      if(left) {
+         XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
+         XFillRectangle(wpDisplay, wpWindow, wpGC, MARGIN, previewY + 90, SIDE_W, SIDE_H);
+         DrawImageNodeFit(wpWindow, left, MARGIN, previewY + 90, SIDE_W, SIDE_H, 0x101010);
+         DestroyImage(left);
+      }
+      if(right) {
+         XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
+         XFillRectangle(wpDisplay, wpWindow, wpGC, WINDOW_W - MARGIN - SIDE_W, previewY + 90, SIDE_W, SIDE_H);
+         DrawImageNodeFit(wpWindow, right, WINDOW_W - MARGIN - SIDE_W, previewY + 90, SIDE_W, SIDE_H, 0x101010);
+         DestroyImage(right);
+      }
+   }
+
    XSetForeground(wpDisplay, wpGC, green);
-   XFillRectangle(wpDisplay, wpWindow, wpGC, 0, HEADER_H - 3, WINDOW_W, 3);
-
-   DrawText(MARGIN, 24, _("EssoraWM Wallpaper"), white);
-   DrawText(MARGIN, 43, _("Wallpapers from /usr/share/backgrounds"), muted);
-
-   if(wpList.count == 0) {
-      DrawText(MARGIN, HEADER_H + 40, _("No images found in /usr/share/backgrounds"), white);
-   }
-
-   for(i = 0; i < COLS * ROWS; i++) {
-      int idx = wpOffset + i;
-      int col = i % COLS;
-      int row = i / COLS;
-      int bx = MARGIN + col * (THUMB_W + THUMB_GAP);
-      int by = HEADER_H + MARGIN + row * (THUMB_H + 34);
-      ImageNode *img;
-      if(idx >= wpList.count) {
-         continue;
-      }
-
-      XSetForeground(wpDisplay, wpGC, idx == wpSelected ? green : RGBToPixel(0x3a, 0x3a, 0x3a));
-      XFillRectangle(wpDisplay, wpWindow, wpGC, bx - 3, by - 3, THUMB_W + 6, THUMB_H + 28);
-      XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
-      XFillRectangle(wpDisplay, wpWindow, wpGC, bx, by, THUMB_W, THUMB_H);
-
-      img = LoadImage(wpList.items[idx].path, THUMB_W, THUMB_H, 1);
-      if(img) {
-         /* agregado por josejp2424: dibujar siempre dentro de la miniatura.
-          * Algunas imágenes/SVG no respetan el tamaño pedido por LoadImage;
-          * por eso se escalan y se recortan de forma segura aquí. */
-         DrawImageNodeFit(wpWindow, img, bx, by, THUMB_W, THUMB_H, 0x101010);
-         DestroyImage(img);
-      } else {
-         DrawText(bx + 12, by + 48, _("No preview"), muted);
-      }
-
-      DrawText(bx + 4, by + THUMB_H + 17, wpList.items[idx].name, white);
-   }
-
-   /* agregado por josejp2424: barra vertical visual para indicar posición de la lista. */
+   XFillRectangle(wpDisplay, wpWindow, wpGC, centerX - 4, previewY - 4, PREVIEW_W + 8, PREVIEW_H + 8);
    XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
-   XFillRectangle(wpDisplay, wpWindow, wpGC, SCROLL_X, SCROLL_Y, SCROLL_W, SCROLL_H);
-   XSetForeground(wpDisplay, wpGC, green);
-   if(wpList.count > COLS * ROWS) {
-      int visible = COLS * ROWS;
-      int maxOffset = wpList.count - visible;
-      int knobH = Max(24, SCROLL_H * visible / wpList.count);
-      int knobY = SCROLL_Y + (SCROLL_H - knobH) * wpOffset / Max(1, maxOffset);
-      XFillRectangle(wpDisplay, wpWindow, wpGC, SCROLL_X + 2, knobY, SCROLL_W - 4, knobH);
+   XFillRectangle(wpDisplay, wpWindow, wpGC, centerX, previewY, PREVIEW_W, PREVIEW_H);
+
+   img = LoadImage(wpList.items[wpSelected].path, PREVIEW_W, PREVIEW_H, 1);
+   if(img) {
+      DrawImageNodeFit(wpWindow, img, centerX, previewY, PREVIEW_W, PREVIEW_H, 0x101010);
+      DestroyImage(img);
    } else {
-      XFillRectangle(wpDisplay, wpWindow, wpGC, SCROLL_X + 2, SCROLL_Y + 2, SCROLL_W - 4, SCROLL_H - 4);
+      DrawText(centerX + 20, previewY + 80, _("No preview"), muted);
    }
 
-   DrawButton(WINDOW_W - 405, WINDOW_H - 48, 86, BUTTON_H, _("Up"), wpOffset > 0);
-   DrawButton(WINDOW_W - 305, WINDOW_H - 48, 86, BUTTON_H, _("Down"), wpOffset + COLS * ROWS < wpList.count);
-   DrawButton(WINDOW_W - 205, WINDOW_H - 48, 86, BUTTON_H, _("Apply"), wpSelected >= 0);
-   DrawButton(WINDOW_W - 105, WINDOW_H - 48, 86, BUTTON_H, _("Cancel"), 1);
+   snprintf(counter, sizeof(counter), "%d / %d", wpSelected + 1, wpList.count);
+   DrawText(centerX, previewY + PREVIEW_H + 26, wpList.items[wpSelected].name, white);
+   DrawText(WINDOW_W - MARGIN - 70, previewY + PREVIEW_H + 26, counter, muted);
 
-   if(wpSelected >= 0 && wpSelected < wpList.count) {
-      DrawText(MARGIN, WINDOW_H - 27, wpList.items[wpSelected].path, muted);
-   }
+   DrawButton(32, WINDOW_H - 48, 86, BUTTON_H, _("Left"), wpList.count > 1);
+   DrawButton(WINDOW_W - 118, WINDOW_H - 48, 86, BUTTON_H, _("Right"), wpList.count > 1);
+   DrawButton(WINDOW_W - 210, WINDOW_H - 48, 86, BUTTON_H, _("Apply"), wpSelected >= 0);
+   DrawButton(WINDOW_W - 110, WINDOW_H - 48, 86, BUTTON_H, _("Cancel"), 1);
+
+   DrawText(MARGIN, WINDOW_H - 66, wpList.items[wpSelected].path, muted);
    XFlush(wpDisplay);
 }
 
@@ -482,7 +401,7 @@ static void DrawButton(int x, int y, int w, int h, const char *label, char activ
    XFillRectangle(wpDisplay, wpWindow, wpGC, x, y, w, h);
    XSetForeground(wpDisplay, wpGC, fill);
    XFillRectangle(wpDisplay, wpWindow, wpGC, x + 1, y + 1, w - 2, h - 2);
-   DrawText(x + 18, y + 22, label, text);
+   DrawText(x + 16, y + 22, label, text);
 }
 
 static int HitButton(int x, int y, int bx, int by, int bw, int bh)
@@ -490,38 +409,20 @@ static int HitButton(int x, int y, int bx, int by, int bw, int bh)
    return x >= bx && x <= bx + bw && y >= by && y <= by + bh;
 }
 
-/* agregado por josejp2424 */
-static int HitScrollbar(int x, int y)
+static void SelectPrevious(void)
 {
-   return x >= SCROLL_X && x <= SCROLL_X + SCROLL_W
-       && y >= SCROLL_Y && y <= SCROLL_Y + SCROLL_H;
+   if(wpList.count <= 0) {
+      return;
+   }
+   wpSelected = (wpSelected - 1 + wpList.count) % wpList.count;
 }
 
-/* agregado por josejp2424 */
-static void ScrollWallpaperList(int rows)
+static void SelectNext(void)
 {
-   int visible = COLS * ROWS;
-   int maxOffset = wpList.count > visible ? wpList.count - visible : 0;
-   if(rows < 0) {
-      wpOffset -= COLS;
-   } else if(rows > 0) {
-      wpOffset += COLS;
+   if(wpList.count <= 0) {
+      return;
    }
-   if(wpOffset < 0) {
-      wpOffset = 0;
-   }
-   if(wpOffset > maxOffset) {
-      wpOffset = (maxOffset / COLS) * COLS;
-   }
-   if(wpSelected < wpOffset) {
-      wpSelected = wpOffset;
-   }
-   if(wpSelected >= wpOffset + visible) {
-      wpSelected = wpOffset + visible - 1;
-   }
-   if(wpSelected >= wpList.count) {
-      wpSelected = wpList.count - 1;
-   }
+   wpSelected = (wpSelected + 1) % wpList.count;
 }
 
 static int MaskShift(unsigned long mask)
@@ -578,52 +479,7 @@ static unsigned long RGBToPixel(unsigned char r, unsigned char g, unsigned char 
    }
 }
 
-static void DrawImageNode(Drawable d, ImageNode *image, int dx, int dy, int bg)
-{
-   XImage *xi;
-   int x, y;
-   unsigned char br = (bg >> 16) & 0xff;
-   unsigned char bgc = (bg >> 8) & 0xff;
-   unsigned char bb = bg & 0xff;
-
-   if(!image || image->bitmap || !image->data) {
-      return;
-   }
-
-   xi = XCreateImage(wpDisplay, wpVisual, wpDepth, ZPixmap, 0, NULL,
-                     image->width, image->height, 32, 0);
-   if(!xi) {
-      return;
-   }
-   xi->data = calloc(1, xi->bytes_per_line * image->height);
-   if(!xi->data) {
-      XDestroyImage(xi);
-      return;
-   }
-
-   for(y = 0; y < image->height; y++) {
-      for(x = 0; x < image->width; x++) {
-         int p = (y * image->width + x) * 4;
-         unsigned int a = image->data[p + 0];
-         unsigned int r = image->data[p + 1];
-         unsigned int g = image->data[p + 2];
-         unsigned int b = image->data[p + 3];
-         unsigned char rr = (r * a + br * (255 - a)) / 255;
-         unsigned char gg = (g * a + bgc * (255 - a)) / 255;
-         unsigned char bb2 = (b * a + bb * (255 - a)) / 255;
-         XPutPixel(xi, x, y, RGBToPixel(rr, gg, bb2));
-      }
-   }
-   XPutImage(wpDisplay, d, wpGC, xi, 0, 0, dx, dy, image->width, image->height);
-   XDestroyImage(xi);
-}
-
-
-/* agregado por josejp2424
- * Dibuja una imagen ajustada dentro de una caja fija, preservando proporción.
- * Esto evita que SVG/JPG/PNG grandes se dibujen encima de toda la ventana
- * cuando el cargador devuelve un tamaño mayor al solicitado.
- */
+/* agregado por josejp2424 */
 static void DrawImageNodeFit(Drawable d, ImageNode *image, int bx, int by, int bw, int bh, int bg)
 {
    XImage *xi;
@@ -639,17 +495,16 @@ static void DrawImageNodeFit(Drawable d, ImageNode *image, int bx, int by, int b
 
    if(image->width * bh > image->height * bw) {
       dw = bw;
-      dh = Max(1, image->height * bw / image->width);
+      dh = MAX(1, image->height * bw / image->width);
    } else {
       dh = bh;
-      dw = Max(1, image->width * bh / image->height);
+      dw = MAX(1, image->width * bh / image->height);
    }
 
    dx = bx + (bw - dw) / 2;
    dy = by + (bh - dh) / 2;
 
-   xi = XCreateImage(wpDisplay, wpVisual, wpDepth, ZPixmap, 0, NULL,
-                     dw, dh, 32, 0);
+   xi = XCreateImage(wpDisplay, wpVisual, wpDepth, ZPixmap, 0, NULL, dw, dh, 32, 0);
    if(!xi) {
       return;
    }
@@ -766,8 +621,6 @@ static void EnsureConfigDir(void)
    if(!home || !home[0]) {
       return;
    }
-   snprintf(path, sizeof(path), "%s/.config", home);
-   mkdir(path, 0755);
    snprintf(path, sizeof(path), "%s/%s", home, CONFIG_SUBDIR);
    mkdir(path, 0755);
 }
@@ -789,64 +642,103 @@ static void SaveWallpaper(const char *path)
 static char *ReadWallpaperPath(void)
 {
    char *cfg = GetConfigPath();
-   char buffer[PATH_MAX];
    FILE *fp = fopen(cfg, "r");
+   char buffer[PATH_MAX];
+   char *result = NULL;
    Release(cfg);
    if(!fp) {
       return NULL;
    }
-   if(!fgets(buffer, sizeof(buffer), fp)) {
-      fclose(fp);
-      return NULL;
+   if(fgets(buffer, sizeof(buffer), fp)) {
+      size_t len = strlen(buffer);
+      while(len > 0 && (buffer[len - 1] == '\n' || buffer[len - 1] == '\r')) {
+         buffer[--len] = 0;
+      }
+      result = CopyString(buffer);
    }
    fclose(fp);
-   buffer[strcspn(buffer, "\r\n")] = 0;
-   return CopyString(buffer);
+   return result;
 }
 
 static char *QuoteShell(const char *path)
 {
-   char *out;
-   size_t i, j = 0, len;
-   len = strlen(path);
-   out = Allocate(len * 4 + 3);
-   out[j++] = '\'';
-   for(i = 0; i < len; i++) {
-      if(path[i] == '\'') {
-         out[j++] = '\'';
-         out[j++] = '\\';
-         out[j++] = '\'';
-         out[j++] = '\'';
+   size_t len = 3;
+   const char *p;
+   char *out, *q;
+   for(p = path; *p; p++) {
+      len += (*p == '\'') ? 4 : 1;
+   }
+   out = Allocate(len);
+   q = out;
+   *q++ = '\'';
+   for(p = path; *p; p++) {
+      if(*p == '\'') {
+         strcpy(q, "'\\''");
+         q += 4;
       } else {
-         out[j++] = path[i];
+         *q++ = *p;
       }
    }
-   out[j++] = '\'';
-   out[j] = 0;
+   *q++ = '\'';
+   *q = 0;
    return out;
 }
 
 static char HasCommand(const char *cmd)
 {
-   char command[256];
-   snprintf(command, sizeof(command), "command -v %s >/dev/null 2>&1", cmd);
-   return system(command) == 0;
+   char buffer[256];
+   snprintf(buffer, sizeof(buffer), "command -v %s >/dev/null 2>&1", cmd);
+   return system(buffer) == 0;
 }
 
-/* agregado por josejp2424
- * Compatibilidad con Puppy/ROX-Filer:
- * si existe $HOME/Choices/ROX-Filer/PuppyPin, se reemplaza solo la ruta
- * dentro de <backdrop style="...">...</backdrop>, preservando el estilo
- * original, por ejemplo Stretched. También se conserva el archivo
- * ~/.config/essorawm/wallpaper para EssoraWM.
- */
+static void ApplyWallpaper(const char *path, char save)
+{
+   char *quoted;
+   char command[PATH_MAX * 2];
+   if(!path || !path[0]) {
+      return;
+   }
+
+   quoted = QuoteShell(path);
+   if(HasCommand("hsetroot")) {
+      snprintf(command, sizeof(command), "hsetroot -fill %s", quoted);
+      system(command);
+   } else if(HasCommand("feh")) {
+      snprintf(command, sizeof(command), "feh --bg-fill %s", quoted);
+      system(command);
+   } else if(HasCommand("xwallpaper")) {
+      snprintf(command, sizeof(command), "xwallpaper --zoom %s", quoted);
+      system(command);
+   }
+   Release(quoted);
+
+   UpdatePuppyPin(path);
+   if(save) {
+      SaveWallpaper(path);
+      RestartWbar();
+   }
+}
+
+/* agregado por josejp2424 */
+static void RestartWbar(void)
+{
+   /*
+    * Reinicia wbar si está activa para evitar que quede el marco negro
+    * después de cambiar el wallpaper. No inicia wbar si no estaba corriendo.
+    */
+   if(system("pgrep -x wbar >/dev/null 2>&1") == 0) {
+      system("pkill -x wbar >/dev/null 2>&1");
+      system("sh -c 'sleep 0.35; wbar >/dev/null 2>&1 &' ");
+   }
+}
+
+/* agregado por josejp2424 */
 static void UpdatePuppyPin(const char *path)
 {
    const char *home = getenv("HOME");
    char pin[PATH_MAX];
    char tmp[PATH_MAX];
    FILE *in, *out;
-   char line[8192];
    int changed = 0;
 
    if(!home || !home[0] || !path || !path[0]) {
@@ -854,69 +746,51 @@ static void UpdatePuppyPin(const char *path)
    }
 
    snprintf(pin, sizeof(pin), "%s/Choices/ROX-Filer/PuppyPin", home);
+   if(access(pin, R_OK | W_OK) != 0) {
+      return;
+   }
    snprintf(tmp, sizeof(tmp), "%s.tmp", pin);
 
    in = fopen(pin, "r");
-   if(!in) {
-      return;
-   }
    out = fopen(tmp, "w");
-   if(!out) {
-      fclose(in);
+   if(!in || !out) {
+      if(in) fclose(in);
+      if(out) fclose(out);
       return;
    }
 
-   while(fgets(line, sizeof(line), in)) {
-      char *start = strstr(line, "<backdrop");
-      char *gt = start ? strchr(start, '>') : NULL;
-      char *end = gt ? strstr(gt, "</backdrop>") : NULL;
-      if(start && gt && end) {
-         *gt = '\0';
-         fprintf(out, "%s>%s</backdrop>\n", line, path);
-         changed = 1;
-      } else {
-         fputs(line, out);
+   while(!feof(in)) {
+      char line[8192];
+      char *start, *end;
+      if(!fgets(line, sizeof(line), in)) {
+         break;
       }
+      start = strstr(line, "<backdrop");
+      end = strstr(line, "</backdrop>");
+      if(start && end && !changed) {
+         char *gt = strchr(start, '>');
+         if(gt && gt < end) {
+            *++gt = 0;
+            fprintf(out, "%s%s%s", line, path, end);
+            changed = 1;
+            continue;
+         }
+      }
+      fputs(line, out);
    }
-
    fclose(in);
    fclose(out);
 
    if(changed) {
+      char *quoted = QuoteShell(pin);
+      char command[PATH_MAX * 2];
       rename(tmp, pin);
       if(HasCommand("rox")) {
-         char *q = QuoteShell(pin);
-         char command[PATH_MAX * 2];
-         snprintf(command, sizeof(command), "rox -p %s >/dev/null 2>&1 &", q);
+         snprintf(command, sizeof(command), "rox -p %s >/dev/null 2>&1 &", quoted);
          system(command);
-         Release(q);
       }
+      Release(quoted);
    } else {
       unlink(tmp);
    }
-}
-
-static void ApplyWallpaper(const char *path, char save)
-{
-   char *q;
-   char command[PATH_MAX * 2];
-   if(!path || access(path, R_OK) < 0) {
-      return;
-   }
-   q = QuoteShell(path);
-   if(HasCommand("hsetroot")) {
-      snprintf(command, sizeof(command), "hsetroot -fill %s >/dev/null 2>&1 &", q);
-   } else if(HasCommand("feh")) {
-      snprintf(command, sizeof(command), "feh --bg-fill %s >/dev/null 2>&1 &", q);
-   } else if(HasCommand("xwallpaper")) {
-      snprintf(command, sizeof(command), "xwallpaper --zoom %s >/dev/null 2>&1 &", q);
-   } else {
-      snprintf(command, sizeof(command), "xsetroot -solid '#202020' >/dev/null 2>&1 &");
-   }
-   system(command);
-   if(save) {
-      SaveWallpaper(path);
-      UpdatePuppyPin(path); /* agregado por josejp2424 */
-   }
-   Release(q);
 }
