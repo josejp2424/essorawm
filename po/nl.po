@@ -542,7 +542,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "Toepassen"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -551,3 +551,244 @@ msgstr "Up"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Down"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "Kon het X-scherm niet openen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "EssoraWM-bureaubladbeheer"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "Geen programmastarters gevonden"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "Selecteer een toepassing om aan het bureaublad toe te voegen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "Verplaats schijfpictogrammen vrij op het bureaublad of rangschik ze hier"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "Standaardinstellingen voor schijfpictogrammen hersteld; klik op Toepassen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "Geen toepassingen komen overeen met de zoekopdracht"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "Kon de configuratiemap van PuppyPin niet maken"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "Kon PuppyPin niet maken"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "Deze toepassing staat al op het bureaublad"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin is ongeldig: </pinboard> is niet gevonden"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "Onvoldoende geheugen om PuppyPin bij te werken"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "Kon PuppyPin niet schrijven"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Toegevoegd aan het bureaublad. EssoraWM slaat de nieuwe positie op wanneer u het verplaatst"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "Deze toepassing staat niet op het bureaublad"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "Verwijderd van het bureaublad"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "Kon de instellingen voor schijfpictogrammen niet opslaan"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "Instellingen voor schijfpictogrammen toegepast"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "Verborgen schijven zijn weer zichtbaar"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "Instellingen voor schijfpictogrammen zijn gewijzigd; klik op Toepassen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Toepassingen en ingebouwde schijfpictogrammen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Toepassingen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Schijfpictogrammen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "Zoeken"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "Typ om toepassingen te filteren"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "Toevoegen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "Verwijderen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Zichtbaarheid"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Schijfpictogrammen tonen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Interne schijven"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Verwisselbare schijven"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Netwerkschijven"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Labels tonen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Labelkader"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Volgorde omkeren"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "U kunt elk schijfpictogram ook vrij over het bureaublad slepen."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "Toepassen rangschikt alle schijven volgens de gekozen indeling."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Indeling"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Horizontaal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Verticaal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Horizontale positie"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Links"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "Midden"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Rechts"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Verticale positie"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Boven"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Onder"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Pictogramgrootte"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Horizontale afstand"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Verticale afstand"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Horizontale verschuiving"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Verticale verschuiving"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Verborgen schijven tonen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Toegepast"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "Standaardwaarden"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Openen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Ontkoppelen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Aankoppelen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Van bureaublad verwijderen"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "Volume %s"

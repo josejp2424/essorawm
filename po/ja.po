@@ -1,0 +1,258 @@
+# EssoraWM desktop translations.
+msgid ""
+msgstr ""
+"Project-Id-Version: EssoraWM 0.1.6\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "X ディスプレイを開けませんでした"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "EssoraWM デスクトップマネージャー"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "アプリケーションランチャーが見つかりません"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "デスクトップに追加するアプリケーションを選択してください"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "ドライブアイコンはデスクトップ上で自由に移動するか、ここで整列できます"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "ドライブアイコンの既定設定を復元しました。「適用」を押してください"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "検索に一致するアプリケーションはありません"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "PuppyPin の設定ディレクトリを作成できませんでした"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "PuppyPin を作成できませんでした"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "このアプリケーションはすでにデスクトップにあります"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin が無効です: </pinboard> が見つかりません"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "PuppyPin を更新するためのメモリが不足しています"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "PuppyPin に書き込めませんでした"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "デスクトップに追加しました。移動すると EssoraWM が新しい位置を保存します"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "このアプリケーションはデスクトップにありません"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "デスクトップから削除しました"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "ドライブアイコンの設定を保存できませんでした"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "ドライブアイコンの設定を適用しました"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "非表示のドライブが再び表示されました"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "ドライブアイコンの設定が変更されました。「適用」を押してください"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "アプリケーションとネイティブドライブアイコン"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "アプリケーション"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "ドライブアイコン"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "検索"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "入力してアプリケーションを絞り込む"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "追加"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "削除"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Close"
+msgstr "閉じる"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "表示"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "ドライブアイコンを表示"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "内蔵ドライブ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "リムーバブルドライブ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "ネットワークドライブ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "ラベルを表示"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "ラベル枠"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "逆順"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "各ドライブアイコンはデスクトップ上で自由にドラッグすることもできます。"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "「適用」を押すと、選択した配置ですべてのドライブを整列します。"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "配置"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "横"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "縦"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "水平位置"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "左"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "中央"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "右"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "垂直位置"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "上"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "下"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "アイコンサイズ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "水平間隔"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "垂直間隔"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "水平オフセット"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "垂直オフセット"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "非表示のドライブを表示"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply"
+msgstr "適用"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "適用済み"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "既定値"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "開く"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "アンマウント"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "マウント"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "デスクトップから削除"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "ボリューム %s"

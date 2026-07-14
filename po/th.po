@@ -524,7 +524,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "ใช้"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -533,3 +533,244 @@ msgstr "Up"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Down"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "ไม่สามารถเปิดจอแสดงผล X ได้"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "ตัวจัดการเดสก์ท็อป EssoraWM"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "ไม่พบตัวเรียกใช้โปรแกรม"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "เลือกโปรแกรมที่จะเพิ่มลงบนเดสก์ท็อป"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "ย้ายไอคอนไดรฟ์บนเดสก์ท็อปได้อย่างอิสระ หรือจัดเรียงที่นี่"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "คืนค่าการตั้งค่าไอคอนไดรฟ์เริ่มต้นแล้ว กด ใช้"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "ไม่มีโปรแกรมที่ตรงกับการค้นหา"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "ไม่สามารถสร้างไดเรกทอรีการตั้งค่า PuppyPin ได้"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "ไม่สามารถสร้าง PuppyPin ได้"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "โปรแกรมนี้อยู่บนเดสก์ท็อปแล้ว"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin ไม่ถูกต้อง: ไม่พบ </pinboard>"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "หน่วยความจำไม่เพียงพอสำหรับอัปเดต PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "ไม่สามารถเขียน PuppyPin ได้"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "เพิ่มลงบนเดสก์ท็อปแล้ว EssoraWM จะบันทึกตำแหน่งใหม่เมื่อคุณย้าย"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "โปรแกรมนี้ไม่ได้อยู่บนเดสก์ท็อป"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "นำออกจากเดสก์ท็อปแล้ว"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "ไม่สามารถบันทึกการตั้งค่าไอคอนไดรฟ์ได้"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "ใช้การตั้งค่าไอคอนไดรฟ์แล้ว"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "ไดรฟ์ที่ซ่อนอยู่แสดงอีกครั้ง"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "การตั้งค่าไอคอนไดรฟ์เปลี่ยนแล้ว กด ใช้"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "โปรแกรมและไอคอนไดรฟ์แบบเนทีฟ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "โปรแกรม"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "ไอคอนไดรฟ์"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "ค้นหา"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "พิมพ์เพื่อกรองโปรแกรม"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "เพิ่ม"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "นำออก"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "การแสดงผล"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "แสดงไอคอนไดรฟ์"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "ไดรฟ์ภายใน"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "ไดรฟ์แบบถอดได้"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "ไดรฟ์เครือข่าย"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "แสดงป้ายชื่อ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "กรอบป้ายชื่อ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "กลับลำดับ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "คุณสามารถลากไอคอนไดรฟ์แต่ละอันบนเดสก์ท็อปได้อย่างอิสระ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "ใช้ จะจัดเรียงไดรฟ์ทั้งหมดตามรูปแบบที่เลือก"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "รูปแบบ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "แนวนอน"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "แนวตั้ง"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "ตำแหน่งแนวนอน"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "ซ้าย"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "กึ่งกลาง"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "ขวา"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "ตำแหน่งแนวตั้ง"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "บน"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "ล่าง"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "ขนาดไอคอน"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "ระยะห่างแนวนอน"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "ระยะห่างแนวตั้ง"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "ระยะเยื้องแนวนอน"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "ระยะเยื้องแนวตั้ง"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "แสดงไดรฟ์ที่ซ่อน"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "ใช้แล้ว"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "ค่าเริ่มต้น"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "เปิด"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "ยกเลิกการเมานต์"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "เมานต์"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "นำออกจากเดสก์ท็อป"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "โวลุ่ม %s"

@@ -542,3 +542,252 @@ msgstr "Haut"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Bas"
+
+#: src/essoradesktop.c
+msgid "Could not open the X display"
+msgstr "Impossible d’ouvrir l’affichage X"
+
+#: src/essoradesktop.c
+msgid "EssoraWM Desktop Applications"
+msgstr "Applications du bureau EssoraWM"
+
+#: src/essoradesktop.c
+msgid "No application launchers were found"
+msgstr "Aucun lanceur d’application trouvé"
+
+#: src/essoradesktop.c
+msgid "Select an application to add it to the desktop"
+msgstr "Sélectionnez une application à ajouter au bureau"
+
+#: src/essoradesktop.c
+msgid "No applications match the search"
+msgstr "Aucune application ne correspond à la recherche"
+
+#: src/essoradesktop.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "Impossible de créer le dossier de configuration de PuppyPin"
+
+#: src/essoradesktop.c
+msgid "Could not create PuppyPin"
+msgstr "Impossible de créer PuppyPin"
+
+#: src/essoradesktop.c
+msgid "This application is already on the desktop"
+msgstr "Cette application se trouve déjà sur le bureau"
+
+#: src/essoradesktop.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin n’est pas valide : </pinboard> est introuvable"
+
+#: src/essoradesktop.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "Mémoire insuffisante pour mettre à jour PuppyPin"
+
+#: src/essoradesktop.c
+msgid "Could not write PuppyPin"
+msgstr "Impossible d’écrire PuppyPin"
+
+#: src/essoradesktop.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Ajoutée au bureau. EssoraWM enregistrera la nouvelle position lors du déplacement"
+
+#: src/essoradesktop.c
+msgid "This application is not on the desktop"
+msgstr "Cette application ne se trouve pas sur le bureau"
+
+#: src/essoradesktop.c
+msgid "Removed from the desktop"
+msgstr "Supprimée du bureau"
+
+#: src/essoradesktop.c
+msgid "Add or remove desktop launchers"
+msgstr "Ajouter ou supprimer des lanceurs du bureau ROX-Filer"
+
+#: src/essoradesktop.c
+msgid "Search"
+msgstr "Rechercher"
+
+#: src/essoradesktop.c
+msgid "Type to filter applications"
+msgstr "Saisissez du texte pour filtrer les applications"
+
+#: src/essoradesktop.c
+msgid "Add"
+msgstr "Ajouter"
+
+#: src/essoradesktop.c
+msgid "Remove"
+msgstr "Supprimer"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "Gestionnaire du bureau EssoraWM"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "Déplacez librement les icônes de lecteurs sur le bureau ou organisez-les ici"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "Paramètres par défaut des icônes de lecteurs restaurés ; cliquez sur Appliquer"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "Impossible d’enregistrer les paramètres des icônes de lecteurs"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "Paramètres des icônes de lecteurs appliqués"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "Les lecteurs masqués sont de nouveau visibles"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "Les paramètres des icônes de lecteurs ont changé ; cliquez sur Appliquer"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Applications et icônes de lecteurs natives"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Applications"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Icônes de lecteurs"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Visibilité"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Afficher les icônes de lecteurs"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Lecteurs internes"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Lecteurs amovibles"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Lecteurs réseau"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Afficher les étiquettes"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Cadre des étiquettes"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Inverser l’ordre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "Vous pouvez aussi déplacer librement chaque icône de lecteur sur le bureau."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "Appliquer organise tous les lecteurs selon la disposition sélectionnée."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Disposition"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Horizontale"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Verticale"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Position horizontale"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Gauche"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "Centre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Droite"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Position verticale"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Haut"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Bas"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Taille des icônes"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Espacement horizontal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Espacement vertical"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Décalage horizontal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Décalage vertical"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Afficher les lecteurs masqués"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Appliqué"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "Valeurs par défaut"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Ouvrir"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Démonter"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Monter"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Supprimer du bureau"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "Volume %s"

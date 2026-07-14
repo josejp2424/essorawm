@@ -16,7 +16,7 @@ static void DisplayUsage(void);
 void DisplayAbout(void)
 {
    /* agregado por josejp2424: identificación del fork EssoraWM manteniendo el binario jwm. */
-   printf("EssoraWM 0.1\n");
+   printf("EssoraWM 0.1.6\n");
    printf("Based on JWM " PACKAGE_VERSION "\n");
    DisplayCompileOptions();
 }
@@ -83,7 +83,8 @@ void DisplayHelp(void)
           "  -restart    Restart JWM (send _JWM_RESTART to the root)\n"
           "  -wallpaper  Open EssoraWM wallpaper selector (agregado por josejp2424)\n"
           "  -wallpaper-restore  Restore saved EssoraWM wallpaper (agregado por josejp2424)\n"
-          "  -v          Display version information\n");
+          "  -desktop-icons  Manage native desktop applications (agregado por josejp2424)\n"
+          "  -v, -version  Display version information\n");
 }
 
 /** Display program usage information. */

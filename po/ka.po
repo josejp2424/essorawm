@@ -524,7 +524,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "გამოყენება"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -533,3 +533,244 @@ msgstr "Up"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Down"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "X ეკრანის გახსნა ვერ მოხერხდა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "EssoraWM სამუშაო მაგიდის მმართველი"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "პროგრამების გამშვები ვერ მოიძებნა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "აირჩიეთ სამუშაო მაგიდაზე დასამატებელი პროგრამა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "დისკების ხატულები თავისუფლად გადაადგილეთ სამუშაო მაგიდაზე ან დაალაგეთ აქ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "დისკების ხატულების ნაგულისხმევი პარამეტრები აღდგა; დააჭირეთ გამოყენებას"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "ძიებას არცერთი პროგრამა არ ემთხვევა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "PuppyPin-ის პარამეტრების საქაღალდის შექმნა ვერ მოხერხდა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "PuppyPin-ის შექმნა ვერ მოხერხდა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "ეს პროგრამა უკვე სამუშაო მაგიდაზეა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin არასწორია: </pinboard> ვერ მოიძებნა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "PuppyPin-ის განახლებისთვის მეხსიერება საკმარისი არ არის"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "PuppyPin-ის ჩაწერა ვერ მოხერხდა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "დაემატა სამუშაო მაგიდას. გადაადგილებისას EssoraWM ახალ მდებარეობას შეინახავს"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "ეს პროგრამა სამუშაო მაგიდაზე არ არის"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "წაიშალა სამუშაო მაგიდიდან"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "დისკების ხატულების პარამეტრების შენახვა ვერ მოხერხდა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "დისკების ხატულების პარამეტრები გამოყენებულია"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "დამალული დისკები კვლავ ხილულია"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "დისკების ხატულების პარამეტრები შეიცვალა; დააჭირეთ გამოყენებას"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "პროგრამები და ჩაშენებული დისკების ხატულები"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "პროგრამები"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "დისკების ხატულები"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "ძიება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "აკრიფეთ პროგრამების გასაფილტრად"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "დამატება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "წაშლა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "ხილვადობა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "დისკების ხატულების ჩვენება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "შიდა დისკები"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "მოსახსნელი დისკები"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "ქსელური დისკები"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "წარწერების ჩვენება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "წარწერის ჩარჩო"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "შებრუნებული რიგი"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "თითოეული დისკის ხატულა შეგიძლიათ თავისუფლად გადაათრიოთ სამუშაო მაგიდაზე."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "გამოყენება ყველა დისკს არჩეული განლაგებით დაალაგებს."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "განლაგება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "ჰორიზონტალური"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "ვერტიკალური"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "ჰორიზონტალური მდებარეობა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "მარცხნივ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "ცენტრში"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "მარჯვნივ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "ვერტიკალური მდებარეობა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "ზემოთ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "ქვემოთ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "ხატულის ზომა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "ჰორიზონტალური დაშორება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "ვერტიკალური დაშორება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "ჰორიზონტალური წანაცვლება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "ვერტიკალური წანაცვლება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "დამალული დისკების ჩვენება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "გამოყენებულია"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "ნაგულისხმევი"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "გახსნა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "მოხსნა"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "მიერთება"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "სამუშაო მაგიდიდან წაშლა"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "ტომი %s"

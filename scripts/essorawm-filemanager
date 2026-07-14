@@ -1,0 +1,56 @@
+#!/bin/sh
+# Portable file-manager launcher for EssoraWM.
+# Puppy uses /usr/local/bin/defaultfilemanager. Other distributions normally
+# provide /etc/alternatives/file-manager, xdg-open, gio or a desktop-specific
+# file manager.
+
+set -u
+
+self="$0"
+if command -v readlink >/dev/null 2>&1; then
+    resolved="$(readlink -f "$0" 2>/dev/null || printf '%s' "$0")"
+else
+    resolved="$0"
+fi
+
+target=${1:-"${HOME:-/}"}
+shift 2>/dev/null || true
+
+run_candidate() {
+    candidate=$1
+    shift
+    [ -x "$candidate" ] || return 1
+    if command -v readlink >/dev/null 2>&1; then
+        candidate_resolved="$(readlink -f "$candidate" 2>/dev/null || printf '%s' "$candidate")"
+        [ "$candidate_resolved" = "$resolved" ] && return 1
+    else
+        [ "$candidate" = "$self" ] && return 1
+    fi
+    exec "$candidate" "$target" "$@"
+}
+
+# Native Puppy convention. Never replace an existing Puppy script.
+run_candidate /usr/local/bin/defaultfilemanager "$@" || true
+
+# Debian/Devuan alternatives, when configured.
+run_candidate /etc/alternatives/file-manager "$@" || true
+
+# Freedesktop launchers are preferable to guessing a desktop environment.
+if command -v xdg-open >/dev/null 2>&1; then
+    exec xdg-open "$target"
+fi
+if command -v gio >/dev/null 2>&1; then
+    exec gio open "$target"
+fi
+if command -v exo-open >/dev/null 2>&1; then
+    exec exo-open --launch FileManager "$target"
+fi
+
+for command_name in pcmanfm thunar spacefm rox ROX-Filer nemo caja nautilus dolphin; do
+    command_path="$(command -v "$command_name" 2>/dev/null || true)"
+    [ -n "$command_path" ] || continue
+    exec "$command_path" "$target" "$@"
+done
+
+printf '%s\n' "EssoraWM: no file manager is available for: $target" >&2
+exit 127

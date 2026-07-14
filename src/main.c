@@ -14,6 +14,8 @@
 #include "error.h"
 #include "event.h"
 #include "essorawallpaper.h" /* agregado por josejp2424 */
+#include "essoradesktop.h" /* agregado por josejp2424 */
+#include "desktopicons.h" /* escritorio nativo agregado por josejp2424 */
 
 #include "border.h"
 #include "client.h"
@@ -44,6 +46,11 @@
 #include "grab.h"
 
 #include <errno.h>
+#include <ctype.h>
+#include <limits.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 Display *display = NULL;
 Window rootWindow;
@@ -102,6 +109,7 @@ static char *displayString = NULL;
 
 char *configPath = NULL;
 
+
 /** The main entry point. */
 #ifndef UNIT_TEST
 int main(int argc, char *argv[])
@@ -114,7 +122,8 @@ int main(int argc, char *argv[])
       COMMAND_RELOAD,
       COMMAND_PARSE,
       COMMAND_WALLPAPER,
-      COMMAND_WALLPAPER_RESTORE
+      COMMAND_WALLPAPER_RESTORE,
+      COMMAND_DESKTOP_ICONS
    } action;
 
    StartDebug();
@@ -122,7 +131,7 @@ int main(int argc, char *argv[])
    /* Parse command line options. */
    action = COMMAND_RUN;
    for(x = 1; x < argc; x++) {
-      if(!strcmp(argv[x], "-v")) {
+      if(!strcmp(argv[x], "-v") || !strcmp(argv[x], "-version")) {
          DisplayAbout();
          DoExit(0);
       } else if(!strcmp(argv[x], "-h")) {
@@ -140,6 +149,8 @@ int main(int argc, char *argv[])
          action = COMMAND_WALLPAPER;
       } else if(!strcmp(argv[x], "-wallpaper-restore")) {
          action = COMMAND_WALLPAPER_RESTORE;
+      } else if(!strcmp(argv[x], "-desktop-icons")) {
+         action = COMMAND_DESKTOP_ICONS;
       } else if(!strcmp(argv[x], "-display") && x + 1 < argc) {
          displayString = argv[++x];
       } else if(!strcmp(argv[x], "-f") && x + 1 < argc) {
@@ -185,6 +196,10 @@ int main(int argc, char *argv[])
       /* agregado por josejp2424 */
       RestoreEssoraWallpaper();
       DoExit(0);
+   case COMMAND_DESKTOP_ICONS:
+      /* agregado por josejp2424 */
+      RunEssoraDesktopManager();
+      DoExit(0);
    default:
       break;
    }
@@ -218,6 +233,7 @@ int main(int argc, char *argv[])
 
    } while(shouldRestart);
    ShutdownConnection();
+
 
    /* If we have a command to execute on shutdown, run it now. */
    if(exitCommand) {
@@ -472,7 +488,12 @@ void HandleExit(int sig)
 void HandleChild(int sig)
 {
    const int savedErrno = errno;
-   while(waitpid((pid_t)-1, NULL, WNOHANG) > 0);
+   pid_t child;
+   (void)sig;
+
+   while((child = waitpid((pid_t)-1, NULL, WNOHANG)) > 0) {
+      (void)child;
+   }
    errno = savedErrno;
 }
 
@@ -491,6 +512,7 @@ void Initialize(void)
    InitializeCommands();
    InitializeCursors();
    InitializeDesktops();
+   InitializeDesktopIcons();
 #ifndef DISABLE_CONFIRM
    InitializeDialogs();
 #endif
@@ -576,6 +598,9 @@ void Startup(void)
    /* Run any startup commands. */
    StartupCommands();
 
+   /* Escritorio nativo compatible con PuppyPin; no usa ROX ni GTK. */
+   StartupDesktopIcons();
+
 }
 
 /** Shutdown the various JWM components.
@@ -602,6 +627,7 @@ void Shutdown(void)
    ShutdownClock();
    ShutdownBorders();
    ShutdownClients();
+   ShutdownDesktopIcons();
    ShutdownBackgrounds();
    ShutdownIcons();
    ShutdownCursors();
@@ -633,6 +659,7 @@ void Destroy(void)
    DestroyCommands();
    DestroyCursors();
    DestroyDesktops();
+   DestroyDesktopIcons();
 #ifndef DISABLE_CONFIRM
    DestroyDialogs();
 #endif

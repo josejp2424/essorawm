@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 128 128"
+   version="1.1"
+   id="svg17"
+   sodipodi:docname="essora-wallpape2r.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title17">essorawm-wallpaper</title>
+  <sodipodi:namedview
+     id="namedview17"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.4492188"
+     inkscape:cx="128"
+     inkscape:cy="128"
+     inkscape:window-width="1598"
+     inkscape:window-height="832"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg17" />
+  <defs
+     id="defs11">
+    <linearGradient
+       id="sky"
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#bfe36a"
+         id="stop1" />
+      <stop
+         offset="55%"
+         stop-color="#8ec93f"
+         id="stop2" />
+      <stop
+         offset="100%"
+         stop-color="#6fa02c"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="mountainBack"
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#5c8a29"
+         id="stop4" />
+      <stop
+         offset="100%"
+         stop-color="#4b7a1f"
+         id="stop5" />
+    </linearGradient>
+    <linearGradient
+       id="mountainFront"
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#3f6c19"
+         id="stop6" />
+      <stop
+         offset="100%"
+         stop-color="#345a14"
+         id="stop7" />
+    </linearGradient>
+    <linearGradient
+       id="bezel"
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#3a3f3a"
+         id="stop8" />
+      <stop
+         offset="100%"
+         stop-color="#24271f"
+         id="stop9" />
+    </linearGradient>
+    <linearGradient
+       id="stand"
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#4a4f47"
+         id="stop10" />
+      <stop
+         offset="100%"
+         stop-color="#2e322b"
+         id="stop11" />
+    </linearGradient>
+    <clipPath
+       id="screenClip">
+      <rect
+         x="16"
+         y="16"
+         width="96"
+         height="64"
+         rx="4"
+         id="rect11" />
+    </clipPath>
+    <filter
+       id="dropShadow"
+       x="0"
+       y="0"
+       width="1"
+       height="1">
+      <feDropShadow
+         dx="0"
+         dy="3"
+         stdDeviation="3"
+         flood-color="#000000"
+         flood-opacity="0.25" />
+    </filter>
+  </defs>
+  <!-- Pata / base del monitor -->
+  <rect
+     x="58"
+     y="92"
+     width="12"
+     height="16"
+     rx="2"
+     fill="url(#stand)"
+     id="rect12" />
+  <rect
+     x="42"
+     y="106"
+     width="44"
+     height="8"
+     rx="4"
+     fill="url(#stand)"
+     id="rect13" />
+  <!-- Marco del monitor -->
+  <rect
+     x="10"
+     y="10"
+     width="108"
+     height="76"
+     rx="8"
+     fill="url(#bezel)"
+     filter="url(#dropShadow)"
+     id="rect14" />
+  <!-- Pantalla con el wallpaper -->
+  <g
+     clip-path="url(#screenClip)"
+     id="g16">
+    <rect
+       x="16"
+       y="16"
+       width="96"
+       height="64"
+       fill="url(#sky)"
+       id="rect15" />
+    <!-- Sol -->
+    <circle
+       cx="88"
+       cy="34"
+       r="10"
+       fill="#fff3b0"
+       id="circle15"
+       style="fill:#ccffaa" />
+    <!-- Montanas fondo -->
+    <path
+       d="M10 66 L34 40 L52 58 L66 46 L84 66 Z"
+       fill="url(#mountainBack)"
+       id="path15" />
+    <!-- Montanas frente -->
+    <path
+       d="M6 80 L28 52 L44 68 L56 56 L70 72 L82 60 L118 80 Z"
+       fill="url(#mountainFront)"
+       id="path16" />
+  </g>
+  <!-- Reflejo sutil de vidrio -->
+  <path
+     d="M18 18 L46 18 L20 40 Z"
+     fill="#ffffff"
+     opacity="0.12"
+     id="path17" />
+  <metadata
+     id="metadata17">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>essorawm-wallpaper</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>josejp2424</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>josejp2424</dc:title>
+          </cc:Agent>
+        </dc:rights>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

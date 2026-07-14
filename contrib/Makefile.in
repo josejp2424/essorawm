@@ -1,14 +1,23 @@
 ICONDIR = $(DESTDIR)@DATADIR@/jwm
+DESKTOPDIR = $(DESTDIR)@DATADIR@/applications
 
-ICONS = jwm.xbm jwm-gray.svg jwm-blue.svg jwm-orange.svg jwm-red.svg essorawm.svg
+ICONS = jwm.xbm jwm-gray.svg jwm-blue.svg jwm-orange.svg jwm-red.svg essorawm.svg essora-wallpaper.svg essorawm-config.svg
+DESKTOPFILES = essorawm-desktop-icons.desktop wallpaper_jwm.desktop
 
 install:
 	install -d $(ICONDIR)
 	for f in $(ICONS) ; do \
 		install -m 0644 $$f $(ICONDIR)/$$f ; \
 	done
+	install -d $(DESKTOPDIR)
+	for f in $(DESKTOPFILES) ; do \
+		install -m 0644 $$f $(DESKTOPDIR)/$$f ; \
+	done
 
 uninstall:
 	for f in $(ICONS) ; do \
 		rm -f $(ICONDIR)/$$f ; \
+	done
+	for f in $(DESKTOPFILES) ; do \
+		rm -f $(DESKTOPDIR)/$$f ; \
 	done

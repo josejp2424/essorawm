@@ -1,26 +1,51 @@
-# JWM Pymenu Essora 2.4.7-2
+# Compilar EssoraWM 0.1.6
 
-Compilar y crear paquete `.deb`:
+El repositorio está preparado para mantenerse limpio. El script de compilación
+copia el source a un directorio temporal, genera allí los archivos de Autotools,
+compila y crea el árbol del paquete sin dejar `Makefile`, `config.h`, objetos,
+catálogos `.gmo` ni binarios dentro del repositorio.
 
-```bash
+Como usuario root:
+
+```sh
 chmod +x build-essora-jwm-deb.sh
 ./build-essora-jwm-deb.sh
 ```
 
-El paquete queda en:
+El paquete final queda en:
 
-```bash
-deb-output/jwm-pymenu_2.4.7-2_amd64.deb
+```text
+deb-output/essorawm_0.1.6_<arquitectura>.deb
 ```
 
-Instalación:
+Ejemplo para amd64:
 
-```bash
-sudo dpkg -i deb-output/jwm-pymenu_2.4.7-2_amd64.deb
+```sh
+dpkg -i deb-output/essorawm_0.1.6_amd64.deb
 ```
 
-Dependencias de compilación recomendadas en Devuan/Debian:
+## Dependencias de compilación
 
-```bash
-sudo apt install build-essential autoconf automake pkg-config libx11-dev libxext-dev libxft-dev libxinerama-dev libxpm-dev libjpeg-dev libpng-dev librsvg2-dev
+```text
+build-essential autoconf automake gettext pkg-config
+libx11-dev libxext-dev libxrender-dev libxmu-dev libxinerama-dev
+libxpm-dev libjpeg-dev libpng-dev libcairo2-dev librsvg2-dev
+libxft-dev libpango1.0-dev
+```
+
+El escritorio nativo no necesita GTK2, GTK3 ni ROX-Filer.
+
+## Compilación manual
+
+```sh
+./autogen.sh
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+make -j"$(nproc)"
+```
+
+Los archivos generados por una compilación manual están cubiertos por
+`.gitignore`. Para quitarlos:
+
+```sh
+make distclean
 ```

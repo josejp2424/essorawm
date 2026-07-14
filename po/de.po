@@ -536,7 +536,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "Anwenden"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -545,3 +545,252 @@ msgstr "Nach oben"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Nach unten"
+
+#: src/essoradesktop.c
+msgid "Could not open the X display"
+msgstr "Die X-Anzeige konnte nicht geöffnet werden"
+
+#: src/essoradesktop.c
+msgid "EssoraWM Desktop Applications"
+msgstr "EssoraWM-Desktop-Anwendungen"
+
+#: src/essoradesktop.c
+msgid "No application launchers were found"
+msgstr "Keine Anwendungsstarter gefunden"
+
+#: src/essoradesktop.c
+msgid "Select an application to add it to the desktop"
+msgstr "Wählen Sie eine Anwendung aus, die zum Desktop hinzugefügt werden soll"
+
+#: src/essoradesktop.c
+msgid "No applications match the search"
+msgstr "Keine Anwendung entspricht der Suche"
+
+#: src/essoradesktop.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "Das PuppyPin-Konfigurationsverzeichnis konnte nicht erstellt werden"
+
+#: src/essoradesktop.c
+msgid "Could not create PuppyPin"
+msgstr "PuppyPin konnte nicht erstellt werden"
+
+#: src/essoradesktop.c
+msgid "This application is already on the desktop"
+msgstr "Diese Anwendung befindet sich bereits auf dem Desktop"
+
+#: src/essoradesktop.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin ist ungültig: </pinboard> wurde nicht gefunden"
+
+#: src/essoradesktop.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "Nicht genügend Speicher zum Aktualisieren von PuppyPin"
+
+#: src/essoradesktop.c
+msgid "Could not write PuppyPin"
+msgstr "PuppyPin konnte nicht geschrieben werden"
+
+#: src/essoradesktop.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Zum Desktop hinzugefügt. EssoraWM speichert die neue Position beim Verschieben"
+
+#: src/essoradesktop.c
+msgid "This application is not on the desktop"
+msgstr "Diese Anwendung befindet sich nicht auf dem Desktop"
+
+#: src/essoradesktop.c
+msgid "Removed from the desktop"
+msgstr "Vom Desktop entfernt"
+
+#: src/essoradesktop.c
+msgid "Add or remove desktop launchers"
+msgstr "ROX-Filer-Desktopstarter hinzufügen oder entfernen"
+
+#: src/essoradesktop.c
+msgid "Search"
+msgstr "Suchen"
+
+#: src/essoradesktop.c
+msgid "Type to filter applications"
+msgstr "Tippen, um Anwendungen zu filtern"
+
+#: src/essoradesktop.c
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: src/essoradesktop.c
+msgid "Remove"
+msgstr "Entfernen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "EssoraWM-Desktopverwaltung"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "Laufwerkssymbole frei auf dem Desktop verschieben oder hier anordnen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "Standardeinstellungen der Laufwerkssymbole wiederhergestellt; auf Anwenden klicken"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "Die Einstellungen der Laufwerkssymbole konnten nicht gespeichert werden"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "Einstellungen der Laufwerkssymbole angewendet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "Ausgeblendete Laufwerke sind wieder sichtbar"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "Einstellungen der Laufwerkssymbole geändert; auf Anwenden klicken"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Anwendungen und native Laufwerkssymbole"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Anwendungen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Laufwerkssymbole"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Sichtbarkeit"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Laufwerkssymbole anzeigen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Interne Laufwerke"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Wechseldatenträger"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Netzlaufwerke"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Beschriftungen anzeigen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Beschriftungsrahmen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Reihenfolge umkehren"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "Jedes Laufwerkssymbol kann auch frei auf dem Desktop verschoben werden."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "Anwenden ordnet alle Laufwerke nach dem ausgewählten Layout an."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Layout"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Horizontal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Vertikal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Horizontale Position"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Links"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "Mitte"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Rechts"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Vertikale Position"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Oben"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Unten"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Symbolgröße"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Horizontaler Abstand"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Vertikaler Abstand"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Horizontaler Versatz"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Vertikaler Versatz"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Ausgeblendete Laufwerke anzeigen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Angewendet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "Standardwerte"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Öffnen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Aushängen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Einhängen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Vom Desktop entfernen"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "Datenträger %s"

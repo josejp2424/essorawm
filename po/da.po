@@ -537,7 +537,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "Anvend"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -546,3 +546,244 @@ msgstr "Up"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Down"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "Kunne ikke åbne X-skærmen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "EssoraWM-skrivebordsstyring"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "Ingen programstartere blev fundet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "Vælg et program, der skal føjes til skrivebordet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "Flyt drevikoner frit på skrivebordet, eller arranger dem her"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "Standardindstillingerne for drevikoner er gendannet; tryk på Anvend"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "Ingen programmer matcher søgningen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "Kunne ikke oprette PuppyPin-konfigurationsmappen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "Kunne ikke oprette PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "Dette program findes allerede på skrivebordet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin er ugyldig: </pinboard> blev ikke fundet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "Der er ikke nok hukommelse til at opdatere PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "Kunne ikke skrive PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Føjet til skrivebordet. EssoraWM gemmer den nye placering, når du flytter den"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "Dette program findes ikke på skrivebordet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "Fjernet fra skrivebordet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "Kunne ikke gemme indstillingerne for drevikoner"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "Indstillingerne for drevikoner er anvendt"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "Skjulte drev er synlige igen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "Indstillingerne for drevikoner er ændret; tryk på Anvend"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Programmer og indbyggede drevikoner"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Programmer"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Drevikoner"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "Søg"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "Skriv for at filtrere programmer"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "Tilføj"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "Fjern"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Synlighed"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Vis drevikoner"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Interne drev"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Flytbare drev"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Netværksdrev"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Vis etiketter"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Etiketramme"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Omvendt rækkefølge"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "Du kan også trække hvert drevikon frit på skrivebordet."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "Anvend arrangerer alle drev efter det valgte layout."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Layout"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Vandret"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Lodret"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Vandret placering"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Venstre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "Centreret"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Højre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Lodret placering"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Øverst"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Nederst"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Ikonstørrelse"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Vandret afstand"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Lodret afstand"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Vandret forskydning"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Lodret forskydning"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Vis skjulte drev"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Anvendt"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "Standarder"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Åbn"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Afmontér"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Montér"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Fjern fra skrivebordet"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "Drev %s"

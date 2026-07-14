@@ -8,6 +8,7 @@
  */
 
 #include "jwm.h"
+#include "desktopicons.h" /* agregado por josejp2424 */
 #include "event.h"
 
 #include "client.h"
@@ -134,7 +135,8 @@ char WaitForEvent(XEvent *event)
       JXNextEvent(display, event);
       UpdateTime(event);
 
-      switch(event->type) {
+      handled = ProcessDesktopIconsEvent(event);
+      if(!handled) switch(event->type) {
       case ConfigureRequest:
          HandleConfigureRequest(&event->xconfigurerequest);
          handled = 1;

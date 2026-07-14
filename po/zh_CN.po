@@ -536,7 +536,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "应用"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -545,3 +545,244 @@ msgstr "向上"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "向下"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "无法打开 X 显示器"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "EssoraWM 桌面管理器"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "未找到应用程序启动器"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "选择要添加到桌面的应用程序"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "可在桌面上自由移动驱动器图标，或在此排列"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "已恢复驱动器图标默认设置；请点击“应用”"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "没有与搜索匹配的应用程序"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "无法创建 PuppyPin 配置目录"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "无法创建 PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "此应用程序已在桌面上"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin 无效：未找到 </pinboard>"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "没有足够的内存更新 PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "无法写入 PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "已添加到桌面。移动时 EssoraWM 将保存新位置"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "此应用程序不在桌面上"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "已从桌面移除"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "无法保存驱动器图标设置"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "已应用驱动器图标设置"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "隐藏的驱动器已重新显示"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "驱动器图标设置已更改；请点击“应用”"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "应用程序和原生驱动器图标"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "应用程序"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "驱动器图标"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "搜索"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "输入内容以筛选应用程序"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "添加"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "移除"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "可见性"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "显示驱动器图标"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "内部驱动器"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "可移动驱动器"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "网络驱动器"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "显示标签"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "标签边框"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "反向排列"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "也可以在桌面上自由拖动每个驱动器图标。"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "“应用”会按所选布局排列所有驱动器。"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "布局"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "水平"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "垂直"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "水平位置"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "左侧"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "居中"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "右侧"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "垂直位置"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "顶部"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "底部"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "图标大小"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "水平间距"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "垂直间距"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "水平偏移"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "垂直偏移"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "显示隐藏驱动器"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "已应用"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "默认值"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "打开"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "卸载"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "挂载"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "从桌面移除"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "卷 %s"

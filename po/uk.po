@@ -527,7 +527,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "Застосувати"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -536,3 +536,244 @@ msgstr "Up"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Down"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "Не вдалося відкрити екран X"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "Менеджер стільниці EssoraWM"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "Не знайдено засобів запуску програм"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "Виберіть програму для додавання на стільницю"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "Вільно переміщуйте піктограми дисків стільницею або впорядкуйте їх тут"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "Типові налаштування піктограм дисків відновлено; натисніть «Застосувати»"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "Немає програм, що відповідають пошуку"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "Не вдалося створити каталог налаштувань PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "Не вдалося створити PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "Ця програма вже є на стільниці"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin некоректний: </pinboard> не знайдено"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "Недостатньо пам’яті для оновлення PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "Не вдалося записати PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Додано на стільницю. EssoraWM збереже нове положення після переміщення"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "Цієї програми немає на стільниці"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "Видалено зі стільниці"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "Не вдалося зберегти налаштування піктограм дисків"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "Налаштування піктограм дисків застосовано"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "Приховані диски знову видимі"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "Налаштування піктограм дисків змінено; натисніть «Застосувати»"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Програми та вбудовані піктограми дисків"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Програми"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Піктограми дисків"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "Пошук"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "Введіть текст для фільтрування програм"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "Додати"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "Видалити"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Видимість"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Показувати піктограми дисків"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Внутрішні диски"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Знімні диски"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Мережеві диски"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Показувати підписи"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Рамка підпису"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Зворотний порядок"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "Кожну піктограму диска також можна вільно перетягувати стільницею."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "«Застосувати» впорядкує всі диски за вибраною схемою."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Розташування"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Горизонтально"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Вертикально"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Горизонтальне положення"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Ліворуч"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "По центру"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Праворуч"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Вертикальне положення"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Вгорі"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Внизу"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Розмір піктограми"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Горизонтальний інтервал"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Вертикальний інтервал"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Горизонтальний зсув"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Вертикальний зсув"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Показати приховані диски"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Застосовано"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "Типові значення"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Відкрити"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Відмонтувати"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Змонтувати"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Видалити зі стільниці"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "Том %s"

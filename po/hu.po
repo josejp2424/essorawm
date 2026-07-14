@@ -540,7 +540,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "Alkalmaz"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -549,3 +549,244 @@ msgstr "Fel"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Le"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "Az X kijelző nem nyitható meg"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "EssoraWM asztalkezelő"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "Nem találhatók alkalmazásindítók"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "Válasszon egy alkalmazást az asztalhoz adáshoz"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "A meghajtóikonok szabadon mozgathatók az asztalon, vagy itt rendezhetők"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "Az alapértelmezett meghajtóikon-beállítások visszaállítva; nyomja meg az Alkalmaz gombot"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "Nincs a keresésnek megfelelő alkalmazás"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "A PuppyPin beállítási könyvtára nem hozható létre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "A PuppyPin nem hozható létre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "Ez az alkalmazás már az asztalon van"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "A PuppyPin érvénytelen: a </pinboard> nem található"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "Nincs elég memória a PuppyPin frissítéséhez"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "A PuppyPin nem írható"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Hozzáadva az asztalhoz. Az EssoraWM elmenti az új helyet az ikon mozgatásakor"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "Ez az alkalmazás nincs az asztalon"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "Eltávolítva az asztalról"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "A meghajtóikonok beállításai nem menthetők"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "A meghajtóikonok beállításai alkalmazva"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "A rejtett meghajtók ismét láthatók"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "A meghajtóikonok beállításai megváltoztak; nyomja meg az Alkalmaz gombot"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Alkalmazások és natív meghajtóikonok"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Alkalmazások"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Meghajtóikonok"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "Keresés"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "Gépeljen az alkalmazások szűréséhez"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Láthatóság"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Meghajtóikonok megjelenítése"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Belső meghajtók"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Cserélhető meghajtók"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Hálózati meghajtók"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Címkék megjelenítése"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Címkekeret"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Fordított sorrend"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "Az egyes meghajtóikonok szabadon is húzhatók az asztalon."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "Az Alkalmaz a kiválasztott elrendezés szerint rendezi az összes meghajtót."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Elrendezés"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Vízszintes"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Függőleges"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Vízszintes helyzet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Balra"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "Középre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Jobbra"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Függőleges helyzet"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Felül"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Alul"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Ikonméret"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Vízszintes térköz"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Függőleges térköz"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Vízszintes eltolás"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Függőleges eltolás"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Rejtett meghajtók megjelenítése"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Alkalmazva"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "Alapértékek"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Megnyitás"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Leválasztás"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Csatolás"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Eltávolítás az asztalról"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "%s kötet"

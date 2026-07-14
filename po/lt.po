@@ -538,7 +538,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "Taikyti"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -547,3 +547,244 @@ msgstr "Up"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Down"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "Nepavyko atverti X ekrano"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "EssoraWM darbalaukio tvarkytuvė"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "Programų paleidiklių nerasta"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "Pasirinkite programą, kurią norite pridėti prie darbalaukio"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "Laisvai perkelkite diskų piktogramas darbalaukyje arba išdėstykite jas čia"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "Atkurti numatytieji diskų piktogramų nustatymai; spustelėkite Taikyti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "Paiešką atitinkančių programų nėra"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "Nepavyko sukurti PuppyPin konfigūracijos aplanko"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "Nepavyko sukurti PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "Ši programa jau yra darbalaukyje"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin netinkamas: </pinboard> nerastas"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "Nepakanka atminties PuppyPin atnaujinti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "Nepavyko įrašyti PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Pridėta prie darbalaukio. Perkėlus EssoraWM išsaugos naują vietą"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "Šios programos darbalaukyje nėra"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "Pašalinta iš darbalaukio"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "Nepavyko išsaugoti diskų piktogramų nustatymų"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "Diskų piktogramų nustatymai pritaikyti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "Paslėpti diskai vėl matomi"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "Diskų piktogramų nustatymai pakeisti; spustelėkite Taikyti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Programos ir savosios diskų piktogramos"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Programos"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Diskų piktogramos"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "Ieškoti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "Rašykite programoms filtruoti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "Pridėti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "Pašalinti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Matomumas"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Rodyti diskų piktogramas"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Vidiniai diskai"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Keičiamieji diskai"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Tinklo diskai"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Rodyti etiketes"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Etiketės rėmelis"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Atvirkštinė tvarka"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "Kiekvieną disko piktogramą taip pat galite laisvai vilkti darbalaukyje."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "Taikyti išdėsto visus diskus pagal pasirinktą maketą."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Išdėstymas"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Horizontaliai"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Vertikaliai"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Horizontali padėtis"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Kairėje"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "Centre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Dešinėje"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Vertikali padėtis"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Viršuje"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Apačioje"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Piktogramos dydis"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Horizontalus tarpas"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Vertikalus tarpas"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Horizontalus poslinkis"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Vertikalus poslinkis"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Rodyti paslėptus diskus"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Pritaikyta"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "Numatytieji"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Atverti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Atjungti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Prijungti"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Pašalinti iš darbalaukio"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "Tomas %s"

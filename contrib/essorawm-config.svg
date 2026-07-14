@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 128 128"
+   version="1.1"
+   id="svg17"
+   sodipodi:docname="essorawm-config.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title17">essorawm-config</title>
+  <sodipodi:namedview
+     id="namedview17"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.4492188"
+     inkscape:cx="128"
+     inkscape:cy="128"
+     inkscape:window-width="1598"
+     inkscape:window-height="832"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg17" />
+  <defs
+     id="defs8">
+    <linearGradient
+       id="winBack"
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#4a4f47"
+         id="stop1" />
+      <stop
+         offset="100%"
+         stop-color="#33372f"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       id="winFront"
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#f4f6f1"
+         id="stop3" />
+      <stop
+         offset="100%"
+         stop-color="#e3e7dc"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
+       id="titleBar"
+       x1="0%"
+       y1="0%"
+       x2="100%"
+       y2="0%">
+      <stop
+         offset="0%"
+         stop-color="#8ec93f"
+         id="stop5" />
+      <stop
+         offset="100%"
+         stop-color="#6fa02c"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="gearGrad"
+       x1="0%"
+       y1="0%"
+       x2="100%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#92c23f"
+         id="stop7" />
+      <stop
+         offset="100%"
+         stop-color="#4b7a1f"
+         id="stop8" />
+    </linearGradient>
+    <filter
+       id="dropShadow"
+       x="-0.017848418"
+       y="-0.013661202"
+       width="1.0356968"
+       height="1.0273224">
+      <feDropShadow
+         dx="0"
+         dy="3"
+         stdDeviation="3"
+         flood-color="#000000"
+         flood-opacity="0.28" />
+    </filter>
+  </defs>
+  <!-- Ventana trasera (fuera de foco, representa otra app abierta por el WM) -->
+  <rect
+     x="26"
+     y="14"
+     width="70"
+     height="52"
+     rx="6"
+     fill="url(#winBack)"
+     filter="url(#dropShadow)"
+     id="rect8" />
+  <rect
+     x="26"
+     y="14"
+     width="70"
+     height="12"
+     rx="6"
+     fill="#2a2e26"
+     id="rect9" />
+  <circle
+     cx="34"
+     cy="20"
+     r="2.4"
+     fill="#8ec93f"
+     id="circle9" />
+  <circle
+     cx="42"
+     cy="20"
+     r="2.4"
+     fill="#5c6155"
+     id="circle10" />
+  <circle
+     cx="50"
+     cy="20"
+     r="2.4"
+     fill="#5c6155"
+     id="circle11" />
+  <!-- Ventana frontal (la activa, con su barra verde Essora) -->
+  <rect
+     x="14"
+     y="40"
+     width="76"
+     height="56"
+     rx="6"
+     fill="url(#winFront)"
+     filter="url(#dropShadow)"
+     id="rect11" />
+  <rect
+     x="14"
+     y="40"
+     width="76"
+     height="13"
+     rx="6"
+     fill="url(#titleBar)"
+     id="rect12" />
+  <rect
+     x="14"
+     y="47"
+     width="76"
+     height="6"
+     fill="url(#titleBar)"
+     id="rect13" />
+  <circle
+     cx="22.5"
+     cy="46.5"
+     r="2.6"
+     fill="#2a2e26"
+     id="circle13" />
+  <circle
+     cx="31"
+     cy="46.5"
+     r="2.6"
+     fill="#ffffff"
+     opacity="0.6"
+     id="circle14" />
+  <circle
+     cx="39.5"
+     cy="46.5"
+     r="2.6"
+     fill="#ffffff"
+     opacity="0.6"
+     id="circle15" />
+  <!-- Lineas de "contenido" dentro de la ventana frontal -->
+  <rect
+     x="22"
+     y="62"
+     width="46"
+     height="5"
+     rx="2.5"
+     fill="#c7cdbd"
+     id="rect15" />
+  <rect
+     x="22"
+     y="72"
+     width="34"
+     height="5"
+     rx="2.5"
+     fill="#c7cdbd"
+     id="rect16" />
+  <rect
+     x="22"
+     y="82"
+     width="40"
+     height="5"
+     rx="2.5"
+     fill="#c7cdbd"
+     id="rect17" />
+  <!-- Engranaje de configuracion, superpuesto abajo a la derecha -->
+  <g
+     transform="translate(96,92)"
+     filter="url(#dropShadow)"
+     id="g17">
+    <path
+       d="M0,-19 l4,0 l1.6,7 a15,15 0 0 1 5.6,3.2 l6.6,-3.4 l2,3.5 l-5.4,4.8              a15,15 0 0 1 0,6.4 l5.4,4.8 l-2,3.5 l-6.6,-3.4              a15,15 0 0 1 -5.6,3.2 l-1.6,7 l-4,0 l-1.6,-7              a15,15 0 0 1 -5.6,-3.2 l-6.6,3.4 l-2,-3.5 l5.4,-4.8              a15,15 0 0 1 0,-6.4 l-5.4,-4.8 l2,-3.5 l6.6,3.4              a15,15 0 0 1 5.6,-3.2 z"
+       fill="url(#gearGrad)"
+       stroke="#3a5c17"
+       stroke-width="1"
+       id="path17" />
+    <circle
+       cx="2"
+       cy="0"
+       r="7.5"
+       fill="#f4f6f1"
+       id="circle17" />
+  </g>
+  <metadata
+     id="metadata17">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>essorawm-config</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>josejp2424</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>josejp2424</dc:title>
+          </cc:Agent>
+        </dc:rights>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

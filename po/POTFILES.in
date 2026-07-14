@@ -13,8 +13,11 @@ src/cursor.c
 src/debug.c
 src/default.c
 src/desktop.c
+src/desktopicons.c
 src/dock.c
 src/error.c
+src/essoradesktop.c
+src/essorawallpaper.c
 src/event.c
 src/font.c
 src/grab.c
@@ -48,4 +51,3 @@ src/timing.c
 src/tray.c
 src/traybutton.c
 src/winmenu.c
-src/essorawallpaper.c

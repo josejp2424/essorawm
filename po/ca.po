@@ -1,0 +1,258 @@
+# EssoraWM desktop translations.
+msgid ""
+msgstr ""
+"Project-Id-Version: EssoraWM 0.1.6\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "No s’ha pogut obrir la pantalla X"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "Gestor de l’escriptori EssoraWM"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "No s’han trobat llançadors d’aplicacions"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "Seleccioneu una aplicació per afegir-la a l’escriptori"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "Moveu lliurement les icones de les unitats per l’escriptori o ordeneu-les aquí"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "S’han restaurat els valors predeterminats de les icones d’unitats; premeu Aplica"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "Cap aplicació coincideix amb la cerca"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "No s’ha pogut crear la carpeta de configuració de PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "No s’ha pogut crear PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "Aquesta aplicació ja és a l’escriptori"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin no és vàlid: no s’ha trobat </pinboard>"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "No hi ha prou memòria per actualitzar PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "No s’ha pogut escriure PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Afegida a l’escriptori. EssoraWM desarà la nova posició quan la moveu"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "Aquesta aplicació no és a l’escriptori"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "Eliminada de l’escriptori"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "No s’han pogut desar els paràmetres de les icones d’unitats"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "S’han aplicat els paràmetres de les icones d’unitats"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "Les unitats amagades tornen a ser visibles"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "Els paràmetres de les icones d’unitats han canviat; premeu Aplica"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Aplicacions i icones d’unitats natives"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Aplicacions"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Icones d’unitats"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "Cerca"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "Escriviu per filtrar aplicacions"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "Afegeix"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "Elimina"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Close"
+msgstr "Tanca"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Visibilitat"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Mostra les icones d’unitats"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Unitats internes"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Unitats extraïbles"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Unitats de xarxa"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Mostra les etiquetes"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Marc de les etiquetes"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Inverteix l’ordre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "També podeu arrossegar lliurement cada icona d’unitat per l’escriptori."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "Aplica ordena totes les unitats amb la disposició seleccionada."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Disposició"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Horitzontal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Vertical"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Posició horitzontal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Esquerra"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "Centre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Dreta"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Posició vertical"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Dalt"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Baix"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Mida de la icona"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Espaiat horitzontal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Espaiat vertical"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Desplaçament horitzontal"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Desplaçament vertical"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Mostra les unitats amagades"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply"
+msgstr "Aplica"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Aplicat"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "Valors predeterminats"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Obre"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Desmunta"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Munta"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Elimina de l’escriptori"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "Volum %s"

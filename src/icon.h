@@ -96,6 +96,20 @@ void LoadIcon(struct ClientNode *np);
  */
 IconNode *LoadNamedIcon(const char *name, char save, char preserveAspect);
 
+/** Load an image from an exact path, converting SVG/SVGZ to a private PNG
+ * cache when native librsvg support is unavailable.
+ * @param path Image path.
+ * @param rwidth Preferred width (0 keeps the natural width).
+ * @param rheight Preferred height (0 keeps the natural height).
+ * @param preserveAspect Preserve the aspect ratio while scaling.
+ * @param effectivePath Optional returned path actually loaded. The caller must
+ * release it with Release().
+ * @return A newly allocated image node, or NULL on failure.
+ */
+struct ImageNode *LoadImageWithFallback(const char *path, int rwidth,
+                                        int rheight, char preserveAspect,
+                                        char **effectivePath);
+
 /** Load the default icon.
  * @return The default icon.
  */
@@ -122,6 +136,7 @@ void SetDefaultIcon(const char *name);
 #define LoadIcon( a )                      ICON_DUMMY_FUNCTION
 #define GetDefaultIcon()                   NULL
 #define LoadNamedIcon( a, b, c )           NULL
+#define LoadImageWithFallback(a,b,c,d,e)    LoadImage((a),(b),(c),(d))
 #define DestroyIcon( a )                   ICON_DUMMY_FUNCTION
 #define SetDefaultIcon( a )                ICON_DUMMY_FUNCTION
 

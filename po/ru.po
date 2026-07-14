@@ -546,7 +546,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "Применить"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -555,3 +555,244 @@ msgstr "Вверх"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Вниз"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "Не удалось открыть экран X"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "Менеджер рабочего стола EssoraWM"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "Панели запуска приложений не найдены"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "Выберите приложение для добавления на рабочий стол"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "Свободно перемещайте значки дисков по рабочему столу или упорядочьте их здесь"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "Настройки значков дисков по умолчанию восстановлены; нажмите «Применить»"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "Нет приложений, соответствующих поиску"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "Не удалось создать каталог настроек PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "Не удалось создать PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "Это приложение уже находится на рабочем столе"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin недействителен: </pinboard> не найден"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "Недостаточно памяти для обновления PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "Не удалось записать PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Добавлено на рабочий стол. EssoraWM сохранит новое положение при перемещении"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "Этого приложения нет на рабочем столе"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "Удалено с рабочего стола"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "Не удалось сохранить настройки значков дисков"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "Настройки значков дисков применены"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "Скрытые диски снова видимы"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "Настройки значков дисков изменены; нажмите «Применить»"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Приложения и встроенные значки дисков"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Приложения"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Значки дисков"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "Поиск"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "Введите текст для фильтрации приложений"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "Добавить"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "Удалить"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Видимость"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Показывать значки дисков"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Внутренние диски"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Съёмные диски"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Сетевые диски"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Показывать подписи"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Рамка подписи"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Обратный порядок"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "Каждый значок диска также можно свободно перетаскивать по рабочему столу."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "Кнопка «Применить» упорядочит все диски согласно выбранной схеме."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Расположение"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Горизонтально"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Вертикально"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Положение по горизонтали"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Слева"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "По центру"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Справа"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Положение по вертикали"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Сверху"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Снизу"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Размер значка"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Интервал по горизонтали"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Интервал по вертикали"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Смещение по горизонтали"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Смещение по вертикали"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Показать скрытые диски"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Применено"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "По умолчанию"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Открыть"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Размонтировать"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Смонтировать"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Удалить с рабочего стола"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "Том %s"

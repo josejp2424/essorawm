@@ -12,16 +12,17 @@
  * - Aplica solo al presionar Apply o Enter.
  * - Guarda en ~/.config/essorawm/wallpaper.
  * - Si existe wbar en ejecución, se reinicia al aplicar para limpiar el marco negro.
- * - Si existe $HOME/Choices/ROX-Filer/PuppyPin, reemplaza solo la ruta del
- *   <backdrop ...> manteniendo el style, por ejemplo Stretched.
+ * - Actualiza el backdrop de PuppyPin y recarga el escritorio nativo.
  */
 
 #include "jwm.h"
 #include "essorawallpaper.h"
 #include "image.h"
+#include "icon.h"
 #include "main.h"
 #include "misc.h"
 #include "error.h"
+#include "desktopicons.h"
 
 #ifndef MAKE_DEPEND
 #  include <dirent.h>
@@ -101,6 +102,7 @@ static char *QuoteShell(const char *path);
 static char HasCommand(const char *cmd);
 static void ApplyWallpaper(const char *path, char save);
 static void UpdatePuppyPin(const char *path);
+static char *EscapeXmlText(const char *text);
 static void RestartWbar(void);
 
 /* agregado por josejp2424 */
@@ -273,7 +275,7 @@ static void CloseWallpaperDisplay(void)
 static void SetWallpaperWindowIcon(void)
 {
    /* agregado por josejp2424: usar /usr/share/jwm/essorawm.svg como icono del panel/marco. */
-   ImageNode *icon = LoadImage(ESSORAWM_ICON, 64, 64, 1);
+   ImageNode *icon = LoadImageWithFallback(ESSORAWM_ICON, 64, 64, 1, NULL);
    Atom netWmIcon;
    unsigned long *data;
    int i;
@@ -321,7 +323,7 @@ static void DrawWallpaperWindow(void)
    XSetForeground(wpDisplay, wpGC, panel);
    XFillRectangle(wpDisplay, wpWindow, wpGC, 0, 0, WINDOW_W, HEADER_H);
 
-   img = LoadImage(ESSORAWM_ICON, 42, 42, 1);
+   img = LoadImageWithFallback(ESSORAWM_ICON, 42, 42, 1, NULL);
    if(img) {
       DrawImageNodeFit(wpWindow, img, MARGIN, 10, 42, 42, 0x2b2b2b);
       DestroyImage(img);
@@ -341,8 +343,8 @@ static void DrawWallpaperWindow(void)
    if(wpList.count > 1) {
       int prev = (wpSelected - 1 + wpList.count) % wpList.count;
       int next = (wpSelected + 1) % wpList.count;
-      ImageNode *left = LoadImage(wpList.items[prev].path, SIDE_W, SIDE_H, 1);
-      ImageNode *right = LoadImage(wpList.items[next].path, SIDE_W, SIDE_H, 1);
+      ImageNode *left = LoadImageWithFallback(wpList.items[prev].path, SIDE_W, SIDE_H, 1, NULL);
+      ImageNode *right = LoadImageWithFallback(wpList.items[next].path, SIDE_W, SIDE_H, 1, NULL);
       if(left) {
          XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
          XFillRectangle(wpDisplay, wpWindow, wpGC, MARGIN, previewY + 90, SIDE_W, SIDE_H);
@@ -362,7 +364,7 @@ static void DrawWallpaperWindow(void)
    XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
    XFillRectangle(wpDisplay, wpWindow, wpGC, centerX, previewY, PREVIEW_W, PREVIEW_H);
 
-   img = LoadImage(wpList.items[wpSelected].path, PREVIEW_W, PREVIEW_H, 1);
+   img = LoadImageWithFallback(wpList.items[wpSelected].path, PREVIEW_W, PREVIEW_H, 1, NULL);
    if(img) {
       DrawImageNodeFit(wpWindow, img, centerX, previewY, PREVIEW_W, PREVIEW_H, 0x101010);
       DestroyImage(img);
@@ -738,6 +740,7 @@ static void UpdatePuppyPin(const char *path)
    const char *home = getenv("HOME");
    char pin[PATH_MAX];
    char tmp[PATH_MAX];
+   char *escaped;
    FILE *in, *out;
    int changed = 0;
 
@@ -749,13 +752,21 @@ static void UpdatePuppyPin(const char *path)
    if(access(pin, R_OK | W_OK) != 0) {
       return;
    }
+   if(strlen(pin) + 4 >= sizeof(tmp)) {
+      return;
+   }
    snprintf(tmp, sizeof(tmp), "%s.tmp", pin);
+   escaped = EscapeXmlText(path);
+   if(!escaped) {
+      return;
+   }
 
    in = fopen(pin, "r");
    out = fopen(tmp, "w");
    if(!in || !out) {
       if(in) fclose(in);
       if(out) fclose(out);
+      Release(escaped);
       return;
    }
 
@@ -771,26 +782,65 @@ static void UpdatePuppyPin(const char *path)
          char *gt = strchr(start, '>');
          if(gt && gt < end) {
             *++gt = 0;
-            fprintf(out, "%s%s%s", line, path, end);
+            fprintf(out, "%s%s%s", line, escaped, end);
             changed = 1;
             continue;
          }
       }
+      if(!changed && strstr(line, "</pinboard>")) {
+         fprintf(out, "  <backdrop style=\"Stretched\">%s</backdrop>\n", escaped);
+         changed = 1;
+      }
       fputs(line, out);
    }
    fclose(in);
-   fclose(out);
+   if(fclose(out) != 0) {
+      changed = 0;
+   }
+   Release(escaped);
 
-   if(changed) {
-      char *quoted = QuoteShell(pin);
-      char command[PATH_MAX * 2];
-      rename(tmp, pin);
-      if(HasCommand("rox")) {
-         snprintf(command, sizeof(command), "rox -p %s >/dev/null 2>&1 &", quoted);
-         system(command);
+   if(changed && rename(tmp, pin) == 0) {
+      if(wpDisplay) {
+         SendDesktopIconsReload(wpDisplay, RootWindow(wpDisplay, wpScreen));
       }
-      Release(quoted);
    } else {
       unlink(tmp);
    }
+}
+
+static char *EscapeXmlText(const char *text)
+{
+   const char *p;
+   size_t length = 1;
+   char *result;
+   char *out;
+
+   if(!text) {
+      return NULL;
+   }
+   for(p = text; *p; p++) {
+      switch(*p) {
+      case '&': length += 5; break;
+      case '<': case '>': length += 4; break;
+      default: length++; break;
+      }
+   }
+   result = Allocate(length);
+   out = result;
+   for(p = text; *p; p++) {
+      const char *replacement = NULL;
+      switch(*p) {
+      case '&': replacement = "&amp;"; break;
+      case '<': replacement = "&lt;"; break;
+      case '>': replacement = "&gt;"; break;
+      default: *out++ = *p; break;
+      }
+      if(replacement) {
+         size_t n = strlen(replacement);
+         memcpy(out, replacement, n);
+         out += n;
+      }
+   }
+   *out = 0;
+   return result;
 }

@@ -541,7 +541,7 @@ msgstr ""
 
 #: src/essorawallpaper.c
 msgid "Apply"
-msgstr ""
+msgstr "Uygula"
 
 #: src/essorawallpaper.c
 msgid "Up"
@@ -550,3 +550,244 @@ msgstr "Up"
 #: src/essorawallpaper.c
 msgid "Down"
 msgstr "Down"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "X ekranı açılamadı"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "EssoraWM Masaüstü Yöneticisi"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "Uygulama başlatıcısı bulunamadı"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "Masaüstüne eklenecek bir uygulama seçin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "Sürücü simgelerini masaüstünde serbestçe taşıyın veya burada düzenleyin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "Varsayılan sürücü simgesi ayarları geri yüklendi; Uygula düğmesine basın"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "Aramayla eşleşen uygulama yok"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "PuppyPin yapılandırma dizini oluşturulamadı"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "PuppyPin oluşturulamadı"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "Bu uygulama zaten masaüstünde"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "PuppyPin geçersiz: </pinboard> bulunamadı"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "PuppyPin’i güncellemek için yeterli bellek yok"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "PuppyPin yazılamadı"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "Masaüstüne eklendi. Taşıdığınızda EssoraWM yeni konumu kaydedecek"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "Bu uygulama masaüstünde değil"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "Masaüstünden kaldırıldı"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "Sürücü simgesi ayarları kaydedilemedi"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "Sürücü simgesi ayarları uygulandı"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "Gizli sürücüler yeniden görünür"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "Sürücü simgesi ayarları değişti; Uygula düğmesine basın"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "Uygulamalar ve yerel sürücü simgeleri"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "Uygulamalar"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "Sürücü simgeleri"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "Ara"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "Uygulamaları süzmek için yazın"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "Ekle"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "Kaldır"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "Görünürlük"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "Sürücü simgelerini göster"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "Dahili sürücüler"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "Çıkarılabilir sürücüler"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "Ağ sürücüleri"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "Etiketleri göster"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "Etiket çerçevesi"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "Sıralamayı ters çevir"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "Her sürücü simgesini masaüstünde serbestçe sürükleyebilirsiniz."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "Uygula, tüm sürücüleri seçilen düzene göre yerleştirir."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "Düzen"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "Yatay"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "Dikey"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "Yatay konum"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "Sol"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "Orta"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "Sağ"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "Dikey konum"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "Üst"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "Alt"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "Simge boyutu"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "Yatay aralık"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "Dikey aralık"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "Yatay kaydırma"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "Dikey kaydırma"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "Gizli sürücüleri göster"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "Uygulandı"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "Varsayılanlar"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "Aç"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "Ayır"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "Bağla"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "Masaüstünden kaldır"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "Birim %s"

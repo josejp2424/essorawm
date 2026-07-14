@@ -19,6 +19,21 @@
 #include "settings.h"
 #include "border.h"
 
+#ifndef MAKE_DEPEND
+#  include <dirent.h>
+#  include <errno.h>
+#  include <fcntl.h>
+#  include <limits.h>
+#  include <stdint.h>
+#  include <signal.h>
+#  include <time.h>
+#  include <strings.h>
+#  include <sys/stat.h>
+#  include <sys/types.h>
+#  include <sys/wait.h>
+#  include <unistd.h>
+#endif
+
 IconNode emptyIcon;
 
 #ifdef USE_ICONS
@@ -39,10 +54,12 @@ const char *ICON_EXTENSIONS[] = {
    ".png",
    ".PNG",
 #endif
-#if defined(USE_CAIRO) && defined(USE_RSVG)
+   /* Native librsvg is optional; LoadImageWithFallback converts SVG files
+    * to a private PNG cache when it is unavailable. */
    ".svg",
    ".SVG",
-#endif
+   ".svgz",
+   ".SVGZ",
 #ifdef USE_XPM
    ".xpm",
    ".XPM",
@@ -85,6 +102,16 @@ static ScaledIconNode *GetScaledIcon(IconNode *icon, long fg,
 static void InsertIcon(IconNode *icon);
 static IconNode *FindIcon(const char *name);
 static unsigned int GetHash(const char *str);
+static void AddFallbackIconPaths(void);
+static void AddThemeIconPaths(const char *root);
+ImageNode *LoadImageWithFallback(const char *path, int rwidth, int rheight,
+                                  char preserveAspect, char **effectivePath);
+static char IsSvgName(const char *path);
+static char *ConvertSvgToPng(const char *path);
+static char CommandAvailable(const char *name);
+static char RunSvgConverter(const char *program, const char *source,
+                            const char *target);
+static uint64_t HashFileIdentity(const char *path, const struct stat *st);
 
 /** Initialize icon data.
  * This must be initialized before parsing the configuration.
@@ -120,6 +147,11 @@ void StartupIcons(void)
    iconSize.width_inc = 1;
    iconSize.height_inc = 1;
    JXSetIconSizes(display, rootWindow, &iconSize, 1);
+
+   /* agregado por josejp2424: los IconPath del usuario siguen teniendo
+    * prioridad; estas rutas son solamente un respaldo para submenús,
+    * dispositivos y temas que guardan iconos fuera de apps/. */
+   AddFallbackIconPaths();
 }
 
 /** Shutdown icon support. */
@@ -309,17 +341,21 @@ IconNode *LoadNamedIcon(const char *name, char save, char preserveAspect)
 
    /* Check for an absolute file name. */
    if(name[0] == '/') {
-      ImageNode *image = LoadImage(name, 0, 0, 1);
+      char *effectivePath = NULL;
+      ImageNode *image = LoadImageWithFallback(name, 0, 0, 1, &effectivePath);
       if(image) {
          icon = CreateIcon(image);
          icon->preserveAspect = preserveAspect;
-         icon->name = CopyString(name);
+         icon->name = effectivePath ? effectivePath : CopyString(name);
          if(save) {
             InsertIcon(icon);
          }
          DestroyImage(image);
          return icon;
       } else {
+         if(effectivePath) {
+            Release(effectivePath);
+         }
          return &emptyIcon;
       }
    }
@@ -341,6 +377,7 @@ IconNode *LoadNamedIconHelper(const char *name, const char *path,
                               char save, char preserveAspect)
 {
    ImageNode *image;
+   char *effectivePath = NULL;
    char *temp;
    const unsigned nameLength = strlen(name);
    const unsigned pathLength = strlen(path);
@@ -355,13 +392,13 @@ IconNode *LoadNamedIconHelper(const char *name, const char *path,
    /* Attempt to load the image. */
    image = NULL;
    if(hasExtension) {
-      image = LoadImage(temp, 0, 0, 1);
+      image = LoadImageWithFallback(temp, 0, 0, 1, &effectivePath);
    }
    if(!image) {
       for(i = 0; i < EXTENSION_COUNT; i++) {
          const unsigned len = strlen(ICON_EXTENSIONS[i]);
          memcpy(&temp[pathLength + nameLength], ICON_EXTENSIONS[i], len + 1);
-         image = LoadImage(temp, 0, 0, 1);
+         image = LoadImageWithFallback(temp, 0, 0, 1, &effectivePath);
          if(image) {
             break;
          }
@@ -373,7 +410,7 @@ IconNode *LoadNamedIconHelper(const char *name, const char *path,
    if(image) {
       IconNode *result = CreateIcon(image);
       result->preserveAspect = preserveAspect;
-      result->name = CopyString(temp);
+      result->name = effectivePath ? effectivePath : CopyString(temp);
       if(save) {
          InsertIcon(result);
       }
@@ -381,6 +418,9 @@ IconNode *LoadNamedIconHelper(const char *name, const char *path,
       return result;
    }
 
+   if(effectivePath) {
+      Release(effectivePath);
+   }
    return NULL;
 }
 
@@ -908,6 +948,276 @@ void SetDefaultIcon(const char *name)
       Release(defaultIconName);
    }
    defaultIconName = CopyString(name);
+}
+
+
+/** Add common icon locations after the configured IconPath entries. */
+static void AddFallbackIconPaths(void)
+{
+   static const char *const fixed[] = {
+      "/usr/share/pixmaps",
+      "/usr/local/share/pixmaps",
+      "/usr/local/lib/X11/pixmaps",
+      "/usr/share/pixmaps/puppy",
+      "/var/lib/flatpak/exports/share/icons/hicolor/48x48/apps",
+      "/var/lib/flatpak/exports/share/icons/hicolor/scalable/apps",
+      NULL
+   };
+   unsigned i;
+   for(i = 0; fixed[i]; i++) {
+      if(access(fixed[i], R_OK | X_OK) == 0) {
+         char *copy = CopyString(fixed[i]);
+         AddIconPath(copy);
+         Release(copy);
+      }
+   }
+   AddThemeIconPaths("/usr/share/icons");
+   AddThemeIconPaths("/usr/local/share/icons");
+}
+
+/** Add size/context directories for every installed icon theme. */
+static void AddThemeIconPaths(const char *root)
+{
+   static const char *const sizes[] = {
+      "48x48", "64x64", "32x32", "24x24", "22x22", "16x16",
+      "96x96", "128x128", "scalable", "symbolic", NULL
+   };
+   static const char *const contexts[] = {
+      "apps", "devices", "places", "actions", "categories",
+      "mimetypes", "status", "emblems", NULL
+   };
+   DIR *directory;
+   struct dirent *entry;
+   directory = opendir(root);
+   if(!directory) {
+      return;
+   }
+   while((entry = readdir(directory)) != NULL) {
+      unsigned si;
+      if(entry->d_name[0] == '.') {
+         continue;
+      }
+      for(si = 0; sizes[si]; si++) {
+         unsigned ci;
+         for(ci = 0; contexts[ci]; ci++) {
+            char path[PATH_MAX];
+            struct stat st;
+            if(snprintf(path, sizeof(path), "%s/%s/%s/%s", root,
+                        entry->d_name, sizes[si], contexts[ci])
+               >= (int)sizeof(path)) {
+               continue;
+            }
+            if(stat(path, &st) == 0 && S_ISDIR(st.st_mode)) {
+               AddIconPath(path);
+            }
+         }
+      }
+   }
+   closedir(directory);
+}
+
+/** Load an image, converting SVG to a private PNG cache when native rsvg
+ * support was not compiled into JWM. */
+ImageNode *LoadImageWithFallback(const char *path, int rwidth, int rheight,
+                                  char preserveAspect, char **effectivePath)
+{
+   ImageNode *image;
+   char *converted;
+   if(effectivePath) {
+      *effectivePath = NULL;
+   }
+   image = LoadImage(path, rwidth, rheight, preserveAspect);
+   if(image) {
+      if(effectivePath) {
+         *effectivePath = CopyString(path);
+      }
+      return image;
+   }
+   if(!IsSvgName(path)) {
+      return NULL;
+   }
+   converted = ConvertSvgToPng(path);
+   if(!converted) {
+      return NULL;
+   }
+   image = LoadImage(converted, rwidth, rheight, preserveAspect);
+   if(image && effectivePath) {
+      *effectivePath = converted;
+   } else {
+      Release(converted);
+   }
+   return image;
+}
+
+static char IsSvgName(const char *path)
+{
+   size_t length;
+   if(!path) {
+      return 0;
+   }
+   length = strlen(path);
+   return (length >= 4 && !strcasecmp(path + length - 4, ".svg"))
+      || (length >= 5 && !strcasecmp(path + length - 5, ".svgz"));
+}
+
+static uint64_t HashFileIdentity(const char *path, const struct stat *st)
+{
+   const unsigned char *p = (const unsigned char*)path;
+   uint64_t value = UINT64_C(1469598103934665603);
+   while(*p) {
+      value ^= (uint64_t)*p++;
+      value *= UINT64_C(1099511628211);
+   }
+   value ^= (uint64_t)st->st_mtime;
+   value *= UINT64_C(1099511628211);
+   value ^= (uint64_t)st->st_size;
+   value *= UINT64_C(1099511628211);
+   return value;
+}
+
+static char *ConvertSvgToPng(const char *path)
+{
+   struct stat sourceStat;
+   struct stat targetStat;
+   char directory[PATH_MAX];
+   char target[PATH_MAX];
+   uint64_t hash;
+   char *result;
+   if(stat(path, &sourceStat) != 0 || !S_ISREG(sourceStat.st_mode)) {
+      return NULL;
+   }
+   if(snprintf(directory, sizeof(directory), "/tmp/essorawm-svg-%lu",
+               (unsigned long)getuid()) >= (int)sizeof(directory)) {
+      return NULL;
+   }
+   if(mkdir(directory, 0700) != 0 && errno != EEXIST) {
+      return NULL;
+   }
+   hash = HashFileIdentity(path, &sourceStat);
+   if(snprintf(target, sizeof(target), "%s/%016llx.png", directory,
+               (unsigned long long)hash) >= (int)sizeof(target)) {
+      return NULL;
+   }
+   if(stat(target, &targetStat) != 0 || targetStat.st_size <= 0) {
+      unlink(target);
+      if(!(CommandAvailable("rsvg-convert")
+           && RunSvgConverter("rsvg-convert", path, target))
+         && !(CommandAvailable("inkscape")
+              && RunSvgConverter("inkscape", path, target))
+         && !(CommandAvailable("magick")
+              && RunSvgConverter("magick", path, target))
+         && !(!CommandAvailable("magick") && CommandAvailable("convert")
+              && RunSvgConverter("convert", path, target))) {
+         unlink(target);
+         return NULL;
+      }
+   }
+   result = CopyString(target);
+   return result;
+}
+
+static char CommandAvailable(const char *name)
+{
+   const char *path = getenv("PATH");
+   char *copy;
+   char *save = NULL;
+   char *part;
+   if(!path || !path[0]) {
+      path = "/usr/local/bin:/usr/bin:/bin";
+   }
+   copy = CopyString(path);
+   for(part = strtok_r(copy, ":", &save); part;
+       part = strtok_r(NULL, ":", &save)) {
+      char candidate[PATH_MAX];
+      if(snprintf(candidate, sizeof(candidate), "%s/%s",
+                  part[0] ? part : ".", name) < (int)sizeof(candidate)
+         && access(candidate, X_OK) == 0) {
+         Release(copy);
+         return 1;
+      }
+   }
+   Release(copy);
+   return 0;
+}
+
+static char RunSvgConverter(const char *program, const char *source,
+                            const char *target)
+{
+   pid_t child;
+   int status = 0;
+   char success = 0;
+   sigset_t blockSet;
+   sigset_t oldSet;
+
+   /* JWM normally reaps all children from its SIGCHLD handler. Block the
+    * signal while this private converter runs so our waitpid owns it. */
+   sigemptyset(&blockSet);
+   sigaddset(&blockSet, SIGCHLD);
+   if(sigprocmask(SIG_BLOCK, &blockSet, &oldSet) != 0) {
+      return 0;
+   }
+
+   child = fork();
+   if(child < 0) {
+      sigprocmask(SIG_SETMASK, &oldSet, NULL);
+      return 0;
+   }
+   if(child == 0) {
+      int nullfd;
+      sigprocmask(SIG_SETMASK, &oldSet, NULL);
+      nullfd = open("/dev/null", O_RDWR);
+      if(nullfd >= 0) {
+         dup2(nullfd, STDIN_FILENO);
+         dup2(nullfd, STDOUT_FILENO);
+         dup2(nullfd, STDERR_FILENO);
+         if(nullfd > STDERR_FILENO) {
+            close(nullfd);
+         }
+      }
+      /* Converters must never open a GUI or inherit the desktop session. */
+      unsetenv("DISPLAY");
+      if(!strcmp(program, "rsvg-convert")) {
+         execlp(program, program, "-w", "128", "-h", "128",
+                "-o", target, source, (char*)NULL);
+      } else if(!strcmp(program, "magick") || !strcmp(program, "convert")) {
+         execlp(program, program, source, "-background", "none",
+                "-resize", "128x128", target, (char*)NULL);
+      } else {
+         execlp(program, program, "--batch-process", source,
+                "--export-background-opacity=0", "--export-width=128",
+                "--export-filename", target, (char*)NULL);
+      }
+      _exit(127);
+   }
+
+   {
+      struct timespec pauseTime = { 0, 50000000L };
+      unsigned int elapsed = 0;
+      for(;;) {
+         pid_t result = waitpid(child, &status, WNOHANG);
+         if(result == child) {
+            success = WIFEXITED(status) && WEXITSTATUS(status) == 0
+               && access(target, R_OK) == 0;
+            break;
+         }
+         if(result < 0 && errno != EINTR) {
+            break;
+         }
+         if(elapsed >= 3000) {
+            kill(child, SIGKILL);
+            while(waitpid(child, &status, 0) < 0 && errno == EINTR) {
+               /* Retry until the converter is reaped. */
+            }
+            unlink(target);
+            break;
+         }
+         nanosleep(&pauseTime, NULL);
+         elapsed += 50;
+      }
+   }
+
+   sigprocmask(SIG_SETMASK, &oldSet, NULL);
+   return success;
 }
 
 #endif /* USE_ICONS */

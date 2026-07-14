@@ -1,0 +1,258 @@
+# EssoraWM desktop translations.
+msgid ""
+msgstr ""
+"Project-Id-Version: EssoraWM 0.1.6\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not open the X display"
+msgstr "تعذر فتح شاشة X"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "EssoraWM Desktop Manager"
+msgstr "مدير سطح المكتب EssoraWM"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No application launchers were found"
+msgstr "لم يتم العثور على مشغلات تطبيقات"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Select an application to add it to the desktop"
+msgstr "اختر تطبيقًا لإضافته إلى سطح المكتب"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Move drive icons freely on the desktop or arrange them here"
+msgstr "حرّك أيقونات الأقراص بحرية على سطح المكتب أو رتّبها هنا"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Default drive icon settings restored; press Apply"
+msgstr "تمت استعادة الإعدادات الافتراضية لأيقونات الأقراص؛ اضغط تطبيق"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "No applications match the search"
+msgstr "لا توجد تطبيقات تطابق البحث"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create the PuppyPin configuration directory"
+msgstr "تعذر إنشاء مجلد إعداد PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not create PuppyPin"
+msgstr "تعذر إنشاء PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is already on the desktop"
+msgstr "هذا التطبيق موجود بالفعل على سطح المكتب"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "PuppyPin is invalid: </pinboard> was not found"
+msgstr "ملف PuppyPin غير صالح: لم يتم العثور على </pinboard>"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Not enough memory to update PuppyPin"
+msgstr "لا توجد ذاكرة كافية لتحديث PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not write PuppyPin"
+msgstr "تعذرت الكتابة إلى PuppyPin"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Added to the desktop. EssoraWM will save the new position when you move it"
+msgstr "تمت الإضافة إلى سطح المكتب. سيحفظ EssoraWM الموضع الجديد عند نقلها"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "This application is not on the desktop"
+msgstr "هذا التطبيق غير موجود على سطح المكتب"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removed from the desktop"
+msgstr "تمت الإزالة من سطح المكتب"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Could not save drive icon settings"
+msgstr "تعذر حفظ إعدادات أيقونات الأقراص"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings applied"
+msgstr "تم تطبيق إعدادات أيقونات الأقراص"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Hidden drives are visible again"
+msgstr "أصبحت الأقراص المخفية مرئية مرة أخرى"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icon settings changed; press Apply"
+msgstr "تغيرت إعدادات أيقونات الأقراص؛ اضغط تطبيق"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications and native drive icons"
+msgstr "التطبيقات وأيقونات الأقراص الأصلية"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applications"
+msgstr "التطبيقات"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Drive icons"
+msgstr "أيقونات الأقراص"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Search"
+msgstr "بحث"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Type to filter applications"
+msgstr "اكتب لتصفية التطبيقات"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Add"
+msgstr "إضافة"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove"
+msgstr "إزالة"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Close"
+msgstr "إغلاق"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Visibility"
+msgstr "الظهور"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show drive icons"
+msgstr "إظهار أيقونات الأقراص"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Internal drives"
+msgstr "الأقراص الداخلية"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Removable drives"
+msgstr "الأقراص القابلة للإزالة"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Network drives"
+msgstr "أقراص الشبكة"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show labels"
+msgstr "إظهار التسميات"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Label frame"
+msgstr "إطار التسميات"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Reverse order"
+msgstr "عكس الترتيب"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "You can also drag each drive icon freely on the desktop."
+msgstr "يمكنك أيضًا سحب كل أيقونة قرص بحرية على سطح المكتب."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply arranges all drives using the selected layout."
+msgstr "يرتّب زر تطبيق جميع الأقراص وفق التخطيط المحدد."
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Layout"
+msgstr "التخطيط"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal"
+msgstr "أفقي"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical"
+msgstr "عمودي"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal position"
+msgstr "الموضع الأفقي"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Left"
+msgstr "يسار"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Center"
+msgstr "وسط"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Right"
+msgstr "يمين"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical position"
+msgstr "الموضع العمودي"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Top"
+msgstr "أعلى"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Bottom"
+msgstr "أسفل"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Icon size"
+msgstr "حجم الأيقونة"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal spacing"
+msgstr "التباعد الأفقي"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical spacing"
+msgstr "التباعد العمودي"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Horizontal offset"
+msgstr "الإزاحة الأفقية"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Vertical offset"
+msgstr "الإزاحة العمودية"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Show hidden drives"
+msgstr "إظهار الأقراص المخفية"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Apply"
+msgstr "تطبيق"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Applied"
+msgstr "تم التطبيق"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Defaults"
+msgstr "الإعدادات الافتراضية"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Open"
+msgstr "فتح"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Unmount"
+msgstr "إلغاء الضم"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Mount"
+msgstr "ضم"
+
+#: src/essoradesktop.c src/desktopicons.c
+msgid "Remove from desktop"
+msgstr "إزالة من سطح المكتب"
+
+#: src/essoradesktop.c src/desktopicons.c
+#, c-format
+msgid "Volume %s"
+msgstr "وحدة التخزين %s"

@@ -1,22 +1,20 @@
 <?xml version="1.0"?>
-
 <JWM>
-	
 <!-- version flag for rc.update --> 
 <!-- When updating change number here and in rc.update -->
 <!-- XDG_JWMRC_VERSION_001 -->
-
 <!-- IMPORTANT, ONLY EDIT /etc/xdg/templates/_root_.jwmrc -->
 <!-- jwm menu for puppy Linux -->
 <RootMenu label="Menu" labeled="false" height="24" onroot="3">
     <!-- agregado por josejp2424 -->
     <Program label="Pymenu" icon="/usr/share/pixmaps/menu3.svg">/usr/local/bin/pymenu</Program>
     <!-- agregado por josejp2424 -->
-    <Program label="EssoraWM Wallpaper" icon="/usr/share/jwm/essorawm.svg">/usr/local/bin/jwm-wallpaper</Program>
+    <Program label="EssoraWM Wallpaper" icon="/usr/share/jwm/essora-wallpaper.svg">jwm-wallpaper</Program>
+    <Program label="EssoraWM Config" icon="/usr/share/jwm/essorawm-config.svg">jwm-desktop-icons</Program>
+    <Program label="Essora Installer" icon="/usr/share/pixmaps/essora/essora-installer2.png">essorapup-installer</Program>
     <Restart label="Restart EssoraWM" icon="/usr/local/pymenu/icon-pymenu/menu-update.png"/>
     <Program label="Leave" icon="/usr/local/pymenu/icon-pymenu/preferences-desktop-essora.svg">logout_gui</Program>
 </RootMenu>
-
 <!-- General classes -->
 <Group>
 	<Option>aerosnap</Option>
@@ -28,7 +26,6 @@
 	<Option>nopager</Option>
 	<Option>nofocus</Option>
 </Group>
-
 <Group>
 	<Class>applet</Class>
 	<Option>layer:below</Option>
@@ -38,7 +35,6 @@
 	<Option>nolist</Option>
 	<Option>nopager</Option>
 </Group>
-
 <Group>		<Class>ontop</Class>		<Option>layer:above</Option>		</Group>
 <Group>		<Class>maximized</Class>	<Option>maximized</Option>		</Group>
 <Group>		<Class>fullscreen</Class>	<Option>fullscreen</Option>		</Group>
@@ -46,19 +42,16 @@
 <Group>		<Class>noborder</Class>		<Option>noborder</Option>		</Group>
 <Group>		<Class>notitle</Class>		<Option>notitle</Option>		</Group>
 <Group>		<Class>sticky</Class>		<Option>sticky</Option>			</Group> 
-
 <!-- 130630 joe added support disable flashing in tray, all apps -->
 <Group>
 	<Option>noturgent</Option>
 </Group>
-
 <Group>
 	<Class>gtkdialog-splash</Class>
 	<Option>nolist</Option>
 	<!-- <Option>layer:above</Option> -->
 	<Option>nofocus</Option>
 </Group>
-
 <!-- Styles -->
 <WindowStyle>
 	<Font>Serif-11</Font>
@@ -74,7 +67,6 @@
 		<Outline>black</Outline>
 	</Active>
 </WindowStyle> 
-
 <PagerStyle>
 	<Outline>black</Outline>
 	<Foreground>#ffc100</Foreground>
@@ -84,7 +76,6 @@
 		<Background>#ffa100</Background>
 	</Active>
 </PagerStyle>
-
 <MenuStyle>
 	<Font>Serif-11</Font>
 	<Foreground>black</Foreground>
@@ -94,14 +85,12 @@
 		<Background>#ffda51:#ffa100</Background>
 	</Active>
 </MenuStyle>
-
 <PopupStyle>
 	<Font>Serif-11</Font>
 	<Outline>white</Outline>
 	<Foreground>white</Foreground>
 	<Background>black</Background>
 </PopupStyle>
-
 <!-- <Icons> -->
 <IconPath>/usr/share/icons/essora-dark-teal/48x48/apps</IconPath>
 <IconPath>/usr/share/icons/TokyoNight-SE/48x48/apps</IconPath>
@@ -117,42 +106,32 @@
 <IconPath>/var/lib/flatpak/exports/share/icons/hicolor/48x48/apps</IconPath>
 <IconPath>/var/lib/flatpak/exports/share/icons/hicolor/scalable/apps</IconPath>
 <!-- </Icons> -->
-<StartupCommand>jwm-wallpaper</StartupCommand>
+<StartupCommand>jwm -wallpaper-restore</StartupCommand>
 <StartupCommand>xsettingsd</StartupCommand>
-<StartupCommand>essora-jwm-preview</StartupCommand>
 <StartupCommand>auto-numlock.sh</StartupCommand>
 <!-- Virtual Desktops -->
 <!-- Name tags can be contained within Desktops for desktop names.  BK: syntax change with jwm 500... -->
 <!-- Number of virtual desktops -->
 <Desktops width="2" height="2"/>
-
 <!-- Double click speed (in milliseconds) -->
 <DoubleClickSpeed>400</DoubleClickSpeed>
-
 <!-- Double click delta (in pixels) -->
 <DoubleClickDelta>3</DoubleClickDelta>
-
 <!-- The focus model (sloppy or click) -->
 <FocusModel>click</FocusModel>
-
 <!-- The snap mode (none, screen, or border) -->
 <SnapMode distance="10">none</SnapMode>
-
 <!-- The move mode (outline or opaque) -->
 <MoveMode coordinates="off" delay="1000">opaque</MoveMode>
-
 <!-- The resize mode (outline or opaque) -->
 <ResizeMode coordinates="off" >opaque</ResizeMode>
-
 <TitleButtonOrder>wtimx</TitleButtonOrder>
-
 <WindowStyle decorations="motif">
   <Height>24</Height>
   <Width>4</Width>
   <Corner>3</Corner>
   <Font align="left">Serif-11:normal</Font>
 </WindowStyle>
-
 <!-- group options set for all windows -->
 <Group>
 <!-- disable flashing in tray for urgent windows -->
@@ -162,7 +141,6 @@
 <!-- auto-maximization when moving window to top/side of desktop -->
 <Option>aerosnap</Option>
 </Group>
-
 <!-- Key bindings -->
 <Key key="Up">up</Key>
 <Key key="Down">down</Key>
@@ -174,13 +152,11 @@
 <Key key="l">right</Key>
 <Key key="Return">select</Key>
 <Key key="Escape">escape</Key>
-<Key key="F12">pymenu</Key>
-
+<Key key="F12">exec:/usr/local/bin/pymenu</Key>
 <Key mask="CA" key="Right">rdesktop</Key>
 <Key mask="CA" key="Left">ldesktop</Key>
 <Key mask="CA" key="Up">udesktop</Key>
 <Key mask="CA" key="Down">ddesktop</Key>
-
 <Key mask="A" key="Tab">nextstacked</Key>
 <Key mask="AS" key="Tab">prevstacked</Key>
 <Key mask="A" key="F4">close</Key>
@@ -190,23 +166,20 @@
 <Key mask="CA" key="Left">ldesktop</Key>
 <Key mask="CA" key="Up">udesktop</Key>
 <Key mask="CA" key="Down">ddesktop</Key>
-<Key mask="A" key="F1">pymenu</Key>
+<Key mask="A" key="F1">exec:/usr/local/bin/pymenu</Key>
 <Key mask="A" key="F3">window</Key>
 <Key mask="A" key="space">window</Key>
-
 <Key mask="CA" key="Delete">exec:defaultprocessmanager</Key>
 <Key mask="CS" key="Escape">exec:defaultprocessmanager</Key>
-
 <!-- http://wiki.linuxquestions.org/wiki/XF86_keyboard_symbols -->
-> <Key keycode="160">exec:amixer sset Master toggle</Key>
-> <Key keycode="176">exec:amixer sset Master 1+,1+</Key>
-> <Key keycode="174">exec:amixer sset Master 1-,1-</Key>
+<Key keycode="160">exec:amixer sset Master toggle</Key>
+<Key keycode="176">exec:amixer sset Master 1+,1+</Key>
+<Key keycode="174">exec:amixer sset Master 1-,1-</Key>
 <Key key="XF86WWW">exec:defaultbrowser</Key>
 <Key key="XF86HomePage">exec:defaultbrowser</Key>
 <Key key="XF86MonBrightnessUp">exec:brightnessctl set +10%</Key>
 <Key key="XF86MonBrightnessDown">exec:brightnessctl set 10%-</Key>
 <Key key="Print">exec:/usr/local/YADCapture/shot_scrot</Key>
-
 <!-- mod4 Super_L Super_R Hyper_L -->
 <Key mask="C" key="e">exec:skippy-xd-fix</Key>
 <Key mask="4" key="e">exec:defaultfilemanager</Key>
@@ -218,22 +191,16 @@
 <Key mask="4" key="m">showdesktop</Key>
 <Key mask="4" key="l">exec:findnrun</Key>
 <Key mask="4" key="k">exec:keymap-set</Key>
-
-<Key key="Super_R">pymenu</Key>
-<Key mask="C" key="Super_L">pymenu</Key>
-
+<Key key="Super_R">exec:/usr/local/bin/pymenu</Key>
+<Key mask="C" key="Super_L">exec:/usr/local/bin/pymenu</Key>
 <DefaultIcon>/usr/share/pixmaps/terminator.svg</DefaultIcon>
-
 <Group><Class>Savebox</Class><Option>width:500</Option></Group>
 <Group><Name>galculator</Name><Option>centered</Option></Group>
-
 <Mouse context="title" button="4">shade</Mouse><Mouse context="title" button="5">shade</Mouse> 
-
 <ButtonClose>/usr/share/pixmaps/close.png</ButtonClose>
 <ButtonMax>/usr/share/pixmaps/max.png</ButtonMax>
 <ButtonMaxActive>/usr/share/pixmaps/maxact.png</ButtonMaxActive>
 <ButtonMin>/usr/share/pixmaps/min.png</ButtonMin>
-
 <Key mask="A" key="Right">maxright</Key>
 <Key mask="A" key="Left">maxleft</Key>
 <Key mask="A" key="Up">maxtop</Key>
@@ -241,13 +208,12 @@
 <Key mask="A" key="m">maximize</Key>
 <Key mask="A" key="x">maxh</Key>
 <Key mask="A" key="y">maxv</Key>
-
 <!-- Include external rc files -->
-<Include>$HOME/.config/essorawm/jwm/jwmrc-theme</Include>
-<Include>$HOME/.config/essorawm/jwm/jwmrc-personal</Include>
-<Include>$HOME/.config/essorawm/jwm/jwmrc-places</Include>
-<Include>$HOME/.config/essorawm/jwm/jwmrc-system</Include>
-<Include>$HOME/.config/essorawm/jwm/jwmrc-tray</Include>
+<Include>/usr/share/jwm/jwm/jwmrc-theme</Include>
+<Include>/usr/share/jwm/jwm/jwmrc-personal</Include>
+<Include>/usr/share/jwm/jwm/jwmrc-places</Include>
+<Include>/usr/share/jwm/jwm/jwmrc-system</Include>
+<Include>/root/.jwmrc-tray</Include>
 <!-- JWMCC KEYS BEGIN -->
 <!-- JWMCC KEYS END -->
 </JWM>
