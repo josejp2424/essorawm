@@ -102,6 +102,29 @@ jwm -wallpaper
   <img src="assets/essorawm-wallpaper.png" alt="EssoraWM wallpaper manager">
 </p>
 
+### Desktop and drive icon manager
+
+EssoraWM includes a graphical configuration tool for managing desktop
+applications and drive icons. It can be opened with:
+
+```sh
+jwm -desktop-icons
+```
+
+or:
+
+```sh
+jwm-desktop-icons
+```
+
+From this window users can add or remove desktop applications, show or hide
+internal and removable drives, choose horizontal or vertical placement,
+change alignment, icon size, spacing, offsets, labels and reverse order.
+
+<p align="center">
+  <img src="assets/essorawm-config.png" alt="EssoraWM desktop and drive icon manager">
+</p>
+
 ---
 
 ## Native desktop
@@ -147,7 +170,8 @@ or:
 jwm-desktop-icons
 ```
 
-The desktop manager contains two sections:
+The desktop manager, shown in `assets/essorawm-config.png`, contains two
+sections:
 
 - **Applications:** search, add and remove desktop launchers.
 - **Drive icons:** configure orientation, alignment, size, spacing, offsets,
