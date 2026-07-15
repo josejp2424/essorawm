@@ -143,10 +143,6 @@ No ejecuta ROX-Filer ni desktop_drive_icons para administrar el escritorio.
 DOC
 install -m 0644 "${SRC_DIR}/README.md" \
     "${STAGE}/usr/share/doc/${PKGNAME}/README.md"
-install -m 0644 "${SRC_DIR}/README-Native-Desktop.md" \
-    "${STAGE}/usr/share/doc/${PKGNAME}/README-Native-Desktop.md"
-install -m 0644 "${SRC_DIR}/README-Desktop-Applications.md" \
-    "${STAGE}/usr/share/doc/${PKGNAME}/README-Desktop-Applications.md"
 gzip -9 -n "${STAGE}/usr/share/doc/${PKGNAME}/README.Essora" || true
 
 if [ -x "${STAGE}/usr/bin/jwm" ]; then
