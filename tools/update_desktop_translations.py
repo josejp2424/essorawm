@@ -880,7 +880,7 @@ def ensure_po_header(path: Path, lang: str):
     path.write_text(
         '# EssoraWM desktop translations.\n'
         'msgid ""\nmsgstr ""\n'
-        '"Project-Id-Version: EssoraWM 0.1.6\\n"\n'
+        '"Project-Id-Version: EssoraWM 0.1.7\\n"\n'
         f'"Language: {lang}\\n"\n'
         '"MIME-Version: 1.0\\n"\n'
         '"Content-Type: text/plain; charset=UTF-8\\n"\n'

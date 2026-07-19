@@ -1,4 +1,4 @@
-# Compilar EssoraWM 0.1.6
+# Compilar EssoraWM 0.1.7
 
 El repositorio está preparado para mantenerse limpio. El script de compilación
 copia el source a un directorio temporal, genera allí los archivos de Autotools,
@@ -15,13 +15,13 @@ chmod +x build-essora-jwm-deb.sh
 El paquete final queda en:
 
 ```text
-deb-output/essorawm_0.1.6_<arquitectura>.deb
+deb-output/essorawm_0.1.7_<arquitectura>.deb
 ```
 
 Ejemplo para amd64:
 
 ```sh
-dpkg -i deb-output/essorawm_0.1.6_amd64.deb
+dpkg -i deb-output/essorawm_0.1.7_amd64.deb
 ```
 
 ## Dependencias de compilación

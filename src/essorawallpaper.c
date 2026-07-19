@@ -22,6 +22,7 @@
 #include "main.h"
 #include "misc.h"
 #include "error.h"
+#include "debug.h"
 #include "desktopicons.h"
 
 #ifndef MAKE_DEPEND
@@ -30,6 +31,8 @@
 #  include <sys/types.h>
 #  include <errno.h>
 #  include <limits.h>
+#  include <signal.h>
+#  include <fcntl.h>
 #endif
 
 #define WALLPAPER_DIR "/usr/share/backgrounds"
@@ -67,6 +70,9 @@ typedef struct WallpaperList {
 static Display *wpDisplay = NULL;
 static Window wpWindow = None;
 static GC wpGC = None;
+static Pixmap wpBuffer = None;
+static Drawable wpDrawTarget = None;
+static char wpBufferDirty = 1;
 static int wpScreen = 0;
 static Visual *wpVisual = NULL;
 static Colormap wpColormap = None;
@@ -103,7 +109,13 @@ static char HasCommand(const char *cmd);
 static void ApplyWallpaper(const char *path, char save);
 static void UpdatePuppyPin(const char *path);
 static char *EscapeXmlText(const char *text);
-static void RestartWbar(void);
+static void RestartWbar(const char *setterCommand);
+static int CountWbarProcesses(void);
+static void GetWbarPids(char *buffer, size_t size);
+static void StopWbarProcesses(void);
+static int GetWbarProcesses(pid_t *pids, int maxCount);
+static char IsWbarProcess(pid_t pid);
+static int StartWbarProcess(void);
 
 /* agregado por josejp2424 */
 void RunEssoraWallpaperSelector(void)
@@ -111,18 +123,23 @@ void RunEssoraWallpaperSelector(void)
    XEvent event;
    int running = 1;
    const int leftX = 32;
-   const int rightX = WINDOW_W - 118;
+   const int rightX = 128;
    const int applyX = WINDOW_W - 210;
    const int cancelX = WINDOW_W - 110;
    const int buttonY = WINDOW_H - 48;
 
+   EssoraTrace("wallpaper", "selector requested");
    if(!InitWallpaperDisplay()) {
+      EssoraTrace("wallpaper", "cannot initialize X display");
       return;
    }
 
    memset(&wpList, 0, sizeof(wpList));
    ScanWallpaperDir(&wpList, WALLPAPER_DIR);
    wpSelected = wpList.count > 0 ? 0 : -1;
+   wpBufferDirty = 1;
+   EssoraTrace("wallpaper", "scan complete: count=%d selected=%d",
+               wpList.count, wpSelected);
 
    wpWindow = XCreateSimpleWindow(wpDisplay, RootWindow(wpDisplay, wpScreen),
                                   0, 0, WINDOW_W, WINDOW_H, 1,
@@ -140,18 +157,71 @@ void RunEssoraWallpaperSelector(void)
    XSetIconName(wpDisplay, wpWindow, _("EssoraWM Wallpaper"));
    SetWallpaperWindowIcon();
 
+   {
+      XSizeHints hints;
+      memset(&hints, 0, sizeof(hints));
+      hints.flags = PMinSize | PMaxSize;
+      hints.min_width = hints.max_width = WINDOW_W;
+      hints.min_height = hints.max_height = WINDOW_H;
+      XSetWMNormalHints(wpDisplay, wpWindow, &hints);
+   }
+
+   {
+      XSetWindowAttributes attrs;
+      attrs.backing_store = WhenMapped;
+      XChangeWindowAttributes(wpDisplay, wpWindow, CWBackingStore, &attrs);
+   }
+
    XSelectInput(wpDisplay, wpWindow,
                 ExposureMask | ButtonPressMask | KeyPressMask | StructureNotifyMask);
    wpGC = XCreateGC(wpDisplay, wpWindow, 0, NULL);
    XMapRaised(wpDisplay, wpWindow);
+   EssoraTrace("wallpaper", "window created id=0x%lx geometry=%dx%d",
+               (unsigned long)wpWindow, WINDOW_W, WINDOW_H);
 
    while(running) {
       XNextEvent(wpDisplay, &event);
       switch(event.type) {
       case Expose:
-         if(event.xexpose.count == 0) {
+         EssoraTrace("wallpaper",
+                     "Expose window=0x%lx region=%d,%d %dx%d count=%d dirty=%d buffer=0x%lx",
+                     (unsigned long)event.xexpose.window,
+                     event.xexpose.x, event.xexpose.y,
+                     event.xexpose.width, event.xexpose.height,
+                     event.xexpose.count, wpBufferDirty,
+                     (unsigned long)wpBuffer);
+         if(wpBuffer == None || wpBufferDirty) {
             DrawWallpaperWindow();
+         } else {
+            /*
+             * The complete UI is installed as the X11 background pixmap.
+             * Clear only the exposed rectangle so the server restores it
+             * atomically, even while XLibre is moving another window.
+             */
+            XClearArea(wpDisplay, wpWindow,
+                       event.xexpose.x, event.xexpose.y,
+                       (unsigned)event.xexpose.width,
+                       (unsigned)event.xexpose.height, False);
+            if(event.xexpose.count == 0) {
+               XFlush(wpDisplay);
+            }
          }
+         break;
+      case ConfigureNotify:
+         EssoraTrace("wallpaper",
+                     "ConfigureNotify window=0x%lx x=%d y=%d w=%d h=%d above=0x%lx",
+                     (unsigned long)event.xconfigure.window,
+                     event.xconfigure.x, event.xconfigure.y,
+                     event.xconfigure.width, event.xconfigure.height,
+                     (unsigned long)event.xconfigure.above);
+         break;
+      case MapNotify:
+         EssoraTrace("wallpaper", "MapNotify window=0x%lx",
+                     (unsigned long)event.xmap.window);
+         break;
+      case UnmapNotify:
+         EssoraTrace("wallpaper", "UnmapNotify window=0x%lx",
+                     (unsigned long)event.xunmap.window);
          break;
       case ButtonPress:
          /* agregado por josejp2424: ignorar rueda, botón central y clic derecho. */
@@ -166,10 +236,13 @@ void RunEssoraWallpaperSelector(void)
             DrawWallpaperWindow();
          } else if(HitButton(event.xbutton.x, event.xbutton.y, applyX, buttonY, 86, BUTTON_H)) {
             if(wpSelected >= 0 && wpSelected < wpList.count) {
+               EssoraTrace("wallpaper", "Apply clicked: %s",
+                           wpList.items[wpSelected].path);
                ApplyWallpaper(wpList.items[wpSelected].path, 1);
             }
             running = 0;
          } else if(HitButton(event.xbutton.x, event.xbutton.y, cancelX, buttonY, 86, BUTTON_H)) {
+            EssoraTrace("wallpaper", "Cancel clicked");
             running = 0;
          } else {
             /* agregado por josejp2424: zonas laterales seleccionan anterior/siguiente. */
@@ -190,6 +263,8 @@ void RunEssoraWallpaperSelector(void)
             running = 0;
          } else if(sym == XK_Return || sym == XK_KP_Enter) {
             if(wpSelected >= 0 && wpSelected < wpList.count) {
+               EssoraTrace("wallpaper", "Apply by keyboard: %s",
+                           wpList.items[wpSelected].path);
                ApplyWallpaper(wpList.items[wpSelected].path, 1);
             }
             running = 0;
@@ -217,6 +292,14 @@ void RunEssoraWallpaperSelector(void)
       XFreeGC(wpDisplay, wpGC);
       wpGC = None;
    }
+   if(wpBuffer != None) {
+      if(wpWindow != None) {
+         XSetWindowBackgroundPixmap(wpDisplay, wpWindow, None);
+      }
+      XFreePixmap(wpDisplay, wpBuffer);
+      wpBuffer = None;
+   }
+   wpDrawTarget = None;
    if(wpWindow) {
       XDestroyWindow(wpDisplay, wpWindow);
       XSync(wpDisplay, False);
@@ -224,6 +307,7 @@ void RunEssoraWallpaperSelector(void)
    }
    FreeWallpaperList(&wpList);
    CloseWallpaperDisplay();
+   EssoraTrace("wallpaper", "selector closed");
 }
 
 /* agregado por josejp2424 */
@@ -316,16 +400,37 @@ static void DrawWallpaperWindow(void)
    const int previewY = HEADER_H + 18;
    char counter[64];
    ImageNode *img;
+   Pixmap newBuffer = None;
+   Pixmap oldBuffer;
+
+   if(wpWindow == None || !wpDisplay || !wpGC) {
+      return;
+   }
+
+   if(wpBuffer != None && !wpBufferDirty) {
+      XClearWindow(wpDisplay, wpWindow);
+      XFlush(wpDisplay);
+      return;
+   }
+
+   newBuffer = XCreatePixmap(wpDisplay, wpWindow,
+                             WINDOW_W, WINDOW_H, (unsigned)wpDepth);
+   if(newBuffer == None) {
+      EssoraTrace("wallpaper", "cannot create persistent background pixmap");
+      wpDrawTarget = wpWindow;
+   } else {
+      wpDrawTarget = newBuffer;
+   }
 
    XSetForeground(wpDisplay, wpGC, bg);
-   XFillRectangle(wpDisplay, wpWindow, wpGC, 0, 0, WINDOW_W, WINDOW_H);
+   XFillRectangle(wpDisplay, wpDrawTarget, wpGC, 0, 0, WINDOW_W, WINDOW_H);
 
    XSetForeground(wpDisplay, wpGC, panel);
-   XFillRectangle(wpDisplay, wpWindow, wpGC, 0, 0, WINDOW_W, HEADER_H);
+   XFillRectangle(wpDisplay, wpDrawTarget, wpGC, 0, 0, WINDOW_W, HEADER_H);
 
    img = LoadImageWithFallback(ESSORAWM_ICON, 42, 42, 1, NULL);
    if(img) {
-      DrawImageNodeFit(wpWindow, img, MARGIN, 10, 42, 42, 0x2b2b2b);
+      DrawImageNodeFit(wpDrawTarget, img, MARGIN, 10, 42, 42, 0x2b2b2b);
       DestroyImage(img);
    }
 
@@ -335,54 +440,72 @@ static void DrawWallpaperWindow(void)
    if(wpList.count <= 0) {
       DrawText(MARGIN, HEADER_H + 80, _("No wallpapers found"), white);
       DrawButton(WINDOW_W - 110, WINDOW_H - 48, 86, BUTTON_H, _("Cancel"), 1);
-      XFlush(wpDisplay);
-      return;
-   }
-
-   /* agregado por josejp2424: carrusel simple, similar al selector de EssoraFM. */
-   if(wpList.count > 1) {
-      int prev = (wpSelected - 1 + wpList.count) % wpList.count;
-      int next = (wpSelected + 1) % wpList.count;
-      ImageNode *left = LoadImageWithFallback(wpList.items[prev].path, SIDE_W, SIDE_H, 1, NULL);
-      ImageNode *right = LoadImageWithFallback(wpList.items[next].path, SIDE_W, SIDE_H, 1, NULL);
-      if(left) {
-         XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
-         XFillRectangle(wpDisplay, wpWindow, wpGC, MARGIN, previewY + 90, SIDE_W, SIDE_H);
-         DrawImageNodeFit(wpWindow, left, MARGIN, previewY + 90, SIDE_W, SIDE_H, 0x101010);
-         DestroyImage(left);
-      }
-      if(right) {
-         XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
-         XFillRectangle(wpDisplay, wpWindow, wpGC, WINDOW_W - MARGIN - SIDE_W, previewY + 90, SIDE_W, SIDE_H);
-         DrawImageNodeFit(wpWindow, right, WINDOW_W - MARGIN - SIDE_W, previewY + 90, SIDE_W, SIDE_H, 0x101010);
-         DestroyImage(right);
-      }
-   }
-
-   XSetForeground(wpDisplay, wpGC, green);
-   XFillRectangle(wpDisplay, wpWindow, wpGC, centerX - 4, previewY - 4, PREVIEW_W + 8, PREVIEW_H + 8);
-   XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
-   XFillRectangle(wpDisplay, wpWindow, wpGC, centerX, previewY, PREVIEW_W, PREVIEW_H);
-
-   img = LoadImageWithFallback(wpList.items[wpSelected].path, PREVIEW_W, PREVIEW_H, 1, NULL);
-   if(img) {
-      DrawImageNodeFit(wpWindow, img, centerX, previewY, PREVIEW_W, PREVIEW_H, 0x101010);
-      DestroyImage(img);
    } else {
-      DrawText(centerX + 20, previewY + 80, _("No preview"), muted);
+      if(wpList.count > 1) {
+         int prev = (wpSelected - 1 + wpList.count) % wpList.count;
+         int next = (wpSelected + 1) % wpList.count;
+         ImageNode *left = LoadImageWithFallback(wpList.items[prev].path, SIDE_W, SIDE_H, 1, NULL);
+         ImageNode *right = LoadImageWithFallback(wpList.items[next].path, SIDE_W, SIDE_H, 1, NULL);
+         if(left) {
+            XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
+            XFillRectangle(wpDisplay, wpDrawTarget, wpGC, MARGIN, previewY + 90, SIDE_W, SIDE_H);
+            DrawImageNodeFit(wpDrawTarget, left, MARGIN, previewY + 90, SIDE_W, SIDE_H, 0x101010);
+            DestroyImage(left);
+         }
+         if(right) {
+            XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
+            XFillRectangle(wpDisplay, wpDrawTarget, wpGC, WINDOW_W - MARGIN - SIDE_W, previewY + 90, SIDE_W, SIDE_H);
+            DrawImageNodeFit(wpDrawTarget, right, WINDOW_W - MARGIN - SIDE_W, previewY + 90, SIDE_W, SIDE_H, 0x101010);
+            DestroyImage(right);
+         }
+      }
+
+      XSetForeground(wpDisplay, wpGC, green);
+      XFillRectangle(wpDisplay, wpDrawTarget, wpGC, centerX - 4, previewY - 4, PREVIEW_W + 8, PREVIEW_H + 8);
+      XSetForeground(wpDisplay, wpGC, RGBToPixel(0x10, 0x10, 0x10));
+      XFillRectangle(wpDisplay, wpDrawTarget, wpGC, centerX, previewY, PREVIEW_W, PREVIEW_H);
+
+      img = LoadImageWithFallback(wpList.items[wpSelected].path, PREVIEW_W, PREVIEW_H, 1, NULL);
+      if(img) {
+         DrawImageNodeFit(wpDrawTarget, img, centerX, previewY, PREVIEW_W, PREVIEW_H, 0x101010);
+         DestroyImage(img);
+      } else {
+         DrawText(centerX + 20, previewY + 80, _("No preview"), muted);
+      }
+
+      snprintf(counter, sizeof(counter), "%d / %d", wpSelected + 1, wpList.count);
+      DrawText(centerX, previewY + PREVIEW_H + 26, wpList.items[wpSelected].name, white);
+      DrawText(WINDOW_W - MARGIN - 70, previewY + PREVIEW_H + 26, counter, muted);
+
+      DrawButton(32, WINDOW_H - 48, 86, BUTTON_H, _("Left"), wpList.count > 1);
+      DrawButton(128, WINDOW_H - 48, 86, BUTTON_H, _("Right"), wpList.count > 1);
+      DrawButton(WINDOW_W - 210, WINDOW_H - 48, 86, BUTTON_H, _("Apply"), wpSelected >= 0);
+      DrawButton(WINDOW_W - 110, WINDOW_H - 48, 86, BUTTON_H, _("Cancel"), 1);
+
+      DrawText(MARGIN, WINDOW_H - 66, wpList.items[wpSelected].path, muted);
    }
 
-   snprintf(counter, sizeof(counter), "%d / %d", wpSelected + 1, wpList.count);
-   DrawText(centerX, previewY + PREVIEW_H + 26, wpList.items[wpSelected].name, white);
-   DrawText(WINDOW_W - MARGIN - 70, previewY + PREVIEW_H + 26, counter, muted);
+   if(newBuffer != None) {
+      oldBuffer = wpBuffer;
+      wpBuffer = newBuffer;
+      wpBufferDirty = 0;
+      wpDrawTarget = wpWindow;
 
-   DrawButton(32, WINDOW_H - 48, 86, BUTTON_H, _("Left"), wpList.count > 1);
-   DrawButton(WINDOW_W - 118, WINDOW_H - 48, 86, BUTTON_H, _("Right"), wpList.count > 1);
-   DrawButton(WINDOW_W - 210, WINDOW_H - 48, 86, BUTTON_H, _("Apply"), wpSelected >= 0);
-   DrawButton(WINDOW_W - 110, WINDOW_H - 48, 86, BUTTON_H, _("Cancel"), 1);
+      /* Keep the entire rendered selector inside the X server. */
+      XSetWindowBackgroundPixmap(wpDisplay, wpWindow, wpBuffer);
+      XClearWindow(wpDisplay, wpWindow);
+      XSync(wpDisplay, False);
 
-   DrawText(MARGIN, WINDOW_H - 66, wpList.items[wpSelected].path, muted);
-   XFlush(wpDisplay);
+      if(oldBuffer != None) {
+         XFreePixmap(wpDisplay, oldBuffer);
+      }
+      EssoraTrace("wallpaper", "persistent background pixmap installed id=0x%lx",
+                  (unsigned long)wpBuffer);
+   } else {
+      wpBufferDirty = 1;
+      wpDrawTarget = wpWindow;
+      XFlush(wpDisplay);
+   }
 }
 
 static void DrawText(int x, int y, const char *text, unsigned long color)
@@ -391,7 +514,7 @@ static void DrawText(int x, int y, const char *text, unsigned long color)
       return;
    }
    XSetForeground(wpDisplay, wpGC, color);
-   XDrawString(wpDisplay, wpWindow, wpGC, x, y, text, strlen(text));
+   XDrawString(wpDisplay, wpDrawTarget, wpGC, x, y, text, strlen(text));
 }
 
 static void DrawButton(int x, int y, int w, int h, const char *label, char active)
@@ -400,15 +523,15 @@ static void DrawButton(int x, int y, int w, int h, const char *label, char activ
    unsigned long fill = active ? RGBToPixel(0x2b, 0x2b, 0x2b) : RGBToPixel(0x1a, 0x1a, 0x1a);
    unsigned long text = active ? RGBToPixel(0xff, 0xff, 0xff) : RGBToPixel(0x77, 0x77, 0x77);
    XSetForeground(wpDisplay, wpGC, border);
-   XFillRectangle(wpDisplay, wpWindow, wpGC, x, y, w, h);
+   XFillRectangle(wpDisplay, wpDrawTarget, wpGC, x, y, w, h);
    XSetForeground(wpDisplay, wpGC, fill);
-   XFillRectangle(wpDisplay, wpWindow, wpGC, x + 1, y + 1, w - 2, h - 2);
+   XFillRectangle(wpDisplay, wpDrawTarget, wpGC, x + 1, y + 1, w - 2, h - 2);
    DrawText(x + 16, y + 22, label, text);
 }
 
 static int HitButton(int x, int y, int bx, int by, int bw, int bh)
 {
-   return x >= bx && x <= bx + bw && y >= by && y <= by + bh;
+   return x >= bx && x < bx + bw && y >= by && y < by + bh;
 }
 
 static void SelectPrevious(void)
@@ -417,6 +540,7 @@ static void SelectPrevious(void)
       return;
    }
    wpSelected = (wpSelected - 1 + wpList.count) % wpList.count;
+   wpBufferDirty = 1;
 }
 
 static void SelectNext(void)
@@ -425,6 +549,7 @@ static void SelectNext(void)
       return;
    }
    wpSelected = (wpSelected + 1) % wpList.count;
+   wpBufferDirty = 1;
 }
 
 static int MaskShift(unsigned long mask)
@@ -702,36 +827,271 @@ static void ApplyWallpaper(const char *path, char save)
    }
 
    quoted = QuoteShell(path);
+   command[0] = 0;
    if(HasCommand("hsetroot")) {
       snprintf(command, sizeof(command), "hsetroot -fill %s", quoted);
-      system(command);
    } else if(HasCommand("feh")) {
       snprintf(command, sizeof(command), "feh --bg-fill %s", quoted);
-      system(command);
    } else if(HasCommand("xwallpaper")) {
       snprintf(command, sizeof(command), "xwallpaper --zoom %s", quoted);
-      system(command);
+   }
+   if(command[0]) {
+      int status;
+      EssoraTrace("wallpaper", "setter command: %s", command);
+      status = system(command);
+      EssoraTrace("wallpaper", "setter exit status=%d", status);
+   } else {
+      EssoraTrace("wallpaper", "no supported wallpaper setter found");
    }
    Release(quoted);
 
    UpdatePuppyPin(path);
    if(save) {
       SaveWallpaper(path);
-      RestartWbar();
+      RestartWbar(command);
    }
 }
 
 /* agregado por josejp2424 */
-static void RestartWbar(void)
+static char IsWbarProcess(pid_t pid)
 {
-   /*
-    * Reinicia wbar si está activa para evitar que quede el marco negro
-    * después de cambiar el wallpaper. No inicia wbar si no estaba corriendo.
-    */
-   if(system("pgrep -x wbar >/dev/null 2>&1") == 0) {
-      system("pkill -x wbar >/dev/null 2>&1");
-      system("sh -c 'sleep 0.35; wbar >/dev/null 2>&1 &' ");
+   char path[64];
+   char buffer[256];
+   FILE *fp;
+   char *closeParen;
+   char state = 0;
+   size_t length;
+
+   if(pid <= 1 || pid == getpid()) {
+      return 0;
    }
+
+   snprintf(path, sizeof(path), "/proc/%ld/comm", (long)pid);
+   fp = fopen(path, "r");
+   if(!fp) {
+      return 0;
+   }
+   if(!fgets(buffer, sizeof(buffer), fp)) {
+      fclose(fp);
+      return 0;
+   }
+   fclose(fp);
+   length = strlen(buffer);
+   while(length > 0 && isspace((unsigned char)buffer[length - 1])) {
+      buffer[--length] = 0;
+   }
+   if(strcmp(buffer, "wbar") != 0) {
+      return 0;
+   }
+
+   snprintf(path, sizeof(path), "/proc/%ld/stat", (long)pid);
+   fp = fopen(path, "r");
+   if(!fp) {
+      return 0;
+   }
+   if(!fgets(buffer, sizeof(buffer), fp)) {
+      fclose(fp);
+      return 0;
+   }
+   fclose(fp);
+   closeParen = strrchr(buffer, ')');
+   if(closeParen && closeParen[1] == ' ' && closeParen[2]) {
+      state = closeParen[2];
+   }
+   return state != 'Z';
+}
+
+static int GetWbarProcesses(pid_t *pids, int maxCount)
+{
+   DIR *dir;
+   struct dirent *entry;
+   int count = 0;
+
+   dir = opendir("/proc");
+   if(!dir) {
+      return 0;
+   }
+   while((entry = readdir(dir)) != NULL) {
+      const char *p = entry->d_name;
+      pid_t pid;
+      if(!*p) {
+         continue;
+      }
+      while(*p && isdigit((unsigned char)*p)) {
+         p++;
+      }
+      if(*p) {
+         continue;
+      }
+      pid = (pid_t)strtol(entry->d_name, NULL, 10);
+      if(IsWbarProcess(pid)) {
+         if(pids && count < maxCount) {
+            pids[count] = pid;
+         }
+         count++;
+      }
+   }
+   closedir(dir);
+   return count;
+}
+
+static int CountWbarProcesses(void)
+{
+   return GetWbarProcesses(NULL, 0);
+}
+
+static void GetWbarPids(char *buffer, size_t size)
+{
+   pid_t pids[64];
+   int count;
+   int i;
+   size_t used = 0;
+
+   if(!buffer || size == 0) {
+      return;
+   }
+   buffer[0] = 0;
+   count = GetWbarProcesses(pids, (int)(sizeof(pids) / sizeof(pids[0])));
+   for(i = 0; i < count && i < (int)(sizeof(pids) / sizeof(pids[0])); i++) {
+      int written = snprintf(buffer + used, size - used, "%s%ld",
+                             used ? "," : "", (long)pids[i]);
+      if(written < 0 || (size_t)written >= size - used) {
+         break;
+      }
+      used += (size_t)written;
+   }
+}
+
+static void StopWbarProcesses(void)
+{
+   pid_t pids[64];
+   int round;
+   int count;
+   int i;
+   int attempt;
+
+   for(round = 0; round < 4; round++) {
+      count = GetWbarProcesses(pids, (int)(sizeof(pids) / sizeof(pids[0])));
+      if(count <= 0) {
+         break;
+      }
+
+      EssoraTrace("wbar", "stop round=%d live=%d", round + 1, count);
+      for(i = 0; i < count && i < (int)(sizeof(pids) / sizeof(pids[0])); i++) {
+         if(kill(pids[i], SIGTERM) != 0 && errno != ESRCH) {
+            EssoraTrace("wbar", "SIGTERM pid=%ld failed errno=%d",
+                        (long)pids[i], errno);
+         }
+      }
+      for(attempt = 0; attempt < 15 && CountWbarProcesses() > 0; attempt++) {
+         usleep(100000);
+      }
+
+      count = GetWbarProcesses(pids, (int)(sizeof(pids) / sizeof(pids[0])));
+      if(count <= 0) {
+         break;
+      }
+      for(i = 0; i < count && i < (int)(sizeof(pids) / sizeof(pids[0])); i++) {
+         if(kill(pids[i], SIGKILL) != 0 && errno != ESRCH) {
+            EssoraTrace("wbar", "SIGKILL pid=%ld failed errno=%d",
+                        (long)pids[i], errno);
+         }
+      }
+      for(attempt = 0; attempt < 15 && CountWbarProcesses() > 0; attempt++) {
+         usleep(100000);
+      }
+   }
+
+   EssoraTrace("wbar", "stop complete live=%d", CountWbarProcesses());
+}
+
+static int StartWbarProcess(void)
+{
+   pid_t pid;
+   int nullfd;
+
+   pid = fork();
+   if(pid < 0) {
+      EssoraTrace("wbar", "fork failed errno=%d", errno);
+      return -1;
+   }
+   if(pid == 0) {
+      setsid();
+      nullfd = open("/dev/null", O_RDWR);
+      if(nullfd >= 0) {
+         dup2(nullfd, STDIN_FILENO);
+         dup2(nullfd, STDOUT_FILENO);
+         dup2(nullfd, STDERR_FILENO);
+         if(nullfd > STDERR_FILENO) {
+            close(nullfd);
+         }
+      }
+      execlp("wbar", "wbar", (char*)NULL);
+      _exit(127);
+   }
+   EssoraTrace("wbar", "started child pid=%ld", (long)pid);
+   return 0;
+}
+
+static void RestartWbar(const char *setterCommand)
+{
+   char beforePids[256];
+   char afterPids[256];
+   int before;
+   int status = 0;
+   int attempt;
+
+   before = CountWbarProcesses();
+   GetWbarPids(beforePids, sizeof(beforePids));
+   EssoraTrace("wbar",
+               "restart requested; live before=%d pids=%s",
+               before, beforePids[0] ? beforePids : "none");
+   if(before <= 0) {
+      EssoraTrace("wbar", "not running; no restart needed");
+      return;
+   }
+
+   StopWbarProcesses();
+
+   /* A valid restart requires the old PID to disappear completely. */
+   if(CountWbarProcesses() > 0) {
+      GetWbarPids(afterPids, sizeof(afterPids));
+      EssoraTrace("wbar", "unable to stop old process pids=%s",
+                  afterPids[0] ? afterPids : "unknown");
+      return;
+   }
+
+   if(setterCommand && setterCommand[0]) {
+      EssoraTrace("wbar", "reapplying wallpaper with wbar fully stopped");
+      status = system(setterCommand);
+      EssoraTrace("wbar", "wallpaper reapply status=%d", status);
+      if(wpDisplay) {
+         XSync(wpDisplay, False);
+      }
+   }
+   usleep(250000);
+
+   /* Remove an unexpected early instance, then restore the root once more. */
+   if(CountWbarProcesses() > 0) {
+      EssoraTrace("wbar", "unexpected early instance detected");
+      StopWbarProcesses();
+      if(setterCommand && setterCommand[0]) {
+         status = system(setterCommand);
+         EssoraTrace("wbar", "second wallpaper reapply status=%d", status);
+      }
+   }
+
+   status = StartWbarProcess();
+   for(attempt = 0; attempt < 30 && CountWbarProcesses() == 0; attempt++) {
+      usleep(100000);
+   }
+
+   GetWbarPids(afterPids, sizeof(afterPids));
+   EssoraTrace("wbar",
+               "restart complete status=%d live after=%d pids=%s old=%s",
+               status, CountWbarProcesses(),
+               afterPids[0] ? afterPids : "none",
+               beforePids[0] ? beforePids : "none");
 }
 
 /* agregado por josejp2424 */
@@ -800,10 +1160,13 @@ static void UpdatePuppyPin(const char *path)
    Release(escaped);
 
    if(changed && rename(tmp, pin) == 0) {
+      EssoraTrace("wallpaper", "PuppyPin backdrop updated: %s", pin);
       if(wpDisplay) {
+         EssoraTrace("wallpaper", "sending native desktop reload");
          SendDesktopIconsReload(wpDisplay, RootWindow(wpDisplay, wpScreen));
       }
    } else {
+      EssoraTrace("wallpaper", "PuppyPin was not changed: %s", pin);
       unlink(tmp);
    }
 }

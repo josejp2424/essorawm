@@ -23,6 +23,7 @@
 #include "timing.h"
 #include "misc.h"
 #include "error.h"
+#include "debug.h"
 
 #ifndef MAKE_DEPEND
 #  include <errno.h>
@@ -120,6 +121,10 @@ static Time lastClickTime = 0;
 static DesktopIconNode *lastClickIcon = NULL;
 static char driveCallbackRegistered = 0;
 static char *lastDriveSignature = NULL;
+static int desktopWindowWidth = 0;
+static int desktopWindowHeight = 0;
+static unsigned long desktopDrawCount = 0;
+static Region desktopExposeRegion = NULL;
 
 static void FreeDesktopConfig(void);
 static void LoadDesktopConfig(void);
@@ -162,6 +167,7 @@ static void ActivateDesktopIcon(DesktopIconNode *icon);
 static DesktopIconNode *FindIconAt(int x, int y);
 static DesktopIconNode *FindIconByPath(const char *path);
 static void DrawDesktop(void);
+static void DrawDesktopExposedRegion(Region exposed);
 static void DrawDesktopIcon(DesktopIconNode *icon);
 static void FillDesktopRoundedRectangle(Drawable drawable, GC gc,
                                         int x, int y, int width, int height,
@@ -226,6 +232,10 @@ void InitializeDesktopIcons(void)
    lastClickIcon = NULL;
    driveCallbackRegistered = 0;
    lastDriveSignature = NULL;
+   desktopWindowWidth = 0;
+   desktopWindowHeight = 0;
+   desktopDrawCount = 0;
+   desktopExposeRegion = NULL;
 }
 
 void StartupDesktopIcons(void)
@@ -234,7 +244,10 @@ void StartupDesktopIcons(void)
    unsigned long mask;
 
    LoadDesktopConfig();
+   EssoraTrace("desktop", "startup requested enabled=%d root=%dx%d",
+               desktopConfig.enabled, rootWidth, rootHeight);
    if(!desktopConfig.enabled) {
+      EssoraTrace("desktop", "native desktop disabled by configuration");
       return;
    }
 
@@ -257,6 +270,11 @@ void StartupDesktopIcons(void)
    SetupDesktopWindowProperties();
    JXMapWindow(display, desktopWindow);
    XLowerWindow(display, desktopWindow);
+   desktopWindowWidth = rootWidth;
+   desktopWindowHeight = rootHeight;
+   EssoraTrace("desktop", "window created id=0x%lx size=%dx%d",
+               (unsigned long)desktopWindow,
+               desktopWindowWidth, desktopWindowHeight);
 
    desktopReloadAtom = JXInternAtom(display, DESKTOP_RELOAD_ATOM, False);
    RegisterCallback(DESKTOP_DRIVE_SCAN_MS, SignalDriveRefresh, NULL);
@@ -266,6 +284,12 @@ void StartupDesktopIcons(void)
 
 void ShutdownDesktopIcons(void)
 {
+   if(desktopExposeRegion) {
+      XDestroyRegion(desktopExposeRegion);
+      desktopExposeRegion = NULL;
+   }
+   EssoraTrace("desktop", "shutdown window=0x%lx draws=%lu",
+               (unsigned long)desktopWindow, desktopDrawCount);
    if(driveCallbackRegistered) {
       UnregisterCallback(SignalDriveRefresh, NULL);
       driveCallbackRegistered = 0;
@@ -299,8 +323,11 @@ void DestroyDesktopIcons(void)
 void ReloadDesktopIcons(void)
 {
    if(desktopWindow == None) {
+      EssoraTrace("desktop", "reload ignored: no desktop window");
       return;
    }
+   EssoraTrace("desktop", "reload begin window=0x%lx",
+               (unsigned long)desktopWindow);
    LoadDesktopConfig();
    EnsurePuppyPin();
    LoadPuppyPin();
@@ -308,6 +335,7 @@ void ReloadDesktopIcons(void)
    ClampDesktopIcons(1);
    ResizeDesktopWindow();
    DrawDesktop();
+   EssoraTrace("desktop", "reload complete");
 }
 
 static void SendDesktopIconsMessage(Display *dpy, Window root, long action)
@@ -325,6 +353,8 @@ static void SendDesktopIconsMessage(Display *dpy, Window root, long action)
    event.xclient.message_type = atom;
    event.xclient.format = 32;
    event.xclient.data.l[0] = action;
+   EssoraTrace("desktop", "send reload message action=%ld root=0x%lx",
+               action, (unsigned long)root);
    XSendEvent(dpy, root, False, SubstructureNotifyMask | StructureNotifyMask,
               &event);
    XFlush(dpy);
@@ -350,6 +380,9 @@ char ProcessDesktopIconsEvent(XEvent *event)
    if(event->type == ClientMessage
       && desktopReloadAtom != None
       && event->xclient.message_type == desktopReloadAtom) {
+      EssoraTrace("desktop", "received reload message action=%ld window=0x%lx",
+                  event->xclient.data.l[0],
+                  (unsigned long)event->xclient.window);
       ReloadDesktopIcons();
       if(event->xclient.data.l[0] == 2) {
          RelayoutDriveIcons();
@@ -399,11 +432,77 @@ char ProcessDesktopIconsEvent(XEvent *event)
    }
 
    switch(event->type) {
-   case Expose:
-      if(event->xexpose.count == 0) DrawDesktop();
+   case Expose: {
+      XEvent current = *event;
+      int rectangles = 0;
+      char sequenceComplete = 0;
+
+      /*
+       * X11 may deliver one exposed area as a sequence of rectangles.  The
+       * count field says how many rectangles still follow.  The previous
+       * implementation ignored every event whose count was not zero, so only
+       * the final thin strip was redrawn and desktop launchers disappeared
+       * until the window moved back over them.
+       *
+       * Accumulate every rectangle in the sequence and redraw once the final
+       * count==0 event arrives.  Do not clear the area manually: the desktop
+       * window uses ParentRelative as its background, and X already restores
+       * that background before sending Expose.
+       */
+      if(!desktopExposeRegion) {
+         desktopExposeRegion = XCreateRegion();
+      }
+
+      do {
+         XRectangle rectangle;
+         rectangle.x = (short)Max(0, current.xexpose.x);
+         rectangle.y = (short)Max(0, current.xexpose.y);
+         rectangle.width = (unsigned short)Max(0,
+            Min(desktopWindowWidth,
+                current.xexpose.x + current.xexpose.width) - rectangle.x);
+         rectangle.height = (unsigned short)Max(0,
+            Min(desktopWindowHeight,
+                current.xexpose.y + current.xexpose.height) - rectangle.y);
+         if(rectangle.width > 0 && rectangle.height > 0) {
+            XUnionRectWithRegion(&rectangle, desktopExposeRegion,
+                                 desktopExposeRegion);
+            rectangles++;
+         }
+         if(current.xexpose.count == 0) {
+            sequenceComplete = 1;
+         }
+      } while(JXCheckTypedWindowEvent(display, desktopWindow, Expose, &current));
+
+      EssoraTrace("desktop",
+                  "Expose window=0x%lx accumulated=%d complete=%d remaining=%d",
+                  (unsigned long)event->xexpose.window, rectangles,
+                  sequenceComplete, event->xexpose.count);
+
+      if(sequenceComplete && desktopExposeRegion) {
+         DrawDesktopExposedRegion(desktopExposeRegion);
+         XDestroyRegion(desktopExposeRegion);
+         desktopExposeRegion = NULL;
+      }
       return 1;
+   }
    case ConfigureNotify:
-      DrawDesktop();
+      if(event->xconfigure.width != desktopWindowWidth
+         || event->xconfigure.height != desktopWindowHeight) {
+         EssoraTrace("desktop",
+                     "ConfigureNotify resize old=%dx%d new=%dx%d x=%d y=%d above=0x%lx",
+                     desktopWindowWidth, desktopWindowHeight,
+                     event->xconfigure.width, event->xconfigure.height,
+                     event->xconfigure.x, event->xconfigure.y,
+                     (unsigned long)event->xconfigure.above);
+         desktopWindowWidth = event->xconfigure.width;
+         desktopWindowHeight = event->xconfigure.height;
+         DrawDesktop();
+      } else {
+         EssoraTrace("desktop",
+                     "ConfigureNotify stacking-only ignored size=%dx%d above=0x%lx",
+                     event->xconfigure.width, event->xconfigure.height,
+                     (unsigned long)event->xconfigure.above);
+      }
       return 1;
    case ButtonPress:
       CloseDesktopMenu();
@@ -1217,9 +1316,53 @@ static void DrawDesktop(void)
 {
    DesktopIconNode *icon;
    if(desktopWindow == None) return;
+   desktopDrawCount++;
+   EssoraTrace("desktop", "draw #%lu window=0x%lx",
+               desktopDrawCount, (unsigned long)desktopWindow);
    JXClearWindow(display, desktopWindow);
    for(icon = desktopIcons; icon; icon = icon->next) {
       if(!(icon->flags & FLAG_HIDDEN)) DrawDesktopIcon(icon);
+   }
+   JXFlush(display);
+}
+
+/*
+ * Redraw icons that intersect the exact X expose region.  The background is
+ * cleared per individual Expose rectangle in ProcessDesktopIconsEvent; this
+ * function deliberately never clears the bounding box of the whole region.
+ */
+static void DrawDesktopExposedRegion(Region exposed)
+{
+   DesktopIconNode *icon;
+   const int padding = 8;
+
+   if(desktopWindow == None || !exposed) {
+      return;
+   }
+
+   desktopDrawCount++;
+   EssoraTrace("desktop", "draw-exposed #%lu window=0x%lx",
+               desktopDrawCount, (unsigned long)desktopWindow);
+
+   for(icon = desktopIcons; icon; icon = icon->next) {
+      int iconLeft;
+      int iconTop;
+      unsigned int iconWidth;
+      unsigned int iconHeight;
+
+      if(icon->flags & FLAG_HIDDEN) {
+         continue;
+      }
+
+      iconLeft = icon->drawX - padding;
+      iconTop = icon->drawY - padding;
+      iconWidth = (unsigned)Max(1, icon->drawWidth + padding * 2);
+      iconHeight = (unsigned)Max(1, icon->drawHeight + padding * 2);
+
+      if(XRectInRegion(exposed, iconLeft, iconTop,
+                       iconWidth, iconHeight) != RectangleOut) {
+         DrawDesktopIcon(icon);
+      }
    }
    JXFlush(display);
 }
@@ -1648,6 +1791,10 @@ static void ClampDesktopIcons(char saveChanges)
 static void ResizeDesktopWindow(void)
 {
    if(desktopWindow != None) {
+      EssoraTrace("desktop", "resize/lower requested root=%dx%d",
+                  rootWidth, rootHeight);
+      desktopWindowWidth = rootWidth;
+      desktopWindowHeight = rootHeight;
       JXMoveResizeWindow(display, desktopWindow, 0, 0,
                          (unsigned)rootWidth, (unsigned)rootHeight);
       XLowerWindow(display, desktopWindow);
@@ -2220,6 +2367,7 @@ static void SignalDriveRefresh(const TimeType *now, int x, int y,
    FreeDriveList(drives);
    if(!signature) signature = CopyString("");
    if(!lastDriveSignature || strcmp(lastDriveSignature, signature)) {
+      EssoraTrace("desktop", "drive signature changed; reloading icons");
       Release(signature);
       LoadPuppyPin();
       RefreshDriveIcons(1);

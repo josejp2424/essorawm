@@ -16,7 +16,7 @@ static void DisplayUsage(void);
 void DisplayAbout(void)
 {
    /* agregado por josejp2424: identificación del fork EssoraWM manteniendo el binario jwm. */
-   printf("EssoraWM 0.1.6\n");
+   printf("EssoraWM 0.1.7\n");
    printf("Based on JWM " PACKAGE_VERSION "\n");
    DisplayCompileOptions();
 }

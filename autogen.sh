@@ -37,11 +37,13 @@ if [ ! -f config.rpath ]; then
     cp build-aux/config.rpath config.rpath 2>/dev/null || touch config.rpath
 fi
 
-# 4. Generar po/Makefile.in.in si falta (gettext template).
-if [ ! -f po/Makefile.in.in ]; then
-    if [ -f /usr/share/gettext/po/Makefile.in.in ]; then
-        cp /usr/share/gettext/po/Makefile.in.in po/Makefile.in.in
-    fi
+# 4. po/Makefile.in es una plantilla propia y mínima.  configure.ac usa
+# AC_CONFIG_FILES([po/Makefile]), por lo que este archivo es obligatorio.
+# No confundirlo con Makefile.in.in de gettext: sin AM_GNU_GETTEXT, autoconf
+# no transforma automáticamente Makefile.in.in en Makefile.in.
+if [ ! -f po/Makefile.in ]; then
+    echo "ERROR: falta po/Makefile.in" >&2
+    exit 1
 fi
 
 # 5. Ejecutar autoconf tools en orden.

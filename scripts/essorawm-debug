@@ -1,0 +1,67 @@
+#!/bin/sh
+# Runtime diagnostic helper for EssoraWM.
+# It works without restarting EssoraWM because the marker is checked live.
+
+UID_NUM="$(id -u)"
+MARKER="/tmp/essorawm-debug-${UID_NUM}.enable"
+LOG="${ESSORAWM_DEBUG_LOG:-/tmp/essorawm-debug-${UID_NUM}.log}"
+OLD="${LOG}.old"
+
+usage() {
+    cat <<USAGE
+Usage: essorawm-debug start|stop|status|show|path|collect [destination]
+
+  start                 Clear the old log and enable tracing.
+  stop                  Disable tracing without deleting the log.
+  status                Show whether tracing is enabled.
+  show                  Show the last 200 log lines.
+  path                  Print the active log path.
+  collect [destination] Copy the log to a permanent file.
+USAGE
+}
+
+case "${1:-}" in
+    start)
+        rm -f "$LOG" "$OLD"
+        : > "$LOG" || exit 1
+        : > "$MARKER" || exit 1
+        chmod 600 "$LOG" "$MARKER" 2>/dev/null || true
+        printf 'EssoraWM tracing enabled.\nReproduce the problem, then run: essorawm-debug stop\nLog: %s\n' "$LOG"
+        ;;
+    stop)
+        rm -f "$MARKER"
+        printf 'EssoraWM tracing disabled.\nLog kept at: %s\n' "$LOG"
+        ;;
+    status)
+        if [ -e "$MARKER" ]; then
+            printf 'enabled\n'
+        else
+            printf 'disabled\n'
+        fi
+        printf 'log: %s\n' "$LOG"
+        ;;
+    show)
+        if [ -f "$LOG" ]; then
+            tail -n 200 "$LOG"
+        else
+            printf 'No log exists yet: %s\n' "$LOG" >&2
+            exit 1
+        fi
+        ;;
+    path)
+        printf '%s\n' "$LOG"
+        ;;
+    collect)
+        if [ ! -f "$LOG" ]; then
+            printf 'No log exists yet: %s\n' "$LOG" >&2
+            exit 1
+        fi
+        DEST="${2:-${HOME:-/tmp}/essorawm-debug-$(date +%Y%m%d-%H%M%S).log}"
+        cp -f "$LOG" "$DEST" || exit 1
+        printf 'Saved: %s\n' "$DEST"
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+esac

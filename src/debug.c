@@ -11,6 +11,72 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
+#include <unistd.h>
+#include <sys/stat.h>
+
+
+/** Return non-zero when the lightweight EssoraWM runtime trace is enabled. */
+char EssoraTraceEnabled(void)
+{
+   const char *value = getenv("ESSORAWM_DEBUG");
+   char marker[128];
+   if(value && value[0] && strcmp(value, "0")) {
+      return 1;
+   }
+   snprintf(marker, sizeof(marker), "/tmp/essorawm-debug-%lu.enable",
+            (unsigned long)getuid());
+   return access(marker, F_OK) == 0;
+}
+
+/** Append a timestamped line to the per-user EssoraWM diagnostic log. */
+void EssoraTrace(const char *component, const char *str, ...)
+{
+   const char *override;
+   char path[256];
+   char oldPath[272];
+   struct stat st;
+   struct timespec ts;
+   struct tm local;
+   FILE *fp;
+   va_list ap;
+
+   if(!EssoraTraceEnabled() || !str) {
+      return;
+   }
+
+   override = getenv("ESSORAWM_DEBUG_LOG");
+   if(override && override[0]) {
+      snprintf(path, sizeof(path), "%s", override);
+   } else {
+      snprintf(path, sizeof(path), "/tmp/essorawm-debug-%lu.log",
+               (unsigned long)getuid());
+   }
+
+   if(stat(path, &st) == 0 && st.st_size > 8 * 1024 * 1024) {
+      snprintf(oldPath, sizeof(oldPath), "%s.old", path);
+      unlink(oldPath);
+      rename(path, oldPath);
+   }
+
+   fp = fopen(path, "a");
+   if(!fp) {
+      return;
+   }
+
+   clock_gettime(CLOCK_REALTIME, &ts);
+   localtime_r(&ts.tv_sec, &local);
+   fprintf(fp, "%04d-%02d-%02d %02d:%02d:%02d.%03ld pid=%ld [%s] ",
+           local.tm_year + 1900, local.tm_mon + 1, local.tm_mday,
+           local.tm_hour, local.tm_min, local.tm_sec,
+           ts.tv_nsec / 1000000L, (long)getpid(),
+           component && component[0] ? component : "core");
+   va_start(ap, str);
+   vfprintf(fp, str, ap);
+   va_end(ap);
+   fputc('\n', fp);
+   fclose(fp);
+}
 
 /** Emit a message (if compiled with -DDEBUG). */
 void Debug(const char *str, ...)

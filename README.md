@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <strong>EssoraWM 0.1.6</strong><br>
+  <strong>EssoraWM 0.1.7</strong><br>
   Based on JWM 2.4.7
 </p>
 
@@ -37,7 +37,7 @@ jwm -version
 Version output:
 
 ```text
-EssoraWM 0.1.6
+EssoraWM 0.1.7
 Based on JWM 2.4.7
 ```
 
@@ -129,7 +129,7 @@ change alignment, icon size, spacing, offsets, labels and reverse order.
 
 ## Native desktop
 
-EssoraWM 0.1.6 includes its own native X11 desktop window. The desktop is
+EssoraWM 0.1.7 includes its own native X11 desktop window. The desktop is
 managed by the same `jwm` process, so neither ROX-Filer pinboard mode nor the
 external `desktop_drive_icons` program is required.
 
@@ -397,7 +397,7 @@ chmod +x build-essora-jwm-deb.sh
 The generated package is written to:
 
 ```text
-deb-output/essorawm_0.1.6_<architecture>.deb
+deb-output/essorawm_0.1.7_<architecture>.deb
 ```
 
 Temporary configuration files, objects and the package staging tree are
@@ -484,3 +484,25 @@ Essora modifications and integration:
 Project repository:
 
 <https://github.com/josejp2424/essorawm>
+
+## Runtime diagnostic log
+
+This source includes a lightweight runtime trace for desktop, wallpaper and
+`wbar` problems. It is disabled by default and can be enabled without
+restarting EssoraWM:
+
+```sh
+essorawm-debug start
+```
+
+Reproduce the problem, then stop tracing and keep the log:
+
+```sh
+essorawm-debug stop
+essorawm-debug collect
+```
+
+The default log is `/tmp/essorawm-debug-UID.log`. The trace records wallpaper
+window expose/configure events, native desktop reloads and redraws, drive
+signature changes, and the number of `wbar` processes before and after a
+wallpaper change.

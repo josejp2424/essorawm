@@ -30,6 +30,12 @@ void *alloca(size_t);
 
 void Debug(const char *str, ...);
 
+/** Runtime diagnostic log enabled by /tmp/essorawm-debug-UID.enable or
+ * ESSORAWM_DEBUG=1. The log is written to
+ * /tmp/essorawm-debug-UID.log unless ESSORAWM_DEBUG_LOG overrides it. */
+char EssoraTraceEnabled(void);
+void EssoraTrace(const char *component, const char *str, ...);
+
 #ifdef HAVE_ALLOCA
 
 #   define AllocateStack( x ) alloca( x )

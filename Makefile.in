@@ -20,6 +20,7 @@ install: all
 	install -m 0755 scripts/jwm-wallpaper $(BINDIR)/jwm-wallpaper
 	install -m 0755 scripts/jwm-desktop-icons $(BINDIR)/jwm-desktop-icons
 	install -m 0755 scripts/essorawm-filemanager $(BINDIR)/essorawm-filemanager
+	install -m 0755 scripts/essorawm-debug $(BINDIR)/essorawm-debug
 	install -d -m 0755 $(MANDIR)/man1
 	install -m 644 jwm.1 $(MANDIR)/man1/jwm.1
 
@@ -33,6 +34,7 @@ install-strip: all install-conf
 	install -m 0755 scripts/jwm-wallpaper $(BINDIR)/jwm-wallpaper
 	install -m 0755 scripts/jwm-desktop-icons $(BINDIR)/jwm-desktop-icons
 	install -m 0755 scripts/essorawm-filemanager $(BINDIR)/essorawm-filemanager
+	install -m 0755 scripts/essorawm-debug $(BINDIR)/essorawm-debug
 	install -d -m 0755 $(MANDIR)/man1
 	install -m 644 jwm.1 $(MANDIR)/man1/jwm.1
 	install -d -m 0755 $(ICONDIR)
@@ -45,6 +47,7 @@ uninstall:
 	rm -f $(BINDIR)/jwm-wallpaper
 	rm -f $(BINDIR)/jwm-desktop-icons
 	rm -f $(BINDIR)/essorawm-filemanager
+	rm -f $(BINDIR)/essorawm-debug
 	rm -f $(MANDIR)/man1/jwm.1
 
 tarball:

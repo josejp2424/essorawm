@@ -16,6 +16,7 @@
 #include "essorawallpaper.h" /* agregado por josejp2424 */
 #include "essoradesktop.h" /* agregado por josejp2424 */
 #include "desktopicons.h" /* escritorio nativo agregado por josejp2424 */
+#include "debug.h"
 
 #include "border.h"
 #include "client.h"
@@ -127,6 +128,7 @@ int main(int argc, char *argv[])
    } action;
 
    StartDebug();
+   EssoraTrace("main", "process start argc=%d", argc);
 
    /* Parse command line options. */
    action = COMMAND_RUN;
@@ -174,6 +176,11 @@ int main(int argc, char *argv[])
    textdomain("jwm");
 #endif
 
+   EssoraTrace("main", "parsed action=%d display=%s config=%s",
+               action,
+               displayString ? displayString : "(default)",
+               configPath ? configPath : "(default)");
+
    switch(action) {
    case COMMAND_PARSE:
       Initialize();
@@ -220,13 +227,18 @@ int main(int argc, char *argv[])
       ParseConfig(configPath);
 
       /* Start up the JWM components. */
+      EssoraTrace("main", "WM startup begin restarting=%d", isRestarting);
       Startup();
+      EssoraTrace("main", "WM startup complete");
 
       /* The main event loop. */
       EventLoop();
+      EssoraTrace("main", "event loop ended exit=%d restart=%d reload=%d",
+                  shouldExit, shouldRestart, shouldReload);
 
       /* Shutdown JWM components. */
       Shutdown();
+      EssoraTrace("main", "WM shutdown complete");
 
       /* Perform any extra cleanup. */
       Destroy();
@@ -596,6 +608,7 @@ void Startup(void)
    LoadBackground(currentDesktop);
 
    /* Run any startup commands. */
+   EssoraTrace("main", "running startup commands");
    StartupCommands();
 
    /* Escritorio nativo compatible con PuppyPin; no usa ROX ni GTK. */

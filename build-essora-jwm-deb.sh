@@ -6,7 +6,7 @@
 set -euo pipefail
 
 PKGNAME="essorawm"
-VERSION="0.1.6"
+VERSION="0.1.7"
 ARCH="$(dpkg --print-architecture 2>/dev/null || echo amd64)"
 MAINTAINER="josejp2424 <puppylinuxjosejp2424@gmail.com>"
 HOMEPAGE="https://github.com/josejp2424/essorawm"
@@ -75,6 +75,10 @@ msg "Generando los archivos de configuración dentro del directorio temporal..."
     cd "$COMPILE_DIR"
     chmod +x ./autogen.sh
     ./autogen.sh
+    [ -f po/Makefile.in ] || {
+        echo "ERROR: falta po/Makefile.in; configure no puede generar po/Makefile." >&2
+        exit 1
+    }
 )
 
 msg "Configurando EssoraWM..."

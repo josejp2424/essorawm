@@ -1,4 +1,47 @@
+## 0.1.7 persistent wallpaper window and real wbar restart
+
+- Store the complete wallpaper selector as the X11 background pixmap of its own window.
+- Restore every exposed rectangle server-side with `XClearArea`, avoiding blank selector windows under XLibre.
+- Fix the selector at 820x500 and request backing store while it is mapped.
+- Discover live wbar processes directly through `/proc` instead of relying on `ps -C`.
+- Stop wbar with `kill(2)`, verify that every old PID disappeared, reapply the wallpaper, and start a genuinely new process.
+- Log the old and new wbar PIDs so a failed restart is immediately visible.
+
+## 0.1.7 wbar and desktop Expose correction
+
+- Accumulate every X11 Expose rectangle, including events whose count is greater than zero.
+- Redraw desktop launchers only after the complete Expose sequence has arrived.
+- Stop manually clearing exposed desktop strips; ParentRelative restores the background.
+- Restart wbar with verified live PIDs, ignoring zombie processes.
+- Reapply the wallpaper after the old wbar exits and before the final fresh instance starts.
+
+## 0.1.7 desktop repaint and Cancel follow-up
+
+- Preserve the exact XLibre Expose rectangles instead of clearing their bounding box.
+- Prevent desktop icons from disappearing while another window moves over them.
+- Move the wallpaper Right button so it no longer overlaps Cancel.
+- Use non-overlapping button hit boxes and trace Cancel clicks.
+
 # EssoraWM changelog
+
+## 0.1.7
+
+- Fixed continuous flashing in the native wallpaper selector when another window passes over it.
+- Coalesced pending X11 `Expose` events instead of repainting repeatedly for every queued event.
+- Changed the native desktop to restore only the exposed region rather than redrawing the complete screen.
+- Added a double-buffered wallpaper selector so already rendered previews are restored with `XCopyArea`.
+- Prevented wallpaper thumbnails from being reopened and rescaled from disk during ordinary window exposure.
+- Kept the desktop diagnostics and duplicate-`wbar` protection introduced during the 0.1.6 investigation.
+
+## 0.1.6 diagnostic desktop fix
+
+- Added an optional per-user runtime trace controlled by `essorawm-debug`.
+- Logged EssoraWM restarts, wallpaper expose/configure events, native desktop
+  reloads/redraws, drive changes and wbar process counts.
+- Ignored desktop `ConfigureNotify` events that only change stacking order.
+- Coalesced pending wallpaper `Expose` events before repainting.
+- Made the wbar refresh wait for the old process and avoid launching a second
+  instance when an autostart or supervisor has already restarted it.
 
 ## 0.1.6
 
