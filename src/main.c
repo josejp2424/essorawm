@@ -607,6 +607,16 @@ void Startup(void)
    /* Draw the background (if backgrounds are used). */
    LoadBackground(currentDesktop);
 
+   /*
+    * Start the saved wallpaper setter without blocking the window manager.
+    * Some hsetroot builds do not return while JWM is still completing its
+    * startup sequence. Waiting here would leave the root window black and
+    * prevent the tray, panel and menus from becoming usable.
+    */
+   EssoraTrace("wallpaper", "startup asynchronous restore begin");
+   RestoreEssoraWallpaperAsync();
+   EssoraTrace("wallpaper", "startup asynchronous restore monitor launched");
+
    /* Run any startup commands. */
    EssoraTrace("main", "running startup commands");
    StartupCommands();

@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <strong>EssoraWM 0.1.7</strong><br>
+  <strong>EssoraWM 0.1.11</strong><br>
   Based on JWM 2.4.7
 </p>
 
@@ -37,7 +37,7 @@ jwm -version
 Version output:
 
 ```text
-EssoraWM 0.1.7
+EssoraWM 0.1.11
 Based on JWM 2.4.7
 ```
 
@@ -129,7 +129,7 @@ change alignment, icon size, spacing, offsets, labels and reverse order.
 
 ## Native desktop
 
-EssoraWM 0.1.7 includes its own native X11 desktop window. The desktop is
+EssoraWM 0.1.11 includes its own native X11 desktop window. The desktop is
 managed by the same `jwm` process, so neither ROX-Filer pinboard mode nor the
 external `desktop_drive_icons` program is required.
 
@@ -397,7 +397,7 @@ chmod +x build-essora-jwm-deb.sh
 The generated package is written to:
 
 ```text
-deb-output/essorawm_0.1.7_<architecture>.deb
+deb-output/essorawm_0.1.11_<architecture>.deb
 ```
 
 Temporary configuration files, objects and the package staging tree are

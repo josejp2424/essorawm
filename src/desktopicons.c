@@ -30,6 +30,7 @@
 #  include <fcntl.h>
 #  include <sys/stat.h>
 #  include <sys/types.h>
+#  include <time.h>
 #  include <unistd.h>
 #  include <strings.h>
 #endif
@@ -43,6 +44,7 @@
 #define DESKTOP_MENU_ROW_HEIGHT 30
 #define DESKTOP_MENU_ICON_SIZE 20
 #define DESKTOP_DRIVE_SCAN_MS 3000
+#define DESKTOP_EXPOSE_BATCH_MS 16
 #define DESKTOP_MAX_PIN_SIZE (16U * 1024U * 1024U)
 #define DESKTOP_RELOAD_ATOM "_ESSORAWM_DESKTOP_RELOAD"
 
@@ -128,6 +130,7 @@ static Region desktopExposeRegion = NULL;
 
 static void FreeDesktopConfig(void);
 static void LoadDesktopConfig(void);
+static char SessionWantsNativeDesktop(void);
 static void ReadIniFile(const char *path);
 static void ApplyIniValue(const char *key, const char *value);
 static char ParseBoolean(const char *value, char fallback);
@@ -434,23 +437,30 @@ char ProcessDesktopIconsEvent(XEvent *event)
    switch(event->type) {
    case Expose: {
       XEvent current = *event;
+      struct timespec delay;
       int rectangles = 0;
-      char sequenceComplete = 0;
+      int lastCount = current.xexpose.count;
 
       /*
-       * X11 may deliver one exposed area as a sequence of rectangles.  The
-       * count field says how many rectangles still follow.  The previous
-       * implementation ignored every event whose count was not zero, so only
-       * the final thin strip was redrawn and desktop launchers disappeared
-       * until the window moved back over them.
+       * XLibre can generate a large stream of Expose events while a window is
+       * moved over the desktop.  Drawing as soon as each sequence reaches
+       * count==0 causes dozens or hundreds of redraws in a fraction of a
+       * second because the next sequence is already arriving.
        *
-       * Accumulate every rectangle in the sequence and redraw once the final
-       * count==0 event arrives.  Do not clear the area manually: the desktop
-       * window uses ParentRelative as its background, and X already restores
-       * that background before sending Expose.
+       * Use one small frame-sized collection window.  During these 16 ms X11
+       * can queue every exposed rectangle produced by the movement.  We then
+       * merge the exact rectangles into one Region and repaint intersecting
+       * icons only once.  This deliberately does not clear the desktop: its
+       * ParentRelative background has already been restored by the server.
        */
       if(!desktopExposeRegion) {
          desktopExposeRegion = XCreateRegion();
+      }
+
+      delay.tv_sec = 0;
+      delay.tv_nsec = DESKTOP_EXPOSE_BATCH_MS * 1000000L;
+      while(nanosleep(&delay, &delay) < 0 && errno == EINTR) {
+         /* Continue sleeping for the unslept part of the 16 ms frame. */
       }
 
       do {
@@ -468,17 +478,15 @@ char ProcessDesktopIconsEvent(XEvent *event)
                                  desktopExposeRegion);
             rectangles++;
          }
-         if(current.xexpose.count == 0) {
-            sequenceComplete = 1;
-         }
+         lastCount = current.xexpose.count;
       } while(JXCheckTypedWindowEvent(display, desktopWindow, Expose, &current));
 
       EssoraTrace("desktop",
-                  "Expose window=0x%lx accumulated=%d complete=%d remaining=%d",
+                  "Expose batch window=0x%lx rectangles=%d delay=%dms last-count=%d",
                   (unsigned long)event->xexpose.window, rectangles,
-                  sequenceComplete, event->xexpose.count);
+                  DESKTOP_EXPOSE_BATCH_MS, lastCount);
 
-      if(sequenceComplete && desktopExposeRegion) {
+      if(desktopExposeRegion) {
          DrawDesktopExposedRegion(desktopExposeRegion);
          XDestroyRegion(desktopExposeRegion);
          desktopExposeRegion = NULL;
@@ -582,13 +590,77 @@ static void FreeDesktopConfig(void)
    }
 }
 
+static char SessionWantsNativeDesktop(void)
+{
+   const char *override = getenv("ESSORAWM_NATIVE_DESKTOP");
+   const char *home = getenv("HOME");
+   char path[PATH_MAX];
+   char line[256];
+   char *session;
+   char *slash;
+   FILE *file;
+
+   if(override && override[0]) {
+      const char enabled = ParseBoolean(override, 0);
+      EssoraTrace("desktop",
+                  "native desktop override ESSORAWM_NATIVE_DESKTOP=%s enabled=%d",
+                  override, enabled);
+      return enabled;
+   }
+
+   if(!home || !home[0]) {
+      EssoraTrace("desktop",
+                  "native desktop disabled: HOME is not available");
+      return 0;
+   }
+
+   snprintf(path, sizeof(path), "%s/.xsession", home);
+   file = fopen(path, "r");
+   if(!file) {
+      EssoraTrace("desktop",
+                  "native desktop disabled: cannot read %s", path);
+      return 0;
+   }
+   if(!fgets(line, sizeof(line), file)) {
+      fclose(file);
+      EssoraTrace("desktop",
+                  "native desktop disabled: empty %s", path);
+      return 0;
+   }
+   fclose(file);
+
+   session = TrimLocal(line);
+   slash = strrchr(session, '/');
+   if(slash) {
+      session = slash + 1;
+   }
+
+   /*
+    * Both session names use this same modified JWM binary.  In the ordinary
+    * "jwm" session the window is only the PuppyPin icon layer; its
+    * ParentRelative background lets the root wallpaper remain visible.
+    * The "essorawm" session uses the same layer as its native desktop.
+    */
+   if(!strcasecmp(session, "essorawm") || !strcasecmp(session, "jwm")) {
+      EssoraTrace("desktop",
+                  "PuppyPin icon layer allowed for session=%s", session);
+      return 1;
+   }
+
+   EssoraTrace("desktop",
+               "PuppyPin icon layer disabled for session=%s",
+               session[0] ? session : "(empty)");
+   return 0;
+}
+
 static void LoadDesktopConfig(void)
 {
    const char *home = getenv("HOME");
+   const char sessionAllowsDesktop = SessionWantsNativeDesktop();
    char path[PATH_MAX];
    FreeDesktopConfig();
    memset(&desktopConfig, 0, sizeof(desktopConfig));
-   desktopConfig.enabled = 1;
+   desktopConfig.enabled = sessionAllowsDesktop;
    desktopConfig.showDrives = 1;
    desktopConfig.showInternal = 1;
    desktopConfig.showRemovable = 1;
@@ -611,6 +683,15 @@ static void LoadDesktopConfig(void)
       ReadIniFile(path);
       snprintf(path, sizeof(path), "%s/.config/essorawm/desktop.ini", home);
       ReadIniFile(path);
+   }
+
+   /*
+    * Respect the selected session gate after reading shared configuration.
+    * For session=jwm this is the transparent PuppyPin icon layer, not a
+    * switch to the EssoraWM session.
+    */
+   if(!sessionAllowsDesktop) {
+      desktopConfig.enabled = 0;
    }
 
    if(desktopConfig.iconSize < DESKTOP_ICON_MIN_SIZE)

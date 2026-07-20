@@ -9,5 +9,6 @@
 
 void RunEssoraWallpaperSelector(void);
 void RestoreEssoraWallpaper(void);
+void RestoreEssoraWallpaperAsync(void);
 
 #endif /* ESSORAWALLPAPER_H */

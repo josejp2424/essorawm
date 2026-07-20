@@ -1,3 +1,33 @@
+## 0.1.11
+
+- Groups native desktop `Expose` events into 16 ms frame-sized batches.
+- Merges every exact exposed rectangle into one X11 region before drawing.
+- Repaints only icons intersecting the accumulated region and never clears the full desktop during an expose batch.
+- Prevents the redraw storm seen while moving windows over the PuppyPin icon layer under XLibre.
+- Keeps the working asynchronous wallpaper startup and JWM PuppyPin behavior from 0.1.10 unchanged.
+
+## 0.1.10
+
+- Restore the PuppyPin application/icon layer in the ordinary `jwm` session.
+- Keep the root wallpaper visible through the icon window using its ParentRelative background.
+- After the asynchronous wallpaper setter finishes, send a native desktop reload so icons and wallpaper are repainted in the correct order.
+- Keep wallpaper restoration outside the WM process so panel and menus can never be blocked.
+
+## 0.1.9
+
+- Fixed a complete black screen during JWM startup caused by waiting synchronously for `hsetroot`.
+- The saved wallpaper is now launched from a non-blocking child process.
+- JWM can finish creating the tray, panel and menus even if the wallpaper setter is slow or does not return.
+- Native desktop session detection from 0.1.8 is preserved: it remains disabled when `/root/.xsession` is `jwm`.
+
+## 0.1.8
+
+- Fixed the ordinary Puppy `jwm` session starting the EssoraWM native desktop even when it was never enabled.
+- The native PuppyPin desktop now starts only when `~/.xsession` contains `essorawm`.
+- Added `ESSORAWM_NATIVE_DESKTOP=1` as an explicit diagnostic override.
+- Restores the saved wallpaper synchronously inside the window manager before startup commands and wbar.
+- Prevents a black root window caused by racing asynchronous wallpaper commands during JWM startup.
+
 ## 0.1.7 persistent wallpaper window and real wbar restart
 
 - Store the complete wallpaper selector as the X11 background pixmap of its own window.

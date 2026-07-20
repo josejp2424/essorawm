@@ -6,7 +6,7 @@
 set -euo pipefail
 
 PKGNAME="essorawm"
-VERSION="0.1.7"
+VERSION="0.1.11"
 ARCH="$(dpkg --print-architecture 2>/dev/null || echo amd64)"
 MAINTAINER="josejp2424 <puppylinuxjosejp2424@gmail.com>"
 HOMEPAGE="https://github.com/josejp2424/essorawm"

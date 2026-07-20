@@ -33,6 +33,7 @@
 #  include <limits.h>
 #  include <signal.h>
 #  include <fcntl.h>
+#  include <sys/wait.h>
 #endif
 
 #define WALLPAPER_DIR "/usr/share/backgrounds"
@@ -315,11 +316,94 @@ void RestoreEssoraWallpaper(void)
 {
    char *path = ReadWallpaperPath();
    if(path && path[0]) {
+      EssoraTrace("wallpaper", "restoring saved wallpaper: %s", path);
       ApplyWallpaper(path, 0);
+   } else {
+      EssoraTrace("wallpaper", "no saved wallpaper to restore");
    }
    if(path) {
       Release(path);
    }
+}
+
+/*
+ * Restore the saved wallpaper from a detached child so the main JWM process
+ * never waits for hsetroot/feh/xwallpaper during startup.
+ * agregado por josejp2424
+ */
+void RestoreEssoraWallpaperAsync(void)
+{
+   char *path = ReadWallpaperPath();
+   pid_t monitorPid;
+
+   if(!path || !path[0]) {
+      EssoraTrace("wallpaper", "no saved wallpaper to restore asynchronously");
+      if(path) {
+         Release(path);
+      }
+      return;
+   }
+
+   EssoraTrace("wallpaper", "launching asynchronous restore: %s", path);
+   monitorPid = fork();
+   if(monitorPid < 0) {
+      EssoraTrace("wallpaper", "cannot fork wallpaper monitor: %s",
+                  strerror(errno));
+      Release(path);
+      return;
+   }
+
+   if(monitorPid == 0) {
+      int nullfd;
+      int status = -1;
+      pid_t setterPid;
+      Display *notifyDisplay;
+
+      /* Do not keep the WM's X connection or terminal streams in the child. */
+      if(display) {
+         close(ConnectionNumber(display));
+      }
+      nullfd = open("/dev/null", O_RDWR);
+      if(nullfd >= 0) {
+         dup2(nullfd, STDIN_FILENO);
+         dup2(nullfd, STDOUT_FILENO);
+         dup2(nullfd, STDERR_FILENO);
+         if(nullfd > STDERR_FILENO) {
+            close(nullfd);
+         }
+      }
+
+      /*
+       * Run the setter in a grandchild.  The monitor may wait here because it
+       * is detached from the WM.  Once the root pixmap is ready, notify the
+       * PuppyPin icon layer so its ParentRelative background is cleared and
+       * redrawn over the new wallpaper.
+       */
+      setterPid = fork();
+      if(setterPid == 0) {
+         execlp("hsetroot", "hsetroot", "-fill", path, (char*)NULL);
+         execlp("feh", "feh", "--bg-fill", path, (char*)NULL);
+         execlp("xwallpaper", "xwallpaper", "--zoom", path, (char*)NULL);
+         _exit(127);
+      }
+      if(setterPid > 0) {
+         while(waitpid(setterPid, &status, 0) < 0 && errno == EINTR) {
+            /* retry */
+         }
+      }
+
+      notifyDisplay = XOpenDisplay(NULL);
+      if(notifyDisplay) {
+         SendDesktopIconsReload(notifyDisplay,
+                                DefaultRootWindow(notifyDisplay));
+         XCloseDisplay(notifyDisplay);
+      }
+      _exit(setterPid < 0 ? 126 : 0);
+   }
+
+   EssoraTrace("wallpaper", "asynchronous monitor child pid=%ld",
+               (long)monitorPid);
+   Release(path);
 }
 
 static char InitWallpaperDisplay(void)

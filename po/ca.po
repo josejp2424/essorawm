@@ -1,7 +1,7 @@
 # EssoraWM desktop translations.
 msgid ""
 msgstr ""
-"Project-Id-Version: EssoraWM 0.1.7\n"
+"Project-Id-Version: EssoraWM 0.1.11\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
